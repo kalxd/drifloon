@@ -1,0 +1,10 @@
+{
+  "version": "0.0.1",
+  "dependencies": {
+    "@cycle/dom": "^22.3.0",
+    "@cycle/isolate": "^5.0.0",
+    "@cycle/most-run": "^8.2.0",
+    "@cycle/state": "^1.2.0",
+    "most": "^1.7.3"
+  }
+}
