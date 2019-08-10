@@ -22,20 +22,20 @@ const addStyle = text => GM_addStyle(text);
 const openInTabWith = R.curry((option, url) => GM_openInTab(url, option));
 const openInTab = url => GM_openInTab(url);
 
-const registerMenuCommand = R.curry((caption, f) => GM.registerMenuCommand(caption, f));
+const registerMenuCommand = R.curry((caption, f) => GM_registerMenuCommand(caption, f));
 
-const unregisterMenuCommand = caption => GM.registerMenuCommand(caption);
+const unregisterMenuCommand = caption => GM_registerMenuCommand(caption);
 
 const notificationWith = option => GM_notification(option);
-const notification = R.curry((title, text) => GM.notification(text, title));
+const notification = R.curry((title, text) => GM_notification(text, title));
 
-const setClipboardWith = R.curry((type, data) => GM.setClipboard(data, type));
-const setClipboard = data => GM.setClipboard(data);
+const setClipboardWith = R.curry((type, data) => GM_setClipboard(data, type));
+const setClipboard = data => GM_setClipboard(data);
 
-const xmlHttpRequest = option => GM.xmlHttpRequest(option);
+const xmlhttpRequest = option => GM_xmlhttpRequest(option);
 
-const downloadWith = option => GM.download(option);
-const download = R.curry((name, url) => GM.download(url, name));
+const downloadWith = option => GM_download(option);
+const download = R.curry((name, url) => GM_download(url, name));
 
 /** end */
 
@@ -63,6 +63,7 @@ exports.notificationWith = notificationWith;
 exports.notification = notification;
 exports.setClipboardWith = setClipboardWith;
 exports.setClipboard = setClipboard;
+exports.xmlhttpRequest = xmlhttpRequest;
 exports.downloadWith = downloadWith;
 exports.download = download;
 
