@@ -1,4 +1,3 @@
-const Most = require("most");
 const R = require("ramda");
 
 /** GM基本定义 */

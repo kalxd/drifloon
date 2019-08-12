@@ -1,20 +1,24 @@
 const R = require("ramda");
-const Most = require("most");
+const RX = require("rxjs");
+const RO = require("rxjs/operators");
 const DOM = require("@cycle/dom");
-const isolate = require("@cycle/isolate");
+const I = require("@cycle/isolate");
 
 const Run = require("./drifloon/run");
 const F = require("./drifloon/function");
 const GM = require("./drifloon/gm");
+const E = require("./drifloon/element");
 
 const M = {
 	R,
-	Most,
+	RX,
+	RO,
 	DOM,
-	isolate,
+	I,
 	...Run,
 	F,
-	GM
+	GM,
+	E
 };
 
 module.exports = M;

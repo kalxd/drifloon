@@ -9,6 +9,9 @@ const config = {
 		filename: `drifloon.dep.${pkg.version}.js`,
 		library: "M",
 		libraryTarget: "umd2"
+	},
+	performance: {
+		hints: false
 	}
 };
 

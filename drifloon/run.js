@@ -1,9 +1,8 @@
-const Most = require("most");
 const R = require("ramda");
 
 const { makeDOMDriver } = require("@cycle/dom");
 const { withState } = require("@cycle/state");
-const { run } = require("@cycle/most-run");
+const { run } = require("@cycle/rxjs-run");
 
 const mkDriver = node => ({
 	DOM: makeDOMDriver(node)
