@@ -1,6 +1,5 @@
 const R = require("ramda");
-const RX = require("rxjs");
-const RO = require("rxjs/operators");
+const Most = require("most");
 const DOM = require("@cycle/dom");
 const I = require("@cycle/isolate");
 
@@ -11,8 +10,7 @@ const E = require("./drifloon/element");
 
 const M = {
 	R,
-	RX,
-	RO,
+	Most,
 	DOM,
 	I,
 	...Run,

@@ -1,13 +1,13 @@
 const R = require("ramda");
-const RX = require("rxjs");
+const Most = require("most");
 
 // fromEvent :: String -> Node -> Stream Event
 const fromEvent = R.curry((type, el) => {
 	if (R.isNil(el)) {
-		return RX.NEVER;
+		return Most.empty();
 	}
 
-	return RX.fromEvent(el, type);
+	return Most.fromEvent(type, el);
 });
 
 const fromClick = fromEvent("click");
