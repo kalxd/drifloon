@@ -8,6 +8,7 @@ const mkDriver = node => ({
 	DOM: makeDOMDriver(node)
 });
 
+// runAt :: Element -> Component -> IO ()
 const runAt = R.curry((node, app) => {
 	const driver = mkDriver(node);
 
