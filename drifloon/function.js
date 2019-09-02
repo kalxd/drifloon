@@ -53,6 +53,22 @@ const makeValue = v => {
 	};
 };
 
+const genValue = f => {
+	const gen = makeValue(null);
+
+	return () => {
+		const v = gen();
+		if (R.isNil(v)) {
+			const value = f();
+			gen(value);
+			return value;
+		}
+		else {
+			return v;
+		}
+	};
+};
+
 exports.fmap = fmap;
 exports.fmap2 = fmap2;
 exports.fmap3 = fmap3;
@@ -60,3 +76,4 @@ exports.fmap4 = fmap4;
 exports.fmap5 = fmap5;
 
 exports.makeValue = makeValue;
+exports.genValue = genValue;
