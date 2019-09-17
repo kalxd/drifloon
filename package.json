@@ -1,11 +1,11 @@
 {
-  "version": "0.2.2",
+  "version": "0.3.0",
   "dependencies": {
     "@cycle/dom": "^22.3.0",
     "@cycle/isolate": "^5.0.0",
-    "@cycle/most-run": "^8.2.0",
+    "@cycle/rxjs-run": "^10.3.0",
     "@cycle/state": "^1.2.0",
-    "most": "^1.7.3",
-    "ramda": "^0.26.1"
+    "ramda": "^0.26.1",
+    "rxjs": "^6.5.3"
   }
 }

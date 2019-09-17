@@ -1,13 +1,23 @@
 const R = require("ramda");
-const Most = require("most");
+const Rx = require("rxjs");
+const Ro = require("rxjs/operators");
+
+const mapToTarget = Ro.map(e => e.target);
+
+const mapToValue = Rx.pipe(
+	mapToTarget,
+	Ro.map(el => el.value.trim())
+);
+
+const debounceAction = Ro.debounceTime(100);
 
 // fromEvent :: String -> Element -> Stream Event
 const fromEvent = R.curry((type, el) => {
 	if (R.isNil(el)) {
-		return Most.empty();
+		return Rx.NEVER;
 	}
 
-	return Most.fromEvent(type, el);
+	return Rx.fromEvent(el, type);
 });
 
 // fromClick :: Element -> Stream Event
@@ -33,5 +43,6 @@ const createEmptyNodeWith = classname => {
 exports.fromEvent = fromEvent;
 exports.fromClick = fromClick;
 exports.fromChange = fromChange;
+
 exports.createEmptyNode = createEmptyNode;
 exports.createEmptyNodeWith = createEmptyNodeWith;

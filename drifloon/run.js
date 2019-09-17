@@ -1,8 +1,9 @@
 const R = require("ramda");
+const Ro = require("rxjs/operators");
 
 const { makeDOMDriver } = require("@cycle/dom");
 const { withState } = require("@cycle/state");
-const { run, setup } = require("@cycle/most-run");
+const { run, setup } = require("@cycle/rxjs-run");
 
 const mkDriver = node => ({
 	DOM: makeDOMDriver(node)
@@ -30,9 +31,14 @@ const runModal = R.curry((node, app) => {
 		dispose
 	);
 
-	sinks.reject$.take(1).observe(gc);
+	sinks.reject$.pipe(
+		Ro.first()
+	).subscribe(gc);
 
-	return sinks.accept$.take(1).tap(gc);
+	return sinks.accept$.pipe(
+		Ro.take(1),
+		Ro.tap(gc)
+	);
 });
 
 const execModal = R.curry((node, app) => {
