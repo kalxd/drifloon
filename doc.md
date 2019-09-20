@@ -4,7 +4,21 @@ author: 荀徒之
 documentclass: morelull
 ---
 
-# 主要模块介绍
+# 使用
+
+直接引入，会得到一个最大模块名——M。
+
+```javascript
+// @require http://你的域名.com/dep/drifloon.dep.<version>.js
+
+console.log(M);
+```
+
+同样可以以`<script>`方式引入。
+
+# 模块介绍
+
+M相当于顶层命名空间，它包含了以下几个模块。
 
 * 第三方模块
   + R，[ramda][ramda]。
@@ -335,6 +349,66 @@ createEmptyNodeWith :: String -> IO Element
 // @resource mycss //path/to/my.css
 
 GM.injectCSS("mycss");
+```
+
+# cycle.js
+
+支持cycle.js是这个库的最终目标。
+
+## 运行cycle.js应用
+
+M提供了`runAt`，将整个应用持载到对应的DOM元素上面。
+
+```javascript
+// 随便从页面哪里找来一个元素。
+const node = document.querySelector("div");
+
+// cycle.js应用，跟往常写法没有任何不同。
+const app = source => {...}
+
+M.runAt(node, app);
+```
+
+`runAt`同时提供了[cycle state](https://cycle.js.org/api/state.html)，用不到可以不用。
+
+## 模态对话框
+
+html没有这种概念，仅仅是在body上新添一块空白div，把对话框应用塞进去。
+
+### runModal
+
+运行一个模态对话框，应用返回信息必须带有`accept$`和`reject$`。
+
+```javascript
+const app = source => {
+	return {
+		DOM: ...,
+		accept$: ...,
+		reject$: ...
+	};
+};
+
+// 用户点击了确认，可以进行下一步。
+const accept$ = M.runModal(node, app);
+```
+
+如果用户响应了`reject$`，整条流就会真正结束，它不是发送EMPTY流，而且直接`subscribe`。
+
+### execModal
+
+与[runModal][runModal]相似，不同的是，它自动绑定所有`.accept`和`.reject`元素，同时以参数形式传入，它同样必须返回`accept$`和`reject$`。
+
+```javascript
+const app = (source, accept$, reject$) => {
+	// 这里可以对accept$和reject$进行额外处理。
+	return {
+		DOM: ...,
+		accept$,
+		reject$
+	};
+};
+
+M.execModal(node, app);
 ```
 
 [ramda]: https://ramdajs.com/
