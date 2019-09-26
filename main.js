@@ -1,8 +1,9 @@
 const R = require("ramda");
 const Rx = require("rxjs");
 const Ro = require("rxjs/operators");
+const Http = require("rxjs/ajax");
 const DOM = require("@cycle/dom");
-const I = require("@cycle/isolate");
+const I = require("@cycle/isolate").default;
 
 const Run = require("./drifloon/run");
 const F = require("./drifloon/function");
@@ -13,6 +14,7 @@ const M = {
 	R,
 	Rx,
 	Ro,
+	Http,
 	DOM,
 	I,
 	...Run,
