@@ -24,7 +24,8 @@ M相当于顶层命名空间，它包含了以下几个模块。
 * 第三方模块
   + R，[ramda][ramda]。
   + Rx, [rxjs][rxjs]。
-  + Ro, [rxjs][rxjs]。
+  + Ro, [rxjs/operators][rxjs]。
+  + Http, [rxjs/ajax][rxjs]。
   + DOM, [cycle dom][cycle/dom]。
   + I, [cycle isolate][cycle/isolate]。
 * 内部模块
@@ -126,7 +127,7 @@ fromClick :: Maybe Element -> Stream Event
 fromClick_ :: Maybe Element -> Stream Event
 ```
 
-[fromClick][fromClick]节流版本。
+[fromClick][fromClick]抖动版本。
 
 ### fromClickE
 
@@ -142,7 +143,7 @@ fromClickE :: Maybe Element -> Stream Element
 fromClickE_ :: Maybe Element -> Stream Element
 ```
 
-[fromClickE][fromClickE]节流版本。
+[fromClickE][fromClickE]抖动版本。
 
 ### fromChange
 
@@ -158,7 +159,7 @@ fromChange :: Maybe Element -> Stream Event
 fromChange_ :: Maybe Element -> Stream Event
 ```
 
-[fromChange]节流版本。
+[fromChange]抖动版本。
 
 ### fromChangeV
 
@@ -174,7 +175,7 @@ fromChangeV :: Maybe Element -> Stream String
 fromChangeV_ :: Maybe Element -> Stream String
 ```
 
-[fromChangeV][fromChangeV]节流版本。
+[fromChangeV][fromChangeV]抖动版本。
 
 ### fromHover
 
@@ -190,7 +191,7 @@ fromHover :: Maybe Element -> Stream Event
 fromHover_ :: Maybe Element -> Stream Event
 ```
 
-[fromHover][fromHover]节流版本。
+[fromHover][fromHover]抖动版本。
 
 ### fromHoverE
 
@@ -206,7 +207,7 @@ fromHoverE :: Maybe Element -> Stream Element
 fromHoverE_ :: Maybe Element -> Stream Element
 ```
 
-[fromHoverE][fromHoverE]节流版本。
+[fromHoverE][fromHoverE]抖动版本。
 
 ### fromBlur
 
@@ -222,7 +223,7 @@ fromBlur :: Maybe Element -> Stream Event
 fromBlur_ :: Maybe Element -> Stream Event
 ```
 
-[fromBlur][fromBlur]节流版本。
+[fromBlur][fromBlur]抖动版本。
 
 ### fromBlurE
 
@@ -238,7 +239,7 @@ fromBlurE :: Maybe Element -> Stream Element
 fromBlurE_ :: Maybe Element -> Stream Element
 ```
 
-[fromBlurE][fromBlurE]节流版本。
+[fromBlurE][fromBlurE]抖动版本。
 
 ### createEmptyNode
 
