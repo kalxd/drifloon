@@ -1,44 +1,20 @@
 const R = require("ramda");
 
-const fmap = R.curry((f, v) => {
-	if (R.isNil(v)) {
+// isAnyNil :: [Maybe a] -> Bool
+const isAnyNil = R.any(R.isNil);
+
+const fmapN = (f, ...args) => {
+	if (isAnyNil(args)) {
 		return null;
 	}
+	return R.apply(f, args);
+};
 
-	return f(v);
-});
-
-const fmap2 = R.curry((f, v1, v2) => {
-	if (R.isNil(v1) || R.isNil(v2)) {
-		return null;
-	}
-
-	return f(v1, v2);
-});
-
-const fmap3 = R.curry((f, v1, v2, v3) => {
-	if (R.isNil(v1) || R.isNil(v2) || R.isNil(v3)) {
-		return null;
-	}
-
-	return f(v1, v2, v3);
-});
-
-const fmap4 = R.curry((f, v1, v2, v3, v4) => {
-	if (R.isNil(v1) || R.isNil(v2) || R.isNil(v3) || R.isNil(v4)) {
-		return null;
-	}
-
-	return f(v1, v2, v3, v4);
-});
-
-const fmap5 = R.curry((f, v1, v2, v3, v4, v5) => {
-	if (R.isNil(v1) || R.isNil(v2) || R.isNil(v3) || R.isNil(v4) || R.isNil(v5)) {
-		return null;
-	}
-
-	return f(v1, v2, v3, v4, v5);
-});
+const fmap = R.curryN(1, fmapN);
+const fmap2 = R.curryN(2, fmapN);
+const fmap3 = R.curryN(3, fmapN);
+const fmap4 = R.curryN(4, fmapN);
+const fmap5 = R.curryN(5, fmapN);
 
 const makeValue = v => {
 	let innerValue = v;
@@ -69,11 +45,12 @@ const genValue = f => {
 	};
 };
 
-exports.fmap = fmap;
-exports.fmap2 = fmap2;
-exports.fmap3 = fmap3;
-exports.fmap4 = fmap4;
-exports.fmap5 = fmap5;
-
-exports.makeValue = makeValue;
-exports.genValue = genValue;
+module.exports = {
+	fmap,
+	fmap2,
+	fmap3,
+	fmap4,
+	fmap5,
+	makeValue,
+	genValue
+};
