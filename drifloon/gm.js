@@ -1,4 +1,5 @@
 const R = require("ramda");
+const { Observable } = require("rxjs");
 
 /** GM基本定义 */
 const info = () => GM_info;
@@ -33,6 +34,30 @@ const setClipboard = data => GM_setClipboard(data);
 
 const xmlhttpRequest = option => GM_xmlhttpRequest(option);
 
+// ajax_ :: (Option a -> Option b) -> Option a -> Stream c
+const ajax_ = R.curry((f, option) => {
+	return new Observable(ob => {
+		const ok = r => {
+			ob.next(r);
+			ob.complete();
+		};
+
+		const no = e => ob.error(e);
+
+		const option_ = R.pipe(
+			f,
+			R.assoc("onload", ok),
+			R.assoc("onerror", no)
+		)(option);
+
+		GM_xmlhttpRequest(option_);
+	});
+});
+
+const ajax = ajax_(R.identity);
+
+const json = ajax_(R.assoc("responseType", "json"));
+
 const downloadWith = option => GM_download(option);
 const download = R.curry((name, url) => GM_download(url, name));
 
@@ -63,6 +88,8 @@ exports.notification = notification;
 exports.setClipboardWith = setClipboardWith;
 exports.setClipboard = setClipboard;
 exports.xmlhttpRequest = xmlhttpRequest;
+exports.ajax = ajax;
+exports.json = json;
 exports.downloadWith = downloadWith;
 exports.download = download;
 
