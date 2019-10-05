@@ -70,27 +70,15 @@ const injectCSS = R.compose(
 );
 /** end */
 
-exports.info = info;
-exports.getValueOr = getValueOr;
-exports.getValue = getValue;
-exports.setValue = setValue;
-exports.deleteValue = deleteValue;
-exports.listValues = listValues;
-exports.getResourceText = getResourceText;
-exports.getResourceUrl = getResourceUrl;
-exports.addStyle = addStyle;
-exports.openInTabWith = openInTabWith;
-exports.openInTab = openInTab;
-exports.registerMenuCommand = registerMenuCommand;
-exports.unregisterMenuCommand = unregisterMenuCommand;
-exports.notificationWith = notificationWith;
-exports.notification = notification;
-exports.setClipboardWith = setClipboardWith;
-exports.setClipboard = setClipboard;
-exports.xmlhttpRequest = xmlhttpRequest;
-exports.ajax = ajax;
-exports.json = json;
-exports.downloadWith = downloadWith;
-exports.download = download;
+module.exports = {
+	info,
+	getValueOr,
+	getValue,
+	setValue,
+	deleteValue,
+	listValues,
+	ajax,
+	json,
 
-exports.injectCSS = injectCSS;
+	injectCSS
+};
