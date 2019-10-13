@@ -8,7 +8,8 @@ const I = require("@cycle/isolate").default;
 const Run = require("./drifloon/run");
 const F = require("./drifloon/function");
 const GM = require("./drifloon/gm");
-const E = require("./drifloon/element");
+const Element = require("./drifloon/element");
+const E = require("./drifloon/error");
 
 const M = {
 	R,
@@ -18,6 +19,7 @@ const M = {
 	DOM,
 	I,
 	...Run,
+	...Element,
 	F,
 	GM,
 	E
