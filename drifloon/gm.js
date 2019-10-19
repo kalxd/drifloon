@@ -4,19 +4,26 @@ const { Observable } = require("rxjs");
 /** GM基本定义 */
 const info = () => GM_info;
 
+// getValueOr :: a -> String -> IO a
 const getValueOr = R.curry((def, key) => GM_getValue(key, def));
+
+// getValue :: String -> IO (Maybe a)
 const getValue = key => GM_getValue(key);
 
+// setValue :: String -> a -> IO ()
 const setValue = R.curry((key, value) => GM_setValue(key, value));
 
+// setValue :: String -> IO ()
 const deleteValue = key => GM_deleteValue(key);
 
-const listValues = () => GM_listValues();
+// listValue :: () -> IO [a]
+const listValue = () => GM_listValues();
 
 const getResourceText = name => GM_getResourceText(name);
 
 const getResourceUrl = name => GM_getResourceUrl(name);
 
+// addStyle :: String -> IO ()
 const addStyle = text => GM_addStyle(text);
 
 const openInTabWith = R.curry((option, url) => GM_openInTab(url, option));
@@ -76,7 +83,8 @@ module.exports = {
 	getValue,
 	setValue,
 	deleteValue,
-	listValues,
+	listValue,
+	addStyle,
 	ajax,
 	json,
 
