@@ -11,7 +11,7 @@ const throwError = R.curry((klass, msg) => {
 // throwMsg :: String -> Stream a
 const throwMsg = throwError(Error);
 
-// throwNil :: ErrorClass -> String -> (Maybe a) -> Stream (Maybe a)
+// throwNil :: ErrorClass -> String -> (Maybe a) -> Stream a
 const throwNil = R.curry((klass, msg , v) => {
 	if (R.isNil(v)) {
 		return throwError(klass, msg);
@@ -21,7 +21,7 @@ const throwNil = R.curry((klass, msg , v) => {
 	}
 });
 
-// throwNilMsg :: String -> Maybe a -> Stream (Maybe a)
+// throwNilMsg :: String -> Maybe a -> Stream a
 const throwNilMsg = throwNil(Error);
 
 module.exports = {

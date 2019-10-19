@@ -30,7 +30,8 @@ M相当于顶层命名空间，它包含了以下几个模块。
   + I, [cycle isolate][cycle/isolate]。
 * 内部模块
   + F，辅助函数。
-  + E，页面元素相关。
+  + N，页面元素相关。
+  + E，错误函数库。
   + GM, 暴力猴API再封装。
 
 # 内部模块
@@ -103,7 +104,7 @@ printColor(); // red
   value(); // 不输出done!，返回1。
   ```
 
-## E
+## N
 
 ### fromEvent
 
@@ -256,6 +257,72 @@ createEmptyNodeWith :: String -> IO Element
 ```
 
 与[createEmptyNode][createEmptyNode]类似，但可以接受样式类名。
+
+## E
+
+简便的错误函数集合。
+
+### throwError
+
+```haskell
+throwError :: ErrorClass -> String -> Stream a
+```
+
+最低层的函数，一般而言不会用到它，除非自行扩展了`Error`。
+
+```javascript
+Rx.of("wrong").pipe(Ro.concatMap(E.throwError(Error))).subscribe(..);
+// Error: wrong
+```
+
+### throwMsg
+
+```haskell
+throwMsg :: String -> Stream a
+```
+
+[throwError][throwError]另一个形式，第一个参数默认为`Error`。
+
+```haskell
+Rx.of("wrong").pipe(Ro.concatMap(E.throwMsg))
+// Error: wrong
+```
+
+### throwNil
+
+```haskell
+throwNil :: ErrorClass -> String -> (Maybe a) -> Stream a
+```
+
+检测到空值，就会抛出一个错误。
+
+```javascript
+Rx.from([1, 2, null]).pipe(
+	Ro.concatMap(E.throwNil(Error, "wrong"))
+);
+
+// 1
+// 2
+// Error: wrong
+```
+
+### throwNilMsg
+
+```haskell
+throwNilMsg :: String -> (Maybe a) -> Stream a
+```
+
+与[throwMsg][throwMsg]相类，第一个参数默认为`Error`。
+
+```javascript
+Rx.from([1, 2, null]).pipe(
+	Ro.concatMap(E.throwNilMsg("wrong"))
+);
+
+// 1
+// 2
+// Error: wrong
+```
 
 ## GM
 

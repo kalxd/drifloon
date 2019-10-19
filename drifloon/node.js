@@ -89,7 +89,7 @@ const fromBlur = fromEvent("mouseleave");
 // fromBlur_ :: Maybe Element -> Stream Event
 const fromBlur_ = R.compose(
 	debounceAction,
-	fromBlue
+	fromBlur
 );
 
 // fromBlurE :: Maybe Element -> Stream Element
