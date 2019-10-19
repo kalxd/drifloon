@@ -1,5 +1,5 @@
 ---
-title: drifloon使用手册
+title: drifloon（v0.4.1）使用手册
 author: 荀徒之
 documentclass: morelull
 numbersections: true
@@ -263,89 +263,71 @@ createEmptyNodeWith :: String -> IO Element
 
 另外，星号版本表示无参数。
 
-### info*
+### info
 
-> 获取油猴信息。
+```haskell
+info :: () -> IO Record
+```
+
+获取油猴信息。
 
 ### getValueOr
 
-> 获取保存的值。
+```haskell
+getValueOr :: JSON a => a -> String -> IO a
+```
 
-* 默认值，尚未保存过数据，将返回该值。
-* key。
+获取保存的值，第一个参数为默认值。
 
 ### getValue
 
-> 直接取值，不关心有没有保存过数据。
+```haskell
+getValue :: JSON a => String -> IO (Maybe a)
+```
 
-* key
+直接取值，不关心有没有保存过数据。
 
 ### setValue
 
-> 保存数据。
+```haskell
+setValue :: JSON a => String -> a -> IO ()
+```
 
-* key
-* 保存的数据
+保存数据。
 
 ### deleteValue
 
-> 删除数据
+```haskell
+deleteValue :: String -> IO ()
+```
 
-* key
+删除数据。
 
-### listValues*
+### listValue
 
-> 列出所有保存过的数据。
+```haskell
+listValue :: JSON a => () -> IO [a]
+```
 
-### getResourceText
-
-> 获取元数据资源。
-
-* 资源名称
-
-### getResourceUrl
-
-> 获取元数据URL。
-
-* 资源名称
+列出所有保存过的数据。
 
 ### addStyle
 
-> 注入样式。
+```haskell
+addStyle :: String -> IO ()
+```
+
+注入样式。
 
 * 样式文本
 
-### openInTabWith
-
-> 新标签打开。
-
-* [选项](https://violentmonkey.github.io/api/gm/#gm_openintab)
-* 地址
-
-### openInTab
-
-> 后台打开地址。
-
-* 地址
-
-### notificationWith
-
-> 提醒。
-
-* [选项](https://violentmonkey.github.io/api/gm/#gm_notification)
-
-### notification
-
-> 提醒。
-
-* 标题
-* 文本
-
 ### injectCSS
 
-> 把元数据的css网络文件直接注入到页面。
+```haskell
+injectCSS :: String -> IO ()
+```
 
-* 名称
+把元数据的css网络文件直接注入到页面。
 
 ```javascript
 // @resource mycss //path/to/my.css

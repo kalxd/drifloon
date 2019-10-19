@@ -4,16 +4,16 @@ const { Observable } = require("rxjs");
 /** GM基本定义 */
 const info = () => GM_info;
 
-// getValueOr :: a -> String -> IO a
+// getValueOr :: ToJSON a => a -> String -> IO a
 const getValueOr = R.curry((def, key) => GM_getValue(key, def));
 
-// getValue :: String -> IO (Maybe a)
+// getValue :: ToJSON a => String -> IO (Maybe a)
 const getValue = key => GM_getValue(key);
 
-// setValue :: String -> a -> IO ()
+// setValue :: ToJSON a => String -> a -> IO ()
 const setValue = R.curry((key, value) => GM_setValue(key, value));
 
-// setValue :: String -> IO ()
+// deleteValue :: String -> IO ()
 const deleteValue = key => GM_deleteValue(key);
 
 // listValue :: () -> IO [a]
