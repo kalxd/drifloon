@@ -52,6 +52,8 @@ const execModal = R.curry((node, app) => {
 	return runModal(node, modalApp);
 });
 
-exports.runAt = runAt;
-exports.runModal = runModal;
-exports.execModal = execModal;
+module.exports = {
+	runAt,
+	runModal,
+	execModal
+};

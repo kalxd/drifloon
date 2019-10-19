@@ -8,7 +8,7 @@ const I = require("@cycle/isolate").default;
 const Run = require("./drifloon/run");
 const F = require("./drifloon/function");
 const GM = require("./drifloon/gm");
-const Element = require("./drifloon/element");
+const N = require("./drifloon/node");
 const E = require("./drifloon/error");
 
 const M = {
@@ -18,11 +18,13 @@ const M = {
 	Http,
 	DOM,
 	I,
-	...Run,
-	...Element,
+
+	N,
 	F,
 	GM,
-	E
+	E,
+
+	...Run,
 };
 
 module.exports = M;
