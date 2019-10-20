@@ -178,70 +178,6 @@ fromChangeV_ :: Maybe Element -> Stream String
 
 [fromChangeV][fromChangeV]抖动版本。
 
-### fromHover
-
-```haskell
-fromHover :: Maybe Element -> Stream Event
-```
-
-同`fromEvent("mouseenter")`。
-
-### fromHover_
-
-```haskell
-fromHover_ :: Maybe Element -> Stream Event
-```
-
-[fromHover][fromHover]抖动版本。
-
-### fromHoverE
-
-```haskell
-fromHoverE :: Maybe Element -> Stream Element
-```
-
-同[fromHover][fromHover]，返回元素本身。
-
-### fromHoverE_
-
-```haskell
-fromHoverE_ :: Maybe Element -> Stream Element
-```
-
-[fromHoverE][fromHoverE]抖动版本。
-
-### fromBlur
-
-```haskell
-fromBlur :: Maybe Element -> Stream Event
-```
-
-同`fromEvent("mouseleave")`。
-
-### fromBlur_
-
-```haskell
-fromBlur_ :: Maybe Element -> Stream Event
-```
-
-[fromBlur][fromBlur]抖动版本。
-
-### fromBlurE
-
-```haskell
-fromBlurE :: Maybe Element -> Stream Element
-```
-
-同[fromBlur][fromBlur]，返回元素本身。
-
-### fromBlurE_
-
-```haskell
-fromBlurE_ :: Maybe Element -> Stream Element
-```
-
-[fromBlurE][fromBlurE]抖动版本。
-
 ### createEmptyNode
 
 ```haskel
@@ -408,7 +344,7 @@ GM.injectCSS("mycss");
 
 ## 运行cycle.js应用
 
-M提供了`runAt`，将整个应用持载到对应的DOM元素上面。
+M提供了`runAt`，将整个应用加载到对应的DOM元素上面。
 
 ```javascript
 // 随便从页面哪里找来一个元素。
@@ -443,7 +379,7 @@ const app = source => {
 const accept$ = M.runModal(node, app);
 ```
 
-如果用户响应了`reject$`，整条流就会真正结束，它不是发送EMPTY流，而且直接`subscribe`。
+如果用户响应了`reject$`，整条流就会真正结束，它不是发送EMPTY流，而是直接`subscribe`。
 
 ### execModal
 
