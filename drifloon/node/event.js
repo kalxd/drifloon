@@ -64,6 +64,48 @@ const fromChangeV_ = R.compose(
 	fromChangeV
 );
 
+// fromKeydown :: Maybe Element -> Stream Event
+const fromKeydown = fromEvent("keydown");
+
+// fromKeydown :: Maybe Element -> Stream Event
+const fromKeydown_ = R.compose(
+	debounceAction,
+	fromKeydown
+);
+
+// fromKeydownV :: Maybe Element -> Stream String
+const fromKeydownV = R.compose(
+	toValue,
+	fromKeydown
+);
+
+// fromKeydownV_ :: Maybe Element -> Stream String
+const fromKeydownV_ = R.compose(
+	debounceAction,
+	fromKeydownV
+);
+
+// fromKeyup :: Maybe Element -> Stream Event
+const fromKeyup = fromEvent("keyup");
+
+// fromKeyup_ :: Maybe Element -> Stream Event
+const fromKeyup_ = R.compose(
+	debounceAction,
+	fromKeyup
+);
+
+// fromKeyupV :: Maybe Element -> Stream String
+const fromKeyupV = R.compose(
+	toValue,
+	fromKeyup
+);
+
+// fromKeyupV_ :: Maybe Element -> Stream String
+const fromKeyupV_ = R.compose(
+	debounceAction,
+	fromKeyup
+);
+
 module.exports = {
 	fromEvent,
 
@@ -75,5 +117,15 @@ module.exports = {
 	fromChange,
 	fromChange_,
 	fromChangeV,
-	fromChangeV_
+	fromChangeV_,
+
+	fromKeydown,
+	fromKeydown_,
+	fromKeydownV,
+	fromKeydownV_,
+
+	fromKeyup,
+	fromKeyup_,
+	fromKeyupV,
+	fromKeyupV_
 };

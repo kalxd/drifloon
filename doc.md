@@ -178,6 +178,60 @@ fromChangeV_ :: Maybe Element -> Stream String
 
 [fromChangeV][fromChangeV]抖动版本。
 
+### fromKeydown ###
+
+```haskell
+fromKeydown :: Maybe Element -> Stream Event
+```
+
+同`fromEvent("keydown")`。
+
+### fromKeydown_ ###
+
+```haskell
+fromKeydown_ :: Maybe Element -> Stream Event
+```
+
+[fromKeydown]抖动版。
+
+### fromKeyDownV ###
+
+```haskell
+fromKeydownV :: Maybe Element -> Stream String
+```
+
+### fromKeyDownV_ ###
+
+```haskell
+fromKeydownV_ :: Maybe Element -> Stream String
+```
+
+### fromKeyup ###
+
+```haskell
+fromKeyup :: Maybe Element -> Stream Event
+```
+
+同`fromEvent(keyup)`。
+
+### fromKeyup_ ###
+
+```haskell
+fromKeyup_ :: Maybe Element -> Stream Event
+```
+
+### fromKeyupV ###
+
+```haskell
+fromKeyupV :: Maybe Element -> Stream String
+```
+
+### fromKeyupV_ ###
+
+```haskell
+fromKeyupV_ :: MaybeElement -> Stream String
+```
+
 ### createEmptyNode
 
 ```haskel
