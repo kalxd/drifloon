@@ -232,6 +232,32 @@ fromKeyupV :: Maybe Element -> Stream String
 fromKeyupV_ :: MaybeElement -> Stream String
 ```
 
+### fromEnterPress ###
+
+```haskell
+fromEnterPress :: Maybe Element -> Stream Event
+```
+
+按下回车才触发。
+
+### fromEnterPress_ ###
+
+```haskell
+fromEnterPress_ :: Maybe Element -> Stream Event
+```
+
+### fromEnterPressV ###
+
+```haskell
+fromEnterPressV :: Maybe Element -> Stream String
+```
+
+### fromEnterPressV_ ###
+
+```haskell
+fromEnterPressV_ :: Maybe Element -> Stream String
+```
+
 ### createEmptyNode
 
 ```haskel

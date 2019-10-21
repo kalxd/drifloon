@@ -9,6 +9,9 @@ const toElement = Ro.map(e => e.target);
 // toValue :: Stream Event -> Stream String
 const toValue = Ro.map(e => e.target.value.trim());
 
+// filterEnterCode :: Stream a -> Stream a
+const filterEnterCode = Ro.filter(R.propEq("code", "Enter"));
+
 // debounceAction :: Stream a -> Stream a
 const debounceAction = Ro.debounceTime(150);
 
@@ -103,7 +106,31 @@ const fromKeyupV = R.compose(
 // fromKeyupV_ :: Maybe Element -> Stream String
 const fromKeyupV_ = R.compose(
 	debounceAction,
+	fromKeyupV
+);
+
+// fromEnterPress :: Maybe Element -> Stream Event
+const fromEnterPress = R.compose(
+	filterEnterCode,
 	fromKeyup
+);
+
+// fromEnterPress_ :: Maybe Element -> Stream Event
+const fromEnterPress_ = R.compose(
+	debounceAction,
+	fromEnterPress
+);
+
+// fromEnterPressV :: Maybe Element -> Stream String
+const fromEnterPressV = R.compose(
+	toValue,
+	fromEnterPress
+);
+
+// fromEnterPressV_ :: Maybe Element -> Stream String
+const fromEnterPressV_ = R.compose(
+	debounceAction,
+	fromEnterPressV
 );
 
 module.exports = {
@@ -127,5 +154,10 @@ module.exports = {
 	fromKeyup,
 	fromKeyup_,
 	fromKeyupV,
-	fromKeyupV_
+	fromKeyupV_,
+
+	fromEnterPress,
+	fromEnterPress_,
+	fromEnterPressV,
+	fromEnterPressV_
 };
