@@ -194,13 +194,13 @@ fromKeydown_ :: Maybe Element -> Stream Event
 
 [fromKeydown]抖动版。
 
-### fromKeyDownV ###
+### fromKeydownV ###
 
 ```haskell
 fromKeydownV :: Maybe Element -> Stream String
 ```
 
-### fromKeyDownV_ ###
+### fromKeydownV_ ###
 
 ```haskell
 fromKeydownV_ :: Maybe Element -> Stream String
