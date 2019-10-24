@@ -1,7 +1,9 @@
 const R = require("ramda");
-const { Observable } = require("rxjs");
+const Most = require("most");
+const Observable = require("zen-observable");
 
 /** GM基本定义 */
+// info :: () -> Record
 const info = () => GM_info;
 
 // getValueOr :: ToJSON a => a -> String -> IO a
@@ -19,27 +21,15 @@ const deleteValue = key => GM_deleteValue(key);
 // listValue :: () -> IO [a]
 const listValue = () => GM_listValues();
 
+// getResourceText :: String -> IO (Maybe String)
 const getResourceText = name => GM_getResourceText(name);
 
-const getResourceUrl = name => GM_getResourceUrl(name);
+// getResourceUrl :: String -> IO (Maybe String)
+const getResourceUrl = name => GM_getResourceURL(name);
 
-// addStyle :: String -> IO ()
-const addStyle = text => GM_addStyle(text);
+// addStyle :: String -> Stream String
+const addStyle = text => Most.fromPromise(GM_addStyle(text));
 
-const openInTabWith = R.curry((option, url) => GM_openInTab(url, option));
-const openInTab = url => GM_openInTab(url);
-
-const registerMenuCommand = R.curry((caption, f) => GM_registerMenuCommand(caption, f));
-
-const unregisterMenuCommand = caption => GM_registerMenuCommand(caption);
-
-const notificationWith = option => GM_notification(option);
-const notification = R.curry((title, text) => GM_notification(text, title));
-
-const setClipboardWith = R.curry((type, data) => GM_setClipboard(data, type));
-const setClipboard = data => GM_setClipboard(data);
-
-const xmlhttpRequest = option => GM_xmlhttpRequest(option);
 
 // ajax_ :: (Option a -> Option b) -> Option a -> Stream c
 const ajax_ = R.curry((f, option) => {
@@ -61,12 +51,11 @@ const ajax_ = R.curry((f, option) => {
 	});
 });
 
+// ajax :: Option -> Stream a
 const ajax = ajax_(R.identity);
 
+// json :: JSON a => Option -> Stream a
 const json = ajax_(R.assoc("responseType", "json"));
-
-const downloadWith = option => GM_download(option);
-const download = R.curry((name, url) => GM_download(url, name));
 
 /** end */
 
@@ -85,6 +74,9 @@ module.exports = {
 	deleteValue,
 	listValue,
 	addStyle,
+	getResourceText,
+	getResourceUrl,
+
 	ajax,
 	json,
 

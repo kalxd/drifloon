@@ -1,11 +1,11 @@
 const R = require("ramda");
-const Rx = require("rxjs");
+const Most = require("most");
 
 // throwError :: ErrorClass -> String -> Stream a
 const throwError = R.curry((klass, msg) => {
 	const e = new klass(msg);
 
-	return Rx.throwError(e);
+	return Most.throwError(e);
 });
 
 // throwMsg :: String -> Stream a
@@ -17,7 +17,7 @@ const throwNil = R.curry((klass, msg , v) => {
 		return throwError(klass, msg);
 	}
 	else {
-		return Rx.of(v);
+		return Most.of(v);
 	}
 });
 

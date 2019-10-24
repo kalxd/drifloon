@@ -1,7 +1,5 @@
 const R = require("ramda");
-const Rx = require("rxjs");
-const Ro = require("rxjs/operators");
-const Http = require("rxjs/ajax");
+const Most = require("most");
 
 const F = require("./drifloon/function");
 const GM = require("./drifloon/gm");
@@ -10,10 +8,7 @@ const E = require("./drifloon/error");
 
 const M = {
 	R,
-	Rx,
-	Ro,
-	Http,
-	I,
+	Most,
 
 	N,
 	F,
