@@ -30,7 +30,6 @@ const getResourceUrl = name => GM_getResourceURL(name);
 // addStyle :: String -> Stream String
 const addStyle = text => Most.fromPromise(GM_addStyle(text));
 
-
 // ajax_ :: (Option a -> Option b) -> Option a -> Stream c
 const ajax_ = R.curry((f, option) => {
 	return new Observable(ob => {
