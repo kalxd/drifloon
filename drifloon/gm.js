@@ -6,13 +6,13 @@ const Observable = require("zen-observable");
 // info :: () -> Record
 const info = () => GM_info;
 
-// getValueOr :: ToJSON a => a -> String -> IO a
+// getValueOr :: JSON a => a -> String -> IO a
 const getValueOr = R.curry((def, key) => GM_getValue(key, def));
 
-// getValue :: ToJSON a => String -> IO (Maybe a)
+// getValue :: JSON a => String -> IO (Maybe a)
 const getValue = key => GM_getValue(key);
 
-// setValue :: ToJSON a => String -> a -> IO ()
+// setValue :: JSON a => String -> a -> IO ()
 const setValue = R.curry((key, value) => GM_setValue(key, value));
 
 // deleteValue :: String -> IO ()
@@ -59,6 +59,7 @@ const json = ajax_(R.assoc("responseType", "json"));
 /** end */
 
 /** 在GM基础上，扩展出更强的功能 */
+// injectCSS :: String -> Stream String
 const injectCSS = R.compose(
 	addStyle,
 	getResourceText

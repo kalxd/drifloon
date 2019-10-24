@@ -23,16 +23,23 @@ M相当于顶层命名空间，它包含了以下几个模块。
 
 * 第三方模块
   + R，[ramda][ramda]。
-  + Rx, [rxjs][rxjs]。
-  + Ro, [rxjs/operators][rxjs]。
-  + Http, [rxjs/ajax][rxjs]。
+  + Most, [most.js][mostjs]。
   + DOM, [cycle dom][cycle/dom]。
-  + I, [cycle isolate][cycle/isolate]。
 * 内部模块
   + F，辅助函数。
   + N，页面元素相关。
   + E，错误函数库。
   + GM, 暴力猴API再封装。
+
+# 更改内容 #
+
+从第三版开始，一直使用RxJS，直到遇到[无法解决的问题](https://github.com/cyclejs/cyclejs/issues/910)，半天无人理，最后思来想去，换回most，而且从写脚本角度而言，并不需要更多功能。
+
+同时去除了`@cycle/state`，同样基于以上的考虑，写脚本不是写复杂应用，简便为主。
+
+虽然替换了大部分库，但接口基本保持兼容，功能不变，仅仅是返回从RxJS到Most，仅仅在此处需要多加留意。
+
+> 有个问题需要注意，most 2.0正在开发，但尚未能完全应用到实际项目，换到most，也可能日后升级成most 2.0。
 
 # 内部模块
 
@@ -342,15 +349,18 @@ Rx.from([1, 2, null]).pipe(
 
 ## GM
 
-油猴API比较特别，它提供的接口默认都是不定参数居多，而且它接受参数多样化。为了方便使用，全部改成定参形式，对于原本不同参数表示不同意义的函数，拆分成多个同意函数。
+油猴API比较特别，它提供的接口默认都是不定参数居多，而且它接受参数多样化。
+为了方便使用，全部以柯里化形式提供，同个功能函数会分成多个函数。
 
-另外，星号版本表示无参数。
+类型签名后面紧跟的是所需的权限提示。有的接口需要更多权限，需要特别注意。
 
 ### info
 
 ```haskell
 info :: () -> IO Record
 ```
+
++ GM_info
 
 获取油猴信息。
 
@@ -360,6 +370,8 @@ info :: () -> IO Record
 getValueOr :: JSON a => a -> String -> IO a
 ```
 
++ `GM_getValue`
+
 获取保存的值，第一个参数为默认值。
 
 ### getValue
@@ -367,6 +379,8 @@ getValueOr :: JSON a => a -> String -> IO a
 ```haskell
 getValue :: JSON a => String -> IO (Maybe a)
 ```
+
++ `GM_getValue`
 
 直接取值，不关心有没有保存过数据。
 
@@ -376,6 +390,8 @@ getValue :: JSON a => String -> IO (Maybe a)
 setValue :: JSON a => String -> a -> IO ()
 ```
 
++ `GM_setValue`
+
 保存数据。
 
 ### deleteValue
@@ -383,6 +399,8 @@ setValue :: JSON a => String -> a -> IO ()
 ```haskell
 deleteValue :: String -> IO ()
 ```
+
++ `GM_deleteValue`
 
 删除数据。
 
@@ -392,23 +410,48 @@ deleteValue :: String -> IO ()
 listValue :: JSON a => () -> IO [a]
 ```
 
++ `GM_listValues`
+
 列出所有保存过的数据。
+
+### getResourceText ###
+
+```haskell
+getResourceText :: String -> IO (Maybe String)
+```
+
++ `GM_getResourceText`
+
+获取资源的源内容。
+
+### getResourceUrl ###
+
+```haskell
+getResourceUrl :: String -> IO (Maybe String)
+```
+
++ `GM_getResourceUrl`
+
+获取资源的blob地址。
 
 ### addStyle
 
 ```haskell
-addStyle :: String -> IO ()
+addStyle :: String -> Stream String
 ```
 
-注入样式。
++ `GM_addStyle`
 
-* 样式文本
+注入样式，需要注意它返回的是一条流。
 
 ### injectCSS
 
 ```haskell
-injectCSS :: String -> IO ()
+injectCSS :: String -> Stream String
 ```
+
++ `GM_getResourceText`
++ `GM_addStyle`
 
 把元数据的css网络文件直接注入到页面。
 
@@ -436,49 +479,7 @@ const app = source => {...}
 M.runAt(node, app);
 ```
 
-`runAt`同时提供了[cycle state](https://cycle.js.org/api/state.html)，用不到可以不用。
-
-## 模态对话框
-
-html没有这种概念，仅仅是在body上新添一块空白div，把对话框应用塞进去。
-
-### runModal
-
-运行一个模态对话框，应用返回信息必须带有`accept$`和`reject$`。
-
-```javascript
-const app = source => {
-	return {
-		DOM: ...,
-		accept$: ...,
-		reject$: ...
-	};
-};
-
-// 用户点击了确认，可以进行下一步。
-const accept$ = M.runModal(node, app);
-```
-
-如果用户响应了`reject$`，整条流就会真正结束，它不是发送EMPTY流，而是直接`subscribe`。
-
-### execModal
-
-与[runModal][runModal]相似，不同的是，它自动绑定所有`.accept`和`.reject`元素，同时以参数形式传入，它同样必须返回`accept$`和`reject$`。
-
-```javascript
-const app = (source, accept$, reject$) => {
-	// 这里可以对accept$和reject$进行额外处理。
-	return {
-		DOM: ...,
-		accept$,
-		reject$
-	};
-};
-
-M.execModal(node, app);
-```
-
 [ramda]: https://ramdajs.com/
-[rxjs]: https://rxjs-dev.firebaseapp.com/
+[mostjs]: https://github.com/cujojs/most
 [cycle/dom]: https://cycle.js.org/api/dom.html
 [cycle/isolate]: https://cycle.js.org/api/isolate.html
