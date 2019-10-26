@@ -5,7 +5,7 @@ const DOM = require("@cycle/dom");
 const F = require("./drifloon/function");
 const GM = require("./drifloon/gm");
 const N = require("./drifloon/node");
-const E = require("./drifloon/error");
+const S = require("./drifloon/stream");
 
 const Run = require("./drifloon/run");
 
@@ -17,7 +17,7 @@ const M = {
 	N,
 	F,
 	GM,
-	E,
+	S,
 
 	...Run
 };
