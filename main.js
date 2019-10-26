@@ -4,8 +4,9 @@ const DOM = require("@cycle/dom");
 
 const F = require("./drifloon/function");
 const GM = require("./drifloon/gm");
-const N = require("./drifloon/node");
+const Z = require("./drifloon/zoo");
 const S = require("./drifloon/stream");
+const V = require("./drifloon/vnode");
 
 const Run = require("./drifloon/run");
 
@@ -14,7 +15,8 @@ const M = {
 	Most,
 	DOM,
 
-	N,
+	Z,
+	V,
 	F,
 	GM,
 	S,

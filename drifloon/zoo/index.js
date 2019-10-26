@@ -1,5 +1,4 @@
 const Event = require("./event");
-const VNode = require("./vnode");
 
 // createBlankDiv :: () -> IO Element
 const createBlankDiv = () => {
@@ -17,7 +16,6 @@ const createBlankDivWith = classname => {
 
 module.exports = {
 	...Event,
-	...VNode,
 	createBlankDiv,
 	createBlankDivWith
 };
