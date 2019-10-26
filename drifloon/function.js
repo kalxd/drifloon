@@ -16,6 +16,24 @@ const fmap3 = R.curryN(3, fmapN);
 const fmap4 = R.curryN(4, fmapN);
 const fmap5 = R.curryN(5, fmapN);
 
+// traverse :: (a -> Maybe b) -> [a] -> Maybe [b]
+const traverse = R.curry((f, xs) => {
+	let r = [];
+
+	for (const x of xs) {
+		let a = f(x);
+
+		if (R.isNil(a)) {
+			return null;
+		}
+		else {
+			r.push(a);
+		}
+	}
+
+	return r;
+});
+
 const makeValue = v => {
 	let innerValue = v;
 
@@ -51,6 +69,9 @@ module.exports = {
 	fmap3,
 	fmap4,
 	fmap5,
+
+	traverse,
+
 	makeValue,
 	genValue
 };

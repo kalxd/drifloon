@@ -1,5 +1,5 @@
 ---
-title: drifloon（v0.4.0）使用手册
+title: drifloon（v0.4.1）使用手册
 author: 荀徒之
 documentclass: morelull
 numbersections: true
@@ -28,7 +28,7 @@ M相当于顶层命名空间，它包含了以下几个模块。
 * 内部模块
   + F，辅助函数。
   + N，页面元素相关。
-  + E，错误函数库。
+  + S，流相关函数，包括错误处理。
   + GM, 暴力猴API再封装。
 
 # 更改内容 #
@@ -75,6 +75,12 @@ fmap4 :: (a -> b -> c -> d -> e) -> Maybe a -> Maybe b -> Maybe c -> Maybe d -> 
 fmap5 :: (a -> b -> c -> d -> e -> f) -> Maybe a -> Maybe b -> Maybe c -> Maybe d -> Maybe e -> Maybe f
 ```
 
+### traverse ###
+
+```haskell
+traverse :: (a -> Maybe b) -> [a] -> Maybe [b]
+```
+
 ### makeValue
 
 `makeValue`接受一个初始值，返回一个getter/setter函数，可以用新函数赋于新值，也可以用它得到内部的值。
@@ -112,6 +118,24 @@ printColor(); // red
   ```
 
 ## N
+
+`N`模块与元素相关。
+
+### guard ###
+
+```haskell
+guard :: Bool -> (() -> View) -> Maybe View
+```
+
+`guard`第一个参数表示是否显示，第二个参数是渲染函数，之所以要求是个函数，在于js没有惰性计算，直接接受`View`可能导致意外错误。如果`View`十分确定，可以使用[only]。
+
+### only ###
+
+```haskell
+only :: Bool -> View -> Maybe View
+```
+
+[guard]特殊版。
 
 ### fromEvent
 
@@ -281,7 +305,7 @@ createEmptyNodeWith :: String -> IO Element
 
 与[createEmptyNode][createEmptyNode]类似，但可以接受样式类名。
 
-## E
+## S
 
 简便的错误函数集合。
 
