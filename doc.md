@@ -137,6 +137,30 @@ only :: Bool -> View -> Maybe View
 
 [guard]特殊版。
 
+### select ###
+
+```haskell
+select :: String -> Record -> String
+```
+
+选择需要的css类。
+
+```javascript
+N.select("ui button", { primary: true }); // .ui.button.primary
+
+N.select("ui button", { primary: false }); // .ui.button
+```
+
+### select_ ###
+
+```haskell
+select_ :: Record -> String
+```
+
+```javascript
+const select_ = select("");
+```
+
 ### fromEvent
 
 ```haskell
@@ -318,7 +342,10 @@ throwError :: ErrorClass -> String -> Stream a
 最低层的函数，一般而言不会用到它，除非自行扩展了`Error`。
 
 ```javascript
-Rx.of("wrong").pipe(Ro.concatMap(E.throwError(Error))).subscribe(..);
+Most.of("wrong")
+	.concatMap(E.throwError(Error)))
+	.subscribe(..)
+;
 // Error: wrong
 ```
 
@@ -331,7 +358,7 @@ throwMsg :: String -> Stream a
 [throwError][throwError]另一个形式，第一个参数默认为`Error`。
 
 ```haskell
-Rx.of("wrong").pipe(Ro.concatMap(E.throwMsg))
+Most.of("wrong").concatMap(E.throwMsg);
 // Error: wrong
 ```
 
@@ -344,10 +371,7 @@ throwNil :: ErrorClass -> String -> (Maybe a) -> Stream a
 检测到空值，就会抛出一个错误。
 
 ```javascript
-Rx.from([1, 2, null]).pipe(
-	Ro.concatMap(E.throwNil(Error, "wrong"))
-);
-
+Most.from([1, 2, null]).concatMap(E.throwNil(Error, "wrong"));
 // 1
 // 2
 // Error: wrong
@@ -362,10 +386,7 @@ throwNilMsg :: String -> (Maybe a) -> Stream a
 与[throwMsg][throwMsg]相类，第一个参数默认为`Error`。
 
 ```javascript
-Rx.from([1, 2, null]).pipe(
-	Ro.concatMap(E.throwNilMsg("wrong"))
-);
-
+Most.from([1, 2, null]).concatMap(E.throwNilMsg("wrong"));
 // 1
 // 2
 // Error: wrong
