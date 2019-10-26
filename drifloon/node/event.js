@@ -12,7 +12,7 @@ const toValue = s$ => s$.map(e => e.target.value.trim());
 const filterEnterCode = s$ => s$.filter(R.propEq("code", "Enter"));
 
 // debounceAction :: Stream a -> Stream a
-const debounceAction = s$ => s$.debounce(150);
+const debounceAction = s$ => s$.debounce(300);
 
 // fromEvent :: String -> Maybe Element -> Stream Event
 const fromEvent = R.curry((type, el) => {
