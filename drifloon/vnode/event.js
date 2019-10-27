@@ -1,6 +1,5 @@
-/** 事件绑定 */
+/** 方便取元素事件 */
 const R = require("ramda");
-const Most = require("most");
 
 const {
 	toElement,
@@ -9,119 +8,118 @@ const {
 	debounceAction
 } = require("../internal");
 
-// fromEvent :: String -> Maybe Element -> Stream Event
-const fromEvent = R.curry((type, el) => {
-	if (R.isNil(el)) {
-		return Most.never();
-	}
-	else {
-		return Most.fromEvent(type, el);
-	}
+/**
+ * type Selector = String
+ */
+
+// fromEvent :: String -> Selector -> Source -> Stream Event
+const fromEvent = R.curry((eventType, selector, source) => {
+	return source.DOM.select(selector).events(eventType);
 });
 
-// fromClick :: Maybe Element -> Stream Event
+// fromClick :: Selector -> Source -> Stream Event
 const fromClick = fromEvent("click");
 
-// fromClick_ :: Maybe Element -> Stream Event
+// fromClick_ :: Selector -> Source -> Stream Event
 const fromClick_ = R.compose(
 	debounceAction,
 	fromClick
 );
 
-// fromClickE :: Maye Element -> Stream Element
+// fromClickE :: Selector -> Source -> Stream Element
 const fromClickE = R.compose(
 	toElement,
 	fromClick
 );
 
-// fromClickE_ :: Maybe Element -> Stream Element
+// fromClickE_ :: Selector -> Source -> Stream Element
 const fromClickE_ = R.compose(
-	debounceAction,
-	fromClickE
+	toElement,
+	fromClick_
 );
 
-// fromChange :: Maybe Element -> Stream Event
+// fromChange :: Selector -> Source -> Stream Event
 const fromChange = fromEvent("change");
 
-// fromChange_  :: Maybe Element -> Stream Event
+// fromChange :: Selector -> Source -> Stream Event
 const fromChange_ = R.compose(
 	debounceAction,
 	fromChange
 );
 
-// fromChangeV :: Maybe Element -> Stream String
+// fromChangeV :: Selector -> Source -> Stream String
 const fromChangeV = R.compose(
 	toValue,
 	fromChange
 );
 
-// fromChangeV_ :: Maybe Element -> Stream String
+// fromChangeV_ :: Selector -> Source -> Stream String
 const fromChangeV_ = R.compose(
-	debounceAction,
-	fromChangeV
+	toValue,
+	fromChange_
 );
 
-// fromKeydown :: Maybe Element -> Stream Event
+// fromKeydown :: Selector -> Source -> Stream Event
 const fromKeydown = fromEvent("keydown");
 
-// fromKeydown :: Maybe Element -> Stream Event
+// fromKeydown_ :: Selector -> Source -> Stream Event
 const fromKeydown_ = R.compose(
 	debounceAction,
 	fromKeydown
 );
 
-// fromKeydownV :: Maybe Element -> Stream String
+// fromKeydownV :: Selector -> Source -> Stream String
 const fromKeydownV = R.compose(
 	toValue,
 	fromKeydown
 );
 
-// fromKeydownV_ :: Maybe Element -> Stream String
+// fromKeydownV_ :: Selector -> Source -> Stream String
 const fromKeydownV_ = R.compose(
-	debounceAction,
-	fromKeydownV
+	toValue,
+	fromKeydown_
 );
 
-// fromKeyup :: Maybe Element -> Stream Event
+// fromKeyup :: Selector -> Source -> Stream Event
 const fromKeyup = fromEvent("keyup");
 
-// fromKeyup_ :: Maybe Element -> Stream Event
+// fromKeyup_ :: Selector -> Source -> Stream Event
 const fromKeyup_ = R.compose(
 	debounceAction,
 	fromKeyup
 );
 
-// fromKeyupV :: Maybe Element -> Stream String
+// fromKeyupV :: Selector -> Source -> Stream String
 const fromKeyupV = R.compose(
 	toValue,
 	fromKeyup
 );
 
-// fromKeyupV_ :: Maybe Element -> Stream String
+// fromKeyupV_ :: Selector -> Source -> Stream String
 const fromKeyupV_ = R.compose(
-	debounceAction,
-	fromKeyupV
+	toValue,
+	fromKeyup_
 );
 
-// fromEnterPress :: Maybe Element -> Stream Event
+// fromEnterPress :: Selector -> Source -> Stream Event
 const fromEnterPress = R.compose(
 	filterEnterCode,
 	fromKeyup
 );
 
-// fromEnterPress_ :: Maybe Element -> Stream Event
+// fromEnterPress_ :: Selector -> Source -> Stream Event
 const fromEnterPress_ = R.compose(
 	debounceAction,
 	fromEnterPress
 );
 
-// fromEnterPressV :: Maybe Element -> Stream String
+// fromEnterPressV :: Selector -> Source -> Stream String
 const fromEnterPressV = R.compose(
 	toValue,
 	fromEnterPress
 );
 
-// fromEnterPressV_ :: Maybe Element -> Stream String
+// fromEnterPressV_ :: Selector -> Source -> Stream String
 const fromEnterPressV_ = R.compose(
 	debounceAction,
 	fromEnterPressV
