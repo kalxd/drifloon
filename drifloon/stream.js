@@ -24,9 +24,16 @@ const throwNil = R.curry((klass, msg , v) => {
 // throwNilMsg :: String -> Maybe a -> Stream a
 const throwNilMsg = throwNil(Error);
 
+// init :: a -> Stream (a -> a) -> Stream a
+const init = R.curry((state, update$) => {
+	return update$.scan(R.flip(R.call), state);
+});
+
 module.exports = {
 	throwError,
 	throwMsg,
 	throwNil,
-	throwNilMsg
+	throwNilMsg,
+
+	init
 };
