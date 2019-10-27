@@ -41,7 +41,7 @@ const fromClickE_ = R.compose(
 // fromChange :: Selector -> Source -> Stream Event
 const fromChange = fromEvent("change");
 
-// fromChange :: Selector -> Source -> Stream Event
+// fromChange_ :: Selector -> Source -> Stream Event
 const fromChange_ = R.compose(
 	debounceAction,
 	fromChange

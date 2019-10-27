@@ -27,23 +27,28 @@ M相当于顶层命名空间，它包含了以下几个模块。
   + DOM, [cycle dom][cycle/dom]。
 * 内部模块
   + F，辅助函数。
-  + N，页面元素相关。
+  + Z，页面元素相关。
+  + V，虚拟DOM相关。
   + S，流相关函数，包括错误处理。
   + GM, 暴力猴API再封装。
 
-# 更改内容 #
+# 更新日志 #
 
-从第三版开始，一直使用RxJS，直到遇到[无法解决的问题](https://github.com/cyclejs/cyclejs/issues/910)，半天无人理，最后思来想去，换回most，而且从写脚本角度而言，并不需要更多功能。
+*该版本与0.4.1不兼容。*
 
-同时去除了`@cycle/state`，同样基于以上的考虑，写脚本不是写复杂应用，简便为主。
+*若没有大改动，将发布第一个稳定版。*
 
-虽然替换了大部分库，但接口基本保持兼容，功能不变，仅仅是返回从RxJS到Most，仅仅在此处需要多加留意。
+原`N`模块拆分成两个模块——`Z`和`V`，前者处理真实DOM元素，后者处理虚拟DOM元素。
 
-> 有个问题需要注意，most 2.0正在开发，但尚未能完全应用到实际项目，换到most，也可能日后升级成most 2.0。
++ 删除`createEmtpyNode`和`createEmptyNodeWith`，代替为[blankBefore]、[blankAfter]、[blankAfterBody]、[blankBeforebody]。
+
++ 添加[S.init][init]。
 
 # 内部模块
 
 ## F
+
+纯函数集合，不言自明的函数。
 
 ### fmap
 
@@ -117,9 +122,9 @@ printColor(); // red
   value(); // 不输出done!，返回1。
   ```
 
-## N
+## V
 
-`N`模块与元素相关。
+虚拟DOM相关函数，与cycle.js搭配使用。
 
 ### guard ###
 
@@ -160,6 +165,138 @@ select_ :: Record -> String
 ```javascript
 const select_ = select("");
 ```
+
+### fromEvent ###
+
+```haskell
+fromEvent :: String -> Selector -> Source -> Stream Event
+```
+
+低层次函数，一般较少使用，它是`source.DOM.select("selector").events("click")`的再一封装。
+
+### fromClick ###
+
+```haskell
+fromClick :: Selector -> Source -> Stream Event
+```
+
+### fromClick_ ###
+
+```haskell
+fromClick_ :: Selector -> Source -> Stream Event
+```
+
+### fromClickE ###
+
+```haskell
+fromClickE :: Selector -> Source -> Stream Element
+```
+
+### fromClickE_ ###
+
+```haskell
+fromClickE_ :: Selector -> Source -> Stream Element
+```
+
+### fromChange ###
+
+```haskell
+fromChange :: Selector -> Source -> Stream Event
+```
+
+### fromChange_ ###
+
+```haskell
+fromChange_ :: Selector -> Source -> Stream Event
+```
+
+### fromChangeV ###
+
+```haskell
+fromChangeV :: Selector -> Source -> Stream String
+```
+
+### fromChangeV_ ###
+
+```haskell
+fromChangeV_ :: Selector -> Source -> Stream String
+```
+
+### fromKeydown ###
+
+```haskell
+fromKeydown :: Selector -> Source -> Stream Event
+```
+
+### fromKeydown_ ###
+
+```haskell
+fromKeydown_ :: Selector -> Source -> Stream Event
+```
+
+### fromKeydownV ###
+
+```haskell
+fromKeydownV :: Selector -> Source -> Stream String
+```
+
+### fromKeydownV_ ###
+
+```haskell
+fromKeydownV_ :: Selector -> Source -> Stream String
+```
+
+### fromKeyup ###
+
+```haskell
+fromKeyup :: Selector -> Source -> Stream Event
+```
+
+### fromKeyup_ ###
+
+```haskell
+fromKeyup_ :: Selector -> Source -> Stream Event
+```
+
+### fromKeyupV ###
+
+```haskell
+fromKeyupV :: Selector -> Source -> Stream String
+```
+
+### fromKeyupV_ ###
+
+```haskell
+fromKeyupV_ :: Selector -> Source -> Stream String
+```
+
+### fromEnterPress ###
+
+```haskell
+fromEnterPress :: Selector -> Source -> Stream Event
+```
+
+### fromEnterPress_ ###
+
+```haskell
+fromEnterPress_ :: Selector -> Source -> Stream Event
+```
+
+### fromEnterPressV ###
+
+```haskell
+fromEnterPressV :: Selector -> Source -> Stream String
+```
+
+### fromEnterPressV_ ###
+
+```haskell
+fromEnterPressV_ :: Selector -> Source -> Stream String
+```
+
+## Z ##
+
+真实DOM元素处理，不用cycle.js前提下，可以使用该模块。
 
 ### fromEvent
 
@@ -313,23 +450,39 @@ fromEnterPressV :: Maybe Element -> Stream String
 fromEnterPressV_ :: Maybe Element -> Stream String
 ```
 
-### createEmptyNode
+### blankAfter ###
 
 ```haskel
-createEmptyNode :: () -> IO Element
+blankAfter :: Element -> IO Element
 ```
 
-创建空div，并插入到body。
+在一个元素后面创建空div。
 
-### createEmptyNodeWith
+### blankBefore ###
 
 ```haskell
-createEmptyNodeWith :: String -> IO Element
+blankBefore :: Element -> IO Element
 ```
 
-与[createEmptyNode][createEmptyNode]类似，但可以接受样式类名。
+在一个元素前面创建空div。
 
-## S
+### blankAfterbody ###
+
+```haskell
+blankAfterBody :: () -> IO Element
+```
+
+[blankAfter]特别版。
+
+### blankBeforeBody ###
+
+```haskell
+blankBeforeBody :: () -> IO Element
+```
+
+[blankBefore]特别版。
+
+## S ##
 
 简便的错误函数集合。
 
@@ -392,6 +545,24 @@ Most.from([1, 2, null]).concatMap(E.throwNilMsg("wrong"));
 // Error: wrong
 ```
 
+### init ###
+
+```haskell
+init :: a -> Stream (a -> a) -> Stream a
+```
+
+初始函数，常用于cycle.js。
+
+```javascript
+const main = source => {
+	// update$带的是(a -> a)函数，对状态进行更新。
+	const update$ = intent(source);
+
+	const state$ = update$.thru(S.init(1));
+	// ...
+};
+```
+
 ## GM
 
 油猴API比较特别，它提供的接口默认都是不定参数居多，而且它接受参数多样化。
@@ -405,7 +576,7 @@ Most.from([1, 2, null]).concatMap(E.throwNilMsg("wrong"));
 info :: () -> IO Record
 ```
 
-+ GM_info
++ `GM_info`
 
 获取油猴信息。
 
