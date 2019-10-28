@@ -605,6 +605,13 @@ put :: JSON a => Url -> Body -> Stream a
 put_ :: JSON a => Url -> Stream a
 ```
 
+### patch ###
+
+```haskell
+patch :: JSON a => Url -> Body -> Stream a
+patch_ :: JSON a => Url -> Stream
+```
+
 ### del ###
 
 ```haskell
