@@ -88,14 +88,14 @@ const patch_ = R.flip(patch)({});
 const del = mkGet("DELETE");
 
 // del_ :: JSON a => Url -> Stream a
-const del_ = R.flip(DELETE)({});
+const del_ = R.flip(del)({});
 
 module.exports = {
 	send,
 	json,
 
-	GET,
-	GET_,
+	get,
+	get_,
 	post,
 	post_,
 	put,
