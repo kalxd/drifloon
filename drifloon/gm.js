@@ -32,7 +32,7 @@ const addStyle = text => Most.fromPromise(GM_addStyle(text));
 
 // ajax_ :: (Option a -> Option b) -> Option a -> Stream c
 const ajax_ = R.curry((f, option) => {
-	return new Observable(ob => {
+	const o = new Observable(ob => {
 		const ok = r => {
 			ob.next(r);
 			ob.complete();
@@ -48,6 +48,8 @@ const ajax_ = R.curry((f, option) => {
 
 		GM_xmlhttpRequest(option_);
 	});
+
+	return Most.from(o);
 });
 
 // ajax :: Option -> Stream a
