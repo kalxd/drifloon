@@ -26,11 +26,12 @@ M相当于顶层命名空间，它包含了以下几个模块。
   + Most, [most.js][mostjs]。
   + DOM, [cycle dom][cycle/dom]。
 * 内部模块
-  + F，辅助函数。
-  + Z，页面元素相关。
-  + V，虚拟DOM相关。
-  + S，流相关函数，包括错误处理。
-  + GM, 暴力猴API再封装。
+  + [F]，辅助函数。
+  + [Z]，页面元素相关。
+  + [V]，虚拟DOM相关。
+  + [S]，流相关函数，包括错误处理。
+  + [Http]，网络请求。
+  + [GM], 暴力猴API再封装。
 
 # 更新日志 #
 
@@ -484,7 +485,7 @@ blankBeforeBody :: () -> IO Element
 
 ## S ##
 
-简便的错误函数集合。
+流相关的操作。
 
 ### throwError
 
@@ -561,6 +562,54 @@ const main = source => {
 	const state$ = update$.thru(S.init(1));
 	// ...
 };
+```
+
+## Http ##
+
+网络请求，只能请求同源资源。有跨域需求，请使用[GM]的[ajax]或[json]。
+
+### send ###
+
+```haskell
+send :: Url -> Option -> Stream a
+```
+
+`window.fetch`再封装，参数一致。
+
+### json ###
+
+```haskell
+json :: JSON a => Url -> Option -> Stream
+```
+
+[send]再封装，自动返回json。
+
+### get ###
+
+```haskell
+get :: JSON a => Url -> Query -> Stream a
+get_ :: JSON a => Url -> Stream
+```
+
+### post ###
+
+```haskell
+post :: JSON a => Url -> Body -> Stream a
+post_ :: JSON a => Url -> Stream
+```
+
+### put ###
+
+```haskell
+put :: JSON a => Url -> Body -> Stream a
+put_ :: JSON a => Url -> Stream a
+```
+
+### del ###
+
+```haskell
+del :: JSON a => Url -> Query -> Stream a
+del_ :: JSON a => Url -> Stream a
 ```
 
 ## GM
@@ -649,6 +698,22 @@ getResourceUrl :: String -> IO (Maybe String)
 + `GM_getResourceUrl`
 
 获取资源的blob地址。
+
+### ajax ###
+
+```haskell
+ajax :: Option -> Stream a
+```
+
+请求网络资源。
+
+### json ###
+
+```haskell
+json :: JSON a => Option -> Stream a
+```
+
+请求网络资源，并解析成json。
 
 ### addStyle
 
