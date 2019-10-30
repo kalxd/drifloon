@@ -1,28 +1,39 @@
 /** 创建新元素 */
+const R = require("ramda");
 
-// blankAfter :: Element -> IO Element
-const blankAfter = node => {
+// mkElement :: (Element -> IO ()) -> IO Element
+const mkElement = f => {
 	const el = document.createElement("div");
-	node.appendChild(el);
+	f(el);
 	return el;
 };
 
-// blankBefore :: Element -> IO Element
-const blankBefore = node => {
-	const el = document.createElement("div");
-	node.parentNode.insertBefore(el, node);
-	return node;
-};
+// blankAtEnd :: Element -> IO Element
+const blankAtEnd = node => mkElement(el => {
+	node.appendChild(el);
+});
 
-// blankAfterBody :: () -> IO Element
-const blankAfterBody = () => blankAfter(document.body);
+// blankAtBegin :: Element -> IO Element
+const blankAtBegin = node => mkElement(el => {
+	const firstChild = node.firstElementChild;
 
-// blankBeforeBody :: () -> IO Element
-const blankBeforeBody = () => blankBefore(document.body);
+	if (R.isNil(firstChild)) {
+		node.appendChild(el)
+	}
+	else {
+		node.insertBefore(el, firstChild);
+	}
+});
+
+// blankAtBodyBegin :: () -> IO Element
+const blankAtBodyBegin = () => blankAtBegin(document.body);
+
+// blankAtBodyEnd :: () -> IO Element
+const blankAtBodyEnd = () => blankAtEnd(document.body);
 
 module.exports = {
-	blankAfter,
-	blankBefore,
-	blankAfterBody,
-	blankBeforeBody
+	blankAtBegin,
+	blankAtEnd,
+	blankAtBodyBegin,
+	blankAtBodyEnd
 };
