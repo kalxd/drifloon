@@ -1,5 +1,5 @@
 ---
-title: drifloon（v0.4.4）使用手册
+title: drifloon（v0.4.5）使用手册
 author: 荀徒之
 documentclass: morelull
 numbersections: true
@@ -10,7 +10,7 @@ numbersections: true
 直接引入，会得到一个最大模块名——M。
 
 ```javascript
-// @require http://你的域名.com/dep/drifloon.dep.<version>.js
+// @require http://<你的域名>.com/dep/drifloon.dep.<哪个版本>.js
 
 console.log(M);
 ```
@@ -31,19 +31,16 @@ M相当于顶层命名空间，它包含了以下几个模块。
   + [V]，虚拟DOM相关。
   + [S]，流相关函数，包括错误处理。
   + [Http]，网络请求。
+  + [State]，状态管理。
   + [GM], 暴力猴API再封装。
 
 # 更新日志 #
 
-*该版本与0.4.1不兼容。*
++ 不兼容改动：
+  - `Z`模块下删除命名不准确函数：`blankBefore`、`blankAfter`、`blankAfterBody`、`blankBeforeBody`，分别改为[blankAtBegin]、[blankAtEnd]、[blankAtBodyBegin]、[blankAtBodyEnd]。
 
-*若没有大改动，将发布第一个稳定版。*
-
-原`N`模块拆分成两个模块——`Z`和`V`，前者处理真实DOM元素，后者处理虚拟DOM元素。
-
-+ 删除`createEmtpyNode`和`createEmptyNodeWith`，代替为[blankBefore]、[blankAfter]、[blankAfterBody]、[blankBeforebody]。
-
-+ 添加[S.init][init]。
++ 新增：
+  - [State]模块。
 
 # 内部模块
 
@@ -111,7 +108,7 @@ printColor(); // red
 
 ### genValue
 
-`genValue`接受一个初始函数，同[makeValue][makeValue]一样返回getter/settter，初始函数仅在第一次调用getter时调用。
+`genValue`接受一个初始函数，同[makeValue][makeValue]一样返回getter/settter，如果内部的值为`nil，`，使用getter时会调用该初始函数。
 
   ```javascript
   const value = genValue(() => {
@@ -451,37 +448,37 @@ fromEnterPressV :: Maybe Element -> Stream String
 fromEnterPressV_ :: Maybe Element -> Stream String
 ```
 
-### blankAfter ###
-
-```haskel
-blankAfter :: Element -> IO Element
-```
-
-在一个元素后面创建空div。
-
-### blankBefore ###
+### blankAtBegin ###
 
 ```haskell
-blankBefore :: Element -> IO Element
+blankAtBegin :: Element -> IO Element
 ```
 
-在一个元素前面创建空div。
+在这个元素的第一个位置创建空`div`。
 
-### blankAfterbody ###
+### blankAtEnd ###
 
 ```haskell
-blankAfterBody :: () -> IO Element
+blankAtEnd :: Element -> IO Element
 ```
 
-[blankAfter]特别版。
+在这个元素最后面创建空`div`。
 
-### blankBeforeBody ###
+### blankAtBodyBegin ###
 
 ```haskell
-blankBeforeBody :: () -> IO Element
+blankAtBodyBegin :: () -> IO Element
 ```
 
-[blankBefore]特别版。
+`body`最开始创建空`div`。
+
+### blankAtBodyEnd ###
+
+```haskell
+blankAtBodyEnd :: () -> IO Element
+```
+
+`body`最后创建空`div`。
 
 ## S ##
 
@@ -617,6 +614,101 @@ patch_ :: JSON a => Url -> Stream
 ```haskell
 del :: JSON a => Url -> Query -> Stream a
 del_ :: JSON a => Url -> Stream a
+```
+
+
+## State ##
+
+状态没有使用[cycle/state][cycle/state]，原因有二：其一，使用复杂；其二，只限制在cycle.js应用内，无法在其他地方使用。
+考虑以上原因，重新制作了不够纯的状态管理，不仅能在cycle.js中使用，普通的应用也能使用。
+
+### 计数器 ###
+
+在cycle.js中使用：
+
+```javascript
+const state = State.init(1);
+
+const app = source => {
+    const up$ = V.fromClick(".up", source);
+    const down$ = V.fromClick(".down", source);
+
+    up$.observe(_ => state.modify(R.inc));
+    down$.observe(_ => state.modify(R.dec));
+
+    const DOM$ = state.stream$
+        .map(_ => DOM.div([
+            DOM.button(".up", "+1"),
+            DOM.label(state.get()),
+            DOM.button(".down", "-1")
+        ]))
+    ;
+
+    return {
+        DOM: DOM$
+    };
+};
+
+M.runAt(node, app);
+```
+
+我们先调用`init`初始化状态，再关注到`DOM$`上面，我们并没有使用`map`的参数，而是调用`state.get`获取当前状态。
+同时`up$`和`down$`也是直接调用`state.modify`更改状态。
+
+这种用法好处显而易见，无论何时何地都可以任意取值与赋值，不像[state][cycle/state]那样麻烦，同时不限于在cycle.js内，任何应用都能使用。
+
+### init ###
+
+初始状态，初始后获取State的一个实例。
+
+```javascript
+const state = State.init(1);
+
+// state就是State一个实例，之后就能调用它的put、get、modify方法。
+```
+
+### stream$ ###
+
+[State]实例成员，每次调用`put`之后会发送新状态。
+
+### put ###
+
+更新状态。
+
+```javascript
+const state = State.init(1);
+
+state.stream$.observe(console.log);
+// 1
+
+state.put(2);
+// 输出2
+
+state.put(3);
+// 输出3
+```
+
+### get ###
+
+获得当前状态。
+
+```javascript
+const state = State.init(1);
+
+state.get(); // 1
+
+state.put(2);
+state.put(3);
+
+state.get(); // 3
+```
+
+### modify ###
+
+接受一个修改状态的高阶函数，相当于：
+
+```javascript
+const modify = f => put(f(get()));
 ```
 
 ## GM
@@ -771,3 +863,5 @@ M.runAt(node, app);
 [mostjs]: https://github.com/cujojs/most
 [cycle/dom]: https://cycle.js.org/api/dom.html
 [cycle/isolate]: https://cycle.js.org/api/isolate.html
+
+[cycle/state]: https://cycle.js.org/api/state.html
