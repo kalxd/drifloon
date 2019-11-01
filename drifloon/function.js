@@ -82,8 +82,13 @@ const makeValue = v => {
 const genValue = f => {
 	const gen = makeValue(null);
 
-	return () => {
+	return (...args) => {
+		if (args.length) {
+			return gen(...args);
+		}
+
 		const v = gen();
+
 		if (R.isNil(v)) {
 			const value = f();
 			gen(value);

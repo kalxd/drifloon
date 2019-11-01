@@ -1,5 +1,5 @@
 ---
-title: drifloon（v0.4.5）使用手册
+title: drifloon（v0.4.6）使用手册
 author: 荀徒之
 documentclass: morelull
 numbersections: true
@@ -108,17 +108,28 @@ printColor(); // red
 
 ### genValue
 
-`genValue`接受一个初始函数，同[makeValue][makeValue]一样返回getter/settter，如果内部的值为`nil，`，使用getter时会调用该初始函数。
+`genValue`接受一个初始函数`f`，返回同[makeValue]同性质的getter/setter。使用getter时，如果内部状态为`Nil`，便会调用`f`生产新状态，并保存下来。
 
-  ```javascript
-  const value = genValue(() => {
-	  console.log("done!");
-	  return 1;
-  });
+初始默认状态即为`Nil`。
 
-  value(); // 输出done!，返回1。
-  value(); // 不输出done!，返回1。
-  ```
+```javascript
+const value = genValue(() => {
+	console.log("done!");
+	Math.random();
+});
+
+value();
+// done!
+// 0.8292609950388922
+
+value();
+// 0.8292609950388922
+
+value(null);
+value();
+// done!
+// 0.171352363719799
+```
 
 ## V
 
