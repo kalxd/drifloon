@@ -13,7 +13,6 @@ const { fmap } = require("./function");
 // takeFirst :: Stream a -> Maybe (Stream a)
 const takeFirst = stream$ => stream$.take(1);
 
-
 // mkDriver :: Element -> Driver
 const mkDriver = node => ({
 	DOM$: makeDOMDriver(node)

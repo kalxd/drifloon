@@ -37,10 +37,20 @@ M相当于顶层命名空间，它包含了以下几个模块。
 # 更新日志 #
 
 + 不兼容改动：
-  - `Z`模块下删除命名不准确函数：`blankBefore`、`blankAfter`、`blankAfterBody`、`blankBeforeBody`，分别改为[blankAtBegin]、[blankAtEnd]、[blankAtBodyBegin]、[blankAtBodyEnd]。
+  - cycle.js应用返回的视图流不在`DOM`，变成`DOM$`，见[runAt]。
 
-+ 新增：
-  - [State]模块。
+- 新增：
+  - [V.fromAccept][fromAccept]。
+  - [V.fromAccept_][fromAccept_]。
+  - [V.fromAcceptE][fromAcceptE]。
+  - [V.fromAcceptE_][fromAcceptE_]。
+  - [V.fromReject][fromReject]。
+  - [V.fromReject_][fromReject_]。
+  - [V.fromRejectE][fromRejectE]。
+  - [V.fromRejectE_][fromRejectE_]。
+  - [M.runModalAt][runModalAt]。
+  - [M.execModalAt][execModalAt]。
+  - `genValue`可以使用setter功能。
 
 # 内部模块
 
@@ -301,6 +311,54 @@ fromEnterPressV :: Selector -> Source -> Stream String
 
 ```haskell
 fromEnterPressV_ :: Selector -> Source -> Stream String
+```
+
+### fromAccept ###
+
+```haskell
+fromAccept :: Source -> Stream Event
+```
+
+### fromAccept_ ###
+
+```haskell
+fromAccept_ :: Source -> Stream Event
+```
+
+### fromAcceptE ###
+
+```haskell
+fromAcceptE :: Source -> Stream Element
+```
+
+### fromAcceptE_ ###
+
+```haskell
+fromAcceptE_ :: Source -> Stream Element
+```
+
+### fromReject ###
+
+```haskell
+fromReject :: Source -> Stream Event
+```
+
+### fromReject_ ###
+
+```haskell
+fromReject_ :: Source -> Stream Event
+```
+
+### fromRejectE ###
+
+```haskell
+fromRejectE :: Source -> Stream Element
+```
+
+### fromRejectE_ ###
+
+```haskell
+fromRejectE_ :: Source -> Stream Element
 ```
 
 ## Z ##
@@ -866,7 +924,7 @@ M提供了`runAt`，将整个应用加载到对应的DOM元素上面。与[cycle
 runAt :: Element -> App -> IO ()
 ```
 
-为了达到统一命令，流的命名后面必须跟`$`，所以返回的视图流都挂载到`DOM$`上。
+为了达到统一命名，流的命名后面必须跟`$`，所以返回的视图流都挂载到`DOM$`上。
 
 ```javascript
 // 随便从页面哪里找来一个元素。

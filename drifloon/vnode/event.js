@@ -125,6 +125,48 @@ const fromEnterPressV_ = R.compose(
 	fromEnterPressV
 );
 
+// fromAccept :: Source -> Stream Event
+const fromAccept = fromClick(".accept");
+
+// fromAccept_ :: Source -> Stream Event
+const fromAccept_ = R.compose(
+	debounceAction,
+	fromAccept
+);
+
+// fromAcceptE :: Source -> Stream Element
+const fromAcceptE = R.compose(
+	toElement,
+	fromAccept
+);
+
+// fromAcceptE_ :: Source -> Stream Element
+const fromAcceptE_ = R.compose(
+	toElement,
+	fromAccept_
+);
+
+// fromReject :: Source -> Stream Event
+const fromReject = fromClick(".reject");
+
+// fromReject_ :: Source -> Stream Event
+const fromReject_ = R.compose(
+	debounceAction,
+	fromReject
+);
+
+// fromRejectE :: Source -> Stream Element
+const fromRejectE = R.compose(
+	toElement,
+	fromReject
+);
+
+// fromRejectE_ :: Source -> Stream Element
+const fromRejectE_ = R.compose(
+	toElement,
+	fromReject_
+);
+
 module.exports = {
 	fromEvent,
 
@@ -151,5 +193,15 @@ module.exports = {
 	fromEnterPress,
 	fromEnterPress_,
 	fromEnterPressV,
-	fromEnterPressV_
+	fromEnterPressV_,
+
+	fromAccept,
+	fromAccept_,
+	fromAcceptE,
+	fromAcceptE_,
+
+	fromReject,
+	fromReject_,
+	fromRejectE,
+	fromRejectE_
 };
