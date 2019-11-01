@@ -16,7 +16,7 @@ const takeFirst = stream$ => stream$.take(1);
 
 // mkDriver :: Element -> Driver
 const mkDriver = node => ({
-	DOM: makeDOMDriver(node)
+	DOM$: makeDOMDriver(node)
 });
 
 // runAt :: Element -> App -> IO ();

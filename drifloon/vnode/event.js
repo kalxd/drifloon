@@ -14,7 +14,7 @@ const {
 
 // fromEvent :: String -> Selector -> Source -> Stream Event
 const fromEvent = R.curry((eventType, selector, source) => {
-	return source.DOM.select(selector).events(eventType);
+	return source.DOM$.select(selector).events(eventType);
 });
 
 // fromClick :: Selector -> Source -> Stream Event
