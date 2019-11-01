@@ -115,7 +115,7 @@ printColor(); // red
 ```javascript
 const value = genValue(() => {
 	console.log("done!");
-	Math.random();
+	return Math.random();
 });
 
 value();
@@ -858,21 +858,98 @@ GM.injectCSS("mycss");
 
 ## 运行cycle.js应用
 
-M提供了`runAt`，将整个应用加载到对应的DOM元素上面。
+M提供了`runAt`，将整个应用加载到对应的DOM元素上面。与[cycle.js官网上例子][cycle]稍有不同，返回的`sinks`不是`DOM`而是`DOM$`，见下例。
+
+### runAt ###
+
+```haskell
+runAt :: Element -> App -> IO ()
+```
+
+为了达到统一命令，流的命名后面必须跟`$`，所以返回的视图流都挂载到`DOM$`上。
 
 ```javascript
 // 随便从页面哪里找来一个元素。
 const node = document.querySelector("div");
 
 // cycle.js应用，跟往常写法没有任何不同。
-const app = source => {...}
+const app = source => {
+	// ...
+
+	return {
+		// 此处需要注意，是`DOM$`而不是`DOM`！！！
+		DOM$
+	};
+};
 
 M.runAt(node, app);
 ```
 
+## 模态对话框 ##
+
+如何在cycle.js里弹出一层对话框呢？垃圾HTML没有模态对话框概念，基本上靠外加一层div实现，有的网站就是在最外层添加这么一层遮罩层，如果cycle.js应用是挂载在其它地方，那么弹对话框是个很难解决的痛点。
+cycle.js不如react有个portal，应用里的一块可以挂载到页面上任意地方，退而求其次，我们重新再启动一个新应用，把弹窗挂载上去，卸载时，拿到内部状态即可。
+
+### runModalAt ###
+
+```haskell
+runModalAt :: Element -> App -> IO (() -> IO (), Sinks);
+```
+
+看起来跟[runAt]差不多，但签名很怪，返回的是一个两元组，第一个是卸载回收回调，第二个即是应用返回值。
+
+```javascript
+const app = source => {
+	const ok$ = V.fromClick(".ok", source);
+
+	return {
+		DOM$: ...
+		ok$
+	};
+};
+
+// dispose即卸载函数，调用后会回收整块内容，并将整个node移除。
+// sinks即app返回值，即{DOM$, ok$}
+const [dispose, sinks] = M.runModalAt(node, app);
+
+// 点击ok后，延时卸载
+sinks.ok$
+	.concatMap(_ => Most.of(null)
+	.delay(1000))
+	.observe(dispose)
+;
+```
+
+### execModalAt ###
+
+```haskell
+execModalAt :: Element -> App -> IO (Stream a)
+```
+
+[runModalAt]特别版，默认响应`accept$`（必需选项）和`reject$`（可选选项），触发后自动调用`dispose`，并把`accept$`返回回去。
+适用于一般的信息提示，交互性强的对话框请使用[runModalAt]。
+
+```javascript
+const app = source => {
+	const accept$ = V.fromClick(".accept", source);
+
+	return {
+		DOM$,
+		accpet$,
+
+		// reject$是可选项，若提供该选项，
+		// `execModalAt`会自动订阅掉，整个流就结束了。
+	};
+};
+
+// 这一条是accept$，所以accept$是必要属性。
+M.execModalAt(node, app).drain();
+```
+
+
 [ramda]: https://ramdajs.com/
 [mostjs]: https://github.com/cujojs/most
+[cycle]: https://cycle.js.org/
 [cycle/dom]: https://cycle.js.org/api/dom.html
 [cycle/isolate]: https://cycle.js.org/api/isolate.html
-
 [cycle/state]: https://cycle.js.org/api/state.html
