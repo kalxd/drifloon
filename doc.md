@@ -961,7 +961,7 @@ const app = source => {
 	const ok$ = V.fromClick(".ok", source);
 
 	return {
-		DOM$: ...
+		DOM$,
 		ok$
 	};
 };
@@ -972,8 +972,7 @@ const [dispose, sinks] = M.runModalAt(node, app);
 
 // 点击ok后，延时卸载
 sinks.ok$
-	.concatMap(_ => Most.of(null)
-	.delay(1000))
+	.delay(1000)
 	.observe(dispose)
 ;
 ```
