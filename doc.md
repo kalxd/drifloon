@@ -1,5 +1,5 @@
 ---
-title: drifloon（v0.4.6）使用手册
+title: drifloon（v0.5.0）使用手册
 author: 荀徒之
 documentclass: morelull
 numbersections: true
@@ -36,27 +36,22 @@ M相当于顶层命名空间，它包含了以下几个模块。
 
 # 更新日志 #
 
-+ 不兼容改动：
-  - cycle.js应用返回的视图流不在`DOM`，变成`DOM$`，见[runAt]。
+`0.4.6`别名，仅仅提升版本号，更新、规范文档。
 
-- 新增：
-  - [V.fromAccept][fromAccept]。
-  - [V.fromAccept_][fromAccept_]。
-  - [V.fromAcceptE][fromAcceptE]。
-  - [V.fromAcceptE_][fromAcceptE_]。
-  - [V.fromReject][fromReject]。
-  - [V.fromReject_][fromReject_]。
-  - [V.fromRejectE][fromRejectE]。
-  - [V.fromRejectE_][fromRejectE_]。
-  - [M.runModalAt][runModalAt]。
-  - [M.execModalAt][execModalAt]。
-  - `genValue`可以使用setter功能。
+# 命名规范 #
+
+在[V]和[Z]模块中出现了同名函数，有的函数名十分相近，此处以[fromClick]做个简要说明：
+
+- [fromClick]，后面不带任何符号，仅仅表示普通的点击事件，原接口返回什么此处也返回什么。
+- [fromClick_]，带下划线版本，表示抖动函数，多次点击仅发送最后一次点击事件。
+- [fromClickE]，`E`表示Element，返回DOM Element，同理，`V`表示Value，返回用户输入。
+- [fromClickE_]，与`fromClick_`同理，表示`fromClickE`抖动版本。
 
 # 内部模块
 
 ## F
 
-纯函数集合，不言自明的函数。
+辅助函数，铺设函数式设施。
 
 ### fmap
 
@@ -96,7 +91,7 @@ traverse :: (a -> Maybe b) -> [a] -> Maybe [b]
 
 ### makeValue
 
-`makeValue`接受一个初始值，返回一个getter/setter函数，可以用新函数赋于新值，也可以用它得到内部的值。
+`makeValue`接受一个初始值，返回一个getter/setter函数，我们叫它为`f`好了，它既能获取内部保存的状态，又能设定新状态：直接调用`f()`获取状态；`f(新值)`设定新状态。
 
 ```javascript
 const value = makeValue("blue");
@@ -387,15 +382,11 @@ fromClick :: Maybe Element -> Stream Event
 fromClick_ :: Maybe Element -> Stream Event
 ```
 
-[fromClick][fromClick]抖动版本。
-
 ### fromClickE
 
 ```haskell
 fromClickE :: Maybe Element -> Stream Element
 ```
-
-同[fromClick][fromClick]，返回点击元素本身。
 
 ### fromClickE_
 
@@ -403,15 +394,11 @@ fromClickE :: Maybe Element -> Stream Element
 fromClickE_ :: Maybe Element -> Stream Element
 ```
 
-[fromClickE][fromClickE]抖动版本。
-
 ### fromChange
 
 ```haskell
 fromChange :: Maybe Element -> Stream Event
 ```
-
-同`fromEvent("change")`。
 
 ### fromChange_
 
@@ -419,15 +406,11 @@ fromChange :: Maybe Element -> Stream Event
 fromChange_ :: Maybe Element -> Stream Event
 ```
 
-[fromChange]抖动版本。
-
 ### fromChangeV
 
 ```haskell
 fromChangeV :: Maybe Element -> Stream String
 ```
-
-同[fromChange][fromChange]，返回用户输入文本，并且`trim()`过一遍。
 
 ### fromChangeV_
 
@@ -435,23 +418,17 @@ fromChangeV :: Maybe Element -> Stream String
 fromChangeV_ :: Maybe Element -> Stream String
 ```
 
-[fromChangeV][fromChangeV]抖动版本。
-
 ### fromKeydown ###
 
 ```haskell
 fromKeydown :: Maybe Element -> Stream Event
 ```
 
-同`fromEvent("keydown")`。
-
 ### fromKeydown_ ###
 
 ```haskell
 fromKeydown_ :: Maybe Element -> Stream Event
 ```
-
-[fromKeydown]抖动版。
 
 ### fromKeydownV ###
 
@@ -470,8 +447,6 @@ fromKeydownV_ :: Maybe Element -> Stream String
 ```haskell
 fromKeyup :: Maybe Element -> Stream Event
 ```
-
-同`fromEvent(keyup)`。
 
 ### fromKeyup_ ###
 
@@ -563,7 +538,7 @@ throwError :: ErrorClass -> String -> Stream a
 
 ```javascript
 Most.of("wrong")
-	.concatMap(E.throwError(Error)))
+	.concatMap(S.throwError(Error)))
 	.subscribe(..)
 ;
 // Error: wrong
@@ -578,7 +553,7 @@ throwMsg :: String -> Stream a
 [throwError][throwError]另一个形式，第一个参数默认为`Error`。
 
 ```haskell
-Most.of("wrong").concatMap(E.throwMsg);
+Most.of("wrong").concatMap(S.throwMsg);
 // Error: wrong
 ```
 
@@ -591,7 +566,7 @@ throwNil :: ErrorClass -> String -> (Maybe a) -> Stream a
 检测到空值，就会抛出一个错误。
 
 ```javascript
-Most.from([1, 2, null]).concatMap(E.throwNil(Error, "wrong"));
+Most.from([1, 2, null]).concatMap(S.throwNil(Error, "wrong"));
 // 1
 // 2
 // Error: wrong
@@ -606,7 +581,7 @@ throwNilMsg :: String -> (Maybe a) -> Stream a
 与[throwMsg][throwMsg]相类，第一个参数默认为`Error`。
 
 ```javascript
-Most.from([1, 2, null]).concatMap(E.throwNilMsg("wrong"));
+Most.from([1, 2, null]).concatMap(S.throwNilMsg("wrong"));
 // 1
 // 2
 // Error: wrong
@@ -984,7 +959,7 @@ execModalAt :: Element -> App -> IO (Stream a)
 ```
 
 [runModalAt]特别版，默认响应`accept$`（必需选项）和`reject$`（可选选项），触发后自动调用`dispose`，并把`accept$`返回回去。
-适用于一般的信息提示，交互性强的对话框请使用[runModalAt]。
+适用于一般的对话框，如果涉及过多副作用，请使用[runModalAt]。
 
 ```javascript
 const app = source => {
