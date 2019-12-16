@@ -1,5 +1,18 @@
 const R = require("ramda");
 const Most = require("most");
+const Observable = require("zen-observable");
+
+// create :: (ZenObservable -> IO a) -> Stream a
+const create = f => {
+	const o = new Observable(f);
+	return Most.from(o);
+};
+
+// init :: a -> Stream (a -> a) -> Stream a
+const init = R.curry((state, update$) => {
+	return update$.scan(R.flip(R.call), state);
+});
+
 
 // throwError :: ErrorClass -> String -> Stream a
 const throwError = R.curry((klass, msg) => {
@@ -24,16 +37,12 @@ const throwNil = R.curry((klass, msg , v) => {
 // throwNilMsg :: String -> Maybe a -> Stream a
 const throwNilMsg = throwNil(Error);
 
-// init :: a -> Stream (a -> a) -> Stream a
-const init = R.curry((state, update$) => {
-	return update$.scan(R.flip(R.call), state);
-});
-
 module.exports = {
+	create,
+	init,
+
 	throwError,
 	throwMsg,
 	throwNil,
-	throwNilMsg,
-
-	init
+	throwNilMsg
 };
