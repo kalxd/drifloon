@@ -2,7 +2,7 @@ const R = require("ramda");
 const Most = require("most");
 const Observable = require("zen-observable");
 
-// create :: (ZenObservable -> IO a) -> Stream a
+// create :: (ZenObservable ~> IO a) -> Stream a
 const create = f => {
 	const o = new Observable(f);
 	return Most.from(o);

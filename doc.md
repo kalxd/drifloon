@@ -1,5 +1,5 @@
 ---
-title: drifloon（v0.5.0）使用手册
+title: drifloon（v0.5.1）使用手册
 author: 荀徒之
 documentclass: morelull
 numbersections: true
@@ -36,7 +36,8 @@ M相当于顶层命名空间，它包含了以下几个模块。
 
 # 更新日志 #
 
-`0.4.6`别名，仅仅提升版本号，更新、规范文档。
++ 新增[S.create]。
++ 新增[S.fromCallback]。
 
 # 命名规范 #
 
@@ -165,9 +166,9 @@ select :: String -> Record -> String
 选择需要的css类。
 
 ```javascript
-N.select("ui button", { primary: true }); // .ui.button.primary
+V.select("ui button", { primary: true }); // .ui.button.primary
 
-N.select("ui button", { primary: false }); // .ui.button
+V.select("ui button", { primary: false }); // .ui.button
 ```
 
 ### select_ ###
@@ -528,6 +529,69 @@ blankAtBodyEnd :: () -> IO Element
 
 流相关的操作。
 
+### create ###
+
+```haskell
+create :: (ZenObservable ~> IO a) -> Stream a
+```
+
+创建新的观察者。
+
+```javascript
+const input$ = S.create(ob => {
+	ob.next(1);
+	ob.next(2);
+});
+
+input$.observe(console.log);
+// 1
+// 2
+```
+
+### fromCallback ###
+
+```haskell
+fromCallback :: (a -> a -> r) -> Stream r
+```
+
+从一个普通回调函数中创建观察者。
+
+```javascript
+// incCPS :: Int -> (Int -> Int) -> Int
+const incCPS = (n, ok) => ok(n + 1);
+
+// input :: [Int]
+const input = R.range(1, 5);
+
+const input$ = S.fromCallback(f => {
+	input.forEach(n => incCPS(n, f));
+});
+
+// 1
+// 2
+// 3
+// 4
+// 5
+```
+
+### init ###
+
+```haskell
+init :: a -> Stream (a -> a) -> Stream a
+```
+
+初始函数，常用于cycle.js。
+
+```javascript
+const main = source => {
+	// update$带的是(a -> a)函数，对状态进行更新。
+	const update$ = intent(source);
+
+	const state$ = update$.thru(S.init(1));
+	// ...
+};
+```
+
 ### throwError
 
 ```haskell
@@ -585,24 +649,6 @@ Most.from([1, 2, null]).concatMap(S.throwNilMsg("wrong"));
 // 1
 // 2
 // Error: wrong
-```
-
-### init ###
-
-```haskell
-init :: a -> Stream (a -> a) -> Stream a
-```
-
-初始函数，常用于cycle.js。
-
-```javascript
-const main = source => {
-	// update$带的是(a -> a)函数，对状态进行更新。
-	const update$ = intent(source);
-
-	const state$ = update$.thru(S.init(1));
-	// ...
-};
 ```
 
 ## Http ##
