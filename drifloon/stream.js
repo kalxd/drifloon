@@ -8,6 +8,14 @@ const create = f => {
 	return Most.from(o);
 };
 
+// fromCallback :: (a -> a -> r) -> Stream r
+const fromCallback = g => {
+	return create(ob => {
+		const f = a => ob.next(a);
+		g(f);
+	});
+};
+
 // init :: a -> Stream (a -> a) -> Stream a
 const init = R.curry((state, update$) => {
 	return update$.scan(R.flip(R.call), state);
@@ -39,6 +47,7 @@ const throwNilMsg = throwNil(Error);
 
 module.exports = {
 	create,
+	fromCallback,
 	init,
 
 	throwError,
