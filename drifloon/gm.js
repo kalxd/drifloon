@@ -58,6 +58,24 @@ const ajax = ajax_(R.identity);
 // json :: JSON a => Option -> Stream a
 const json = ajax_(R.assoc("responseType", "json"));
 
+// setClipboard :: String -> String -> IO ()
+const setClipboard = R.curry((data, type) => GM_setClipboard(data, type));
+
+// setClipboardPlain :: String -> IO ()
+const setClipboardPlain = R.flip(setClipboard)("text/plain");
+
+// download :: Option -> IO ()
+const download = option => GM_download(option);
+
+// downloadUrl :: String -> Url -> IO ()
+const downloadUrl = R.curry((name, url) => GM_download(url, name));
+
+// notify :: Option -> IO ()
+const notify = option => GM_notification(option);
+
+// notifyText :: String -> String -> IO ()
+const notifyText = R.curry((title, text) => GM_notification(text, title));
+
 /** end */
 
 /** 在GM基础上，扩展出更强的功能 */
@@ -81,6 +99,13 @@ module.exports = {
 
 	ajax,
 	json,
+
+	setClipboard,
+	setClipboardPlain,
+	download,
+	downloadUrl,
+	notify,
+	notifyText,
 
 	injectCSS
 };

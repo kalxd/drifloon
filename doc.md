@@ -1,11 +1,11 @@
 ---
-title: drifloon（v0.5.1）使用手册
+title: drifloon（v0.5.2）使用手册
 author: 荀徒之
 documentclass: morelull
 numbersections: true
 ---
 
-# 使用
+# 使用 #
 
 直接引入，会得到一个最大模块名——M。
 
@@ -17,7 +17,7 @@ console.log(M);
 
 同样可以以`<script>`方式引入。
 
-# 模块介绍
+# 模块介绍 #
 
 M相当于顶层命名空间，它包含了以下几个模块。
 
@@ -36,8 +36,12 @@ M相当于顶层命名空间，它包含了以下几个模块。
 
 # 更新日志 #
 
-+ 新增[S.create]。
-+ 新增[S.fromCallback]。
++ 新增GM.setClipboard。
++ 新增GM.setClipboardplain。
++ 新增GM.download。
++ 新增GM.downloadUrl。
++ 新增GM.notify。
++ 新增GM.notifyText。
 
 # 命名规范 #
 
@@ -904,7 +908,71 @@ json :: JSON a => Option -> Stream a
 
 请求网络资源，并解析成json。
 
-### addStyle
+
+### setClipboard ###
+
+```haskell
+setClipboard :: Option -> IO ()
+```
+
++ GM_setClipboard
+
+复制到系统剪切板。
+
+### setClipboardPlain ###
+
+```haskell
+setClipboardPlain :: String -> IO ()
+```
+
++ GM_setClipboard
+
+复制纯文本到剪切板。
+
+### download ###
+
+```haskell
+download :: Option -> IO ()
+```
+
++ GM_download
+
+下载文件。
+
+### downloadUrl ###
+
+```haskell
+downloadUrl :: String -> String -> IO ()
+```
+
++ GM_download
+
+下载文件。
+
+### notify ###
+
+```haskell
+notify :: Option -> IO ()
+```
+
++ GM_notification
+
+发送通知提醒。
+
+### notifyText ###
+
+```haskell
+type Title = String
+type Content = String
+
+notifyText :: Title -> Content -> IO ()
+```
+
++ GM_notification
+
+发送通知提醒。
+
+### addStyle ###
 
 ```haskell
 addStyle :: String -> Stream String
