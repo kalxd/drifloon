@@ -1,5 +1,5 @@
 ---
-title: drifloon（v0.5.2）使用手册
+title: drifloon（v0.5.3）使用手册
 author: 荀徒之
 documentclass: morelull
 numbersections: true
@@ -36,12 +36,8 @@ M相当于顶层命名空间，它包含了以下几个模块。
 
 # 更新日志 #
 
-+ 新增GM.setClipboard。
-+ 新增GM.setClipboardplain。
-+ 新增GM.download。
-+ 新增GM.downloadUrl。
-+ 新增GM.notify。
-+ 新增GM.notifyText。
++ 新增[maybe]。
++ 新增[maybeOr]。
 
 # 命名规范 #
 
@@ -92,6 +88,40 @@ fmap5 :: (a -> b -> c -> d -> e -> f) -> Maybe a -> Maybe b -> Maybe c -> Maybe 
 
 ```haskell
 traverse :: (a -> Maybe b) -> [a] -> Maybe [b]
+```
+
+### maybe ###
+
+```haskell
+maybe :: b -> (a -> b) -> Maybe a -> b
+```
+
+同`haskell`的`maybe`。
+
+```javascript
+// f :: Maybe String -> String
+const f = maybe("failed", R.toUpper);
+
+f("abc"); // "ABC"
+f("hello world"); // "HELLO WORLD"
+f(null); // "failed"
+```
+
+### maybeOr ###
+
+```haskell
+maybeOr :: b -> b -> Maybe a -> b
+```
+
+形似三元表达式，前者作用于`Maybe a`，后者作用于`Bool`。
+
+```javascript
+// f :: Maybe a -> String
+const f = maybeOr("failed", "OK");
+
+f(1); // "OK"
+f("hello"); // "OK"
+f(null); // "failed"
 ```
 
 ### makeValue

@@ -66,6 +66,26 @@ const traverse = R.curry((f, xs) => {
 	return r;
 });
 
+// maybe :: b -> (a -> b) -> Maybe a -> b
+const maybe = R.curry((b, f, c) => {
+	if (R.isNil(c)) {
+		return b;
+	}
+	else {
+		return f(c);
+	}
+});
+
+// maybeOr :: b -> b -> Maybe a -> b
+const maybeOr = R.curry((a, b, c) => {
+	if (R.isNil(c)) {
+		return a;
+	}
+	else {
+		return b;
+	}
+});
+
 const makeValue = v => {
 	let innerValue = v;
 
@@ -108,6 +128,9 @@ module.exports = {
 	fmap5,
 
 	traverse,
+
+	maybe,
+	maybeOr,
 
 	makeValue,
 	genValue
