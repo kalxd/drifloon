@@ -66,6 +66,9 @@ const traverse = R.curry((f, xs) => {
 	return r;
 });
 
+// isJust :: Maybe a -> Bool
+const isJust = R.complement(R.isNil);
+
 // maybe :: b -> (a -> b) -> Maybe a -> b
 const maybe = R.curry((b, f, c) => {
 	if (R.isNil(c)) {
@@ -129,6 +132,7 @@ module.exports = {
 
 	traverse,
 
+	isJust,
 	maybe,
 	maybeOr,
 
