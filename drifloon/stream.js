@@ -8,7 +8,7 @@ const create = f => {
 	return Most.from(o);
 };
 
-// fromCallback :: (a -> a -> r) -> Stream r
+// fromCallback :: (a -> IO ()) -> Stream a
 const fromCallback = g => {
 	return create(ob => {
 		const f = a => ob.next(a);
