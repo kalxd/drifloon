@@ -1,5 +1,5 @@
 ---
-title: drifloon（v0.5.4）使用手册
+title: drifloon（v0.5.5）使用手册
 author: 荀徒之
 documentclass: morelull
 numbersections: true
@@ -36,9 +36,9 @@ M相当于顶层命名空间，包含了以下几个模块。
 
 # 更新日志 #
 
-基本没有多少更新，主要是完善文档。
+紧急修复：
 
-+ 新增[isJust]。
++ `internal`出现`R is not defined`错误。
 
 # 命名规范 #
 
