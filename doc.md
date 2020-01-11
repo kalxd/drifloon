@@ -498,7 +498,7 @@ fromKeyupV :: Maybe Element -> Stream String
 ### fromKeyupV_ ###
 
 ```haskell
-fromKeyupV_ :: MaybeElement -> Stream String
+fromKeyupV_ :: Maybe Element -> Stream String
 ```
 
 ### fromEnterPress ###
