@@ -21,7 +21,6 @@ const init = R.curry((state, update$) => {
 	return update$.scan(R.flip(R.call), state);
 });
 
-
 // throwError :: ErrorClass -> String -> Stream a
 const throwError = R.curry((klass, msg) => {
 	const e = new klass(msg);
