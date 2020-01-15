@@ -30,7 +30,6 @@ M相当于顶层命名空间，包含了以下几个模块。
   + [Z]，页面元素相关。
   + [V]，虚拟DOM相关。
   + [S]，流相关函数，包括错误处理。
-  + [Http]，网络请求。
   + [State]，状态管理。
   + [G], 暴力猴API再封装。
 
@@ -38,6 +37,7 @@ M相当于顶层命名空间，包含了以下几个模块。
 
 + 不兼容改动:
   - Tampermonkey内置GM变量，与`GM`冲突，遂改名为[G]。
+  - 移除`Http`模块。
 
 + 新增:
 
@@ -714,62 +714,6 @@ Most.from([1, 2, null]).concatMap(S.throwNilMsg("wrong"));
 // 2
 // Error: wrong
 ```
-
-## Http ##
-
-网络请求，只能请求同源资源。有跨域需求，请使用[GM]的[ajax]或[json]。
-
-### send ###
-
-```haskell
-send :: Url -> Option -> Stream a
-```
-
-`window.fetch`再封装，参数一致。
-
-### json ###
-
-```haskell
-json :: JSON a => Url -> Option -> Stream
-```
-
-[send]再封装，自动返回json。
-
-### get ###
-
-```haskell
-get :: JSON a => Url -> Query -> Stream a
-get_ :: JSON a => Url -> Stream
-```
-
-### post ###
-
-```haskell
-post :: JSON a => Url -> Body -> Stream a
-post_ :: JSON a => Url -> Stream
-```
-
-### put ###
-
-```haskell
-put :: JSON a => Url -> Body -> Stream a
-put_ :: JSON a => Url -> Stream a
-```
-
-### patch ###
-
-```haskell
-patch :: JSON a => Url -> Body -> Stream a
-patch_ :: JSON a => Url -> Stream
-```
-
-### del ###
-
-```haskell
-del :: JSON a => Url -> Query -> Stream a
-del_ :: JSON a => Url -> Stream a
-```
-
 
 ## State ##
 
