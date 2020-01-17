@@ -828,7 +828,7 @@ const modify = f => put(f(get()));
 compactQuery :: Url -> Maybe Query -> Url
 ```
 
-合并url和query。*暂不支持数组。*
+合并url和query。**暂不支持数组。**
 
 ```javascript
 const url = "http://my.site";
@@ -853,10 +853,12 @@ json_ :: Url -> Stream JSON
 
 ## G ##
 
-油猴API比较特别，它提供的接口默认都是不定参数居多，而且它接受参数多样化。
-为了方便使用，全部以柯里化形式提供，同个功能函数会分成多个函数。
+封装了[Tampermonkey的API](https://www.tampermonkey.net/documentation.php?version=4.10.6105&ext=fire)。
 
-类型签名后面紧跟的是所需的权限提示。有的接口需要更多权限，需要特别注意。
+油猴API比较特别，它的接口不定参数居多，接受参数多样化。
+为了使用方便，全部都做成柯里化，同个功能会分成多个函数。
+
+类型签名后面紧跟的是必需权限列表。有的接口需要更多权限，需要特别注意。
 
 ### getValueOr
 
