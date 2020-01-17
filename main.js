@@ -8,6 +8,7 @@ const Z = require("./drifloon/zoo");
 const S = require("./drifloon/stream");
 const V = require("./drifloon/vnode");
 const State = require("./drifloon/state");
+const X = require("./drifloon/extra");
 
 const Run = require("./drifloon/run");
 
@@ -22,6 +23,7 @@ const M = {
 	G,
 	S,
 	State,
+	X,
 
 	...Run
 };
