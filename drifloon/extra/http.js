@@ -14,6 +14,16 @@ const toQueryString = R.compose(
 	R.toPairs
 );
 
+// compactQuery :: Url -> Maybe Query -> Url
+const compactQuery = R.curry((url, query) => {
+	if (R.isNil(query) || R.isEmpty(query)) {
+		return url;
+	}
+	else {
+		return `${url}?${toQueryString(query)}`;
+	}
+});
+
 // send :: Url -> FetchOption -> Stream a
 const send = R.curry((url, option) => {
 	const r = fetch(url, option);
@@ -39,6 +49,8 @@ const json_ = url => {
 };
 
 module.exports = {
+	compactQuery,
+
 	send,
 	send_,
 	json,
