@@ -2,10 +2,6 @@ const R = require("ramda");
 const Most = require("most");
 const Observable = require("zen-observable");
 
-/** GM基本定义 */
-// info :: () -> Record
-const info = () => GM_info;
-
 // getValueOr :: JSON a => a -> String -> IO a
 const getValueOr = R.curry((def, key) => GM_getValue(key, def));
 
@@ -87,7 +83,6 @@ const injectCSS = R.compose(
 /** end */
 
 module.exports = {
-	info,
 	getValueOr,
 	getValue,
 	setValue,
