@@ -32,14 +32,18 @@ M相当于顶层命名空间，包含了以下几个模块。
   + [S]，流相关函数，包括错误处理。
   + [State]，状态管理。
   + [G], 暴力猴API再封装。
+  + [X]，“其它”模块，无法分类的模块都归于此。
 
 # 更新日志 #
 
 + 不兼容改动:
   - Tampermonkey内置GM变量，与`GM`冲突，遂改名为[G]。
-  - 移除`Http`模块。
+  - `Http`模块移到[X]并精化，移除不必要的方法。
+  - 删除`GM.info`。
 
 + 新增:
+  - [X]。
+  - [Http.compactQuery][compactQuery]
 
 # 命名规范 #
 
@@ -810,22 +814,49 @@ state.get(); // 3
 const modify = f => put(f(get()));
 ```
 
-## G
+# X #
+
+“其它”分类。
+
+### Http ###
+
+同源网络请求。
+
+#### compactQuery ####
+
+```haskell
+compactQuery :: Url -> Maybe Query -> Url
+```
+
+合并url和query。*暂不支持数组。*
+
+```javascript
+const url = "http://my.site";
+
+compactQuery(url, {}); // http://my.site
+compactQuery(url, {a: 1}); // http://my.site?a=1
+```
+
+#### send和send_ ####
+
+```haskell
+send :: Url -> FetchOption -> Stream a
+send_ :: Url -> Stream a
+```
+
+#### json和json_ ####
+
+```haskell
+json :: Url -> FetchOption -> Stream JSON
+json_ :: Url -> Stream JSON
+```
+
+## G ##
 
 油猴API比较特别，它提供的接口默认都是不定参数居多，而且它接受参数多样化。
 为了方便使用，全部以柯里化形式提供，同个功能函数会分成多个函数。
 
 类型签名后面紧跟的是所需的权限提示。有的接口需要更多权限，需要特别注意。
-
-### info
-
-```haskell
-info :: () -> IO Record
-```
-
-+ `GM_info`
-
-获取油猴信息。
 
 ### getValueOr
 
