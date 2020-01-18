@@ -41,6 +41,7 @@ M相当于顶层命名空间，包含了以下几个模块。
   - `Http`模块移到[X]并精化，移除不必要的方法。
   - 删除`GM.info`。
   - 删除`GM.listValue`，拆分成两个函数——[G.listAllKey][listAllKey]和[G.listAllValue][listAllValue]。
+  - [G.notify][notify]返回流。
 
 + 新增:
   - [X]。
@@ -1013,12 +1014,14 @@ downloadUrl :: String -> String -> IO ()
 ### notify ###
 
 ```haskell
-notify :: Option -> IO ()
+notify :: Option -> Stream Bool
 ```
 
-+ GM_notification
++ `GM_notification`
 
 发送通知提醒。
+
+> 返回值为Bool，当用户点击提示窗体关闭时为`true`，点“关闭”关闭提示时为`false`。
 
 ### notifyText ###
 

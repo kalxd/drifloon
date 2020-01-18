@@ -1,6 +1,7 @@
 const R = require("ramda");
 const Most = require("most");
 const Observable = require("zen-observable");
+const S = require("./stream");
 
 // getValueOr :: JSON a => a -> String -> IO a
 const getValueOr = R.curry((def, key) => GM_getValue(key, def));
@@ -78,12 +79,18 @@ const download = option => GM_download(option);
 // downloadUrl :: String -> Url -> IO ()
 const downloadUrl = R.curry((name, url) => GM_download(url, name));
 
-// notify :: Option -> IO ()
-const notify = option => GM_notification(option);
+// notify :: Option -> Stream Bool
+const notify = option => {
+	return S.create(ob => {
+		GM_notification(option, b => {
+			ob.next(b);
+			ob.complete();
+		});
+	});
+};
 
 // notifyText :: String -> String -> IO ()
 const notifyText = R.curry((title, text) => GM_notification(text, title));
-
 /** end */
 
 /** 在GM基础上，扩展出更强的功能 */
