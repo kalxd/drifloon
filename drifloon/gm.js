@@ -23,6 +23,12 @@ const listAllValue = R.compose(
 	listAllKey
 );
 
+// clearAllValue :: () -> IO ()
+const clearAllValue = R.compose(
+	R.map(deleteValue),
+	listAllKey
+);
+
 // getResourceText :: String -> IO (Maybe String)
 const getResourceText = name => GM_getResourceText(name);
 
@@ -95,6 +101,8 @@ module.exports = {
 	deleteValue,
 	listAllKey,
 	listAllValue,
+	clearAllValue,
+
 	addStyle,
 	getResourceText,
 	getResourceUrl,

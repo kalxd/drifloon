@@ -44,7 +44,8 @@ M相当于顶层命名空间，包含了以下几个模块。
 
 + 新增:
   - [X]。
-  - [Http.compactQuery][compactQuery]
+  - [Http.compactQuery][compactQuery]。
+  - [G.clearAllValue][clearAllValue]。
 
 # 命名规范 #
 
@@ -920,6 +921,17 @@ listAllValue :: JSON a => () -> IO [a]
 + `GM_listValues`
 
 列出已保存所有值。
+
+### clearAllValue ###
+
+```haskell
+clearAllValue :: () -> IO ()
+```
+
++ `GM_listValues`
++ `GM_deleteValue`
+
+清空保存数据。
 
 ### getResourceText ###
 
