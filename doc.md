@@ -40,6 +40,7 @@ M相当于顶层命名空间，包含了以下几个模块。
   - Tampermonkey内置GM变量，与`GM`冲突，遂改名为[G]。
   - `Http`模块移到[X]并精化，移除不必要的方法。
   - 删除`GM.info`。
+  - 删除`GM.listValue`，拆分成两个函数——[G.listAllKey][listAllKey]和[G.listAllValue][listAllValue]。
 
 + 新增:
   - [X]。
@@ -890,7 +891,7 @@ setValue :: JSON a => String -> a -> IO ()
 
 保存数据。
 
-### deleteValue
+### deleteValue ###
 
 ```haskell
 deleteValue :: String -> IO ()
@@ -900,15 +901,25 @@ deleteValue :: String -> IO ()
 
 删除数据。
 
-### listValue
+### listAllKey ###
 
 ```haskell
-listValue :: JSON a => () -> IO [a]
+listAllKey :: () -> IO [String]
 ```
 
 + `GM_listValues`
 
-列出所有保存过的数据。
+列出已保存所有KEY。
+
+### listALLValue ###
+
+```haskell
+listAllValue :: JSON a => () -> IO [a]
+```
+
++ `GM_listValues`
+
+列出已保存所有值。
 
 ### getResourceText ###
 

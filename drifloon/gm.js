@@ -14,8 +14,14 @@ const setValue = R.curry((key, value) => GM_setValue(key, value));
 // deleteValue :: String -> IO ()
 const deleteValue = key => GM_deleteValue(key);
 
-// listValue :: () -> IO [a]
-const listValue = () => GM_listValues();
+// listAllKey :: () -> IO [String]
+const listAllKey = () => GM_listValues();
+
+// listAllValue :: JSON a => () -> IO [a]
+const listAllValue = R.compose(
+	R.map(getValue),
+	listAllKey
+);
 
 // getResourceText :: String -> IO (Maybe String)
 const getResourceText = name => GM_getResourceText(name);
@@ -87,7 +93,8 @@ module.exports = {
 	getValue,
 	setValue,
 	deleteValue,
-	listValue,
+	listAllKey,
+	listAllValue,
 	addStyle,
 	getResourceText,
 	getResourceUrl,
