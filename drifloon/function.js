@@ -22,7 +22,7 @@ const fmap2 = R.curry((f, a, b) => {
 });
 
 // fmap3 :: (a -> b -> c -> d) -> Maybe a -> Maybe b -> Maybe c -> Maybe d
-const fmap3 = R.curryN((f, a, b, c) => {
+const fmap3 = R.curry((f, a, b, c) => {
 	if (isAnyNil([a, b, c])) {
 		return null;
 	}
