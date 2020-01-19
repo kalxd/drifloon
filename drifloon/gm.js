@@ -39,9 +39,9 @@ const getResourceUrl = name => GM_getResourceURL(name);
 // addStyle :: String -> Stream String
 const addStyle = text => Most.fromPromise(GM_addStyle(text));
 
-// ajax_ :: (Option a -> Option b) -> Option a -> Stream c
-const ajax_ = R.curry((f, option) => {
-	const o = new Observable(ob => {
+// mkRequest :: (Option a -> Option b) -> Option a -> Stream c
+const mkRequest = R.curry((f, option) => {
+	return S.create(ob => {
 		const ok = r => {
 			ob.next(r);
 			ob.complete();
@@ -57,15 +57,28 @@ const ajax_ = R.curry((f, option) => {
 
 		GM_xmlhttpRequest(option_);
 	});
-
-	return Most.from(o);
 });
 
-// ajax :: Option -> Stream a
-const ajax = ajax_(R.identity);
+// takeResponse :: Stream Response -> Stream a
+const takeResponse = input$ => input$.map(R.prop("response"));
+
+// ajax_ :: Option -> Stream Response
+const ajax_ = mkRequest(R.identity);
+
+// ajax :: Option -> String
+const ajax = R.compose(
+	takeResponse,
+	ajax_
+);
+
+// json_ :: Option -> Stream Response
+const json_ = mkRequest(R.assoc("responseType", "json"));
 
 // json :: JSON a => Option -> Stream a
-const json = ajax_(R.assoc("responseType", "json"));
+const json = R.compose(
+	takeResponse,
+	json_
+);
 
 // setClipboard :: String -> String -> IO ()
 const setClipboard = R.curry((data, type) => GM_setClipboard(data, type));
@@ -115,7 +128,9 @@ module.exports = {
 	getResourceUrl,
 
 	ajax,
+	ajax_,
 	json,
+	json_,
 
 	setClipboard,
 	setClipboardPlain,

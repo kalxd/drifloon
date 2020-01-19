@@ -42,6 +42,7 @@ M相当于顶层命名空间，包含了以下几个模块。
   - 删除`GM.info`。
   - 删除`GM.listValue`，拆分成两个函数——[G.listAllKey][listAllKey]和[G.listAllValue][listAllValue]。
   - [G.notify][notify]返回流。
+  - 旧`G.ajax`对应[G.ajax_][ajax_]；旧`G.json`对应[G.json_][json_]。[G.ajax][ajax]和[G.json][json]都返回响应体内容。
 
 + 新增:
   - [X]。
@@ -954,13 +955,35 @@ getResourceUrl :: String -> IO (Maybe String)
 
 获取资源的blob地址。
 
-### ajax ###
+### ajax_ ###
 
 ```haskell
-ajax :: Option -> Stream a
+ajax_ :: Option -> Stream Response
 ```
 
 请求网络资源。
+
+* `GM_xmlhttpRequest`
+
+### ajax ###
+
+```haskell
+ajax :: Option -> Stream String
+```
+
+请求网络资源，返回响应体。
+
+* `GM_xmlhttpRequest`
+
+### json_ ###
+
+```haskell
+json_ :: Option -> Response
+```
+
+请求JSON格式网络资源。
+
+* `GM_xmlhttpRequest`
 
 ### json ###
 
@@ -968,8 +991,9 @@ ajax :: Option -> Stream a
 json :: JSON a => Option -> Stream a
 ```
 
-请求网络资源，并解析成json。
+* `GM_xmlhttpRequest`
 
+请求JSON格式网络资源，返回响应体。请求正确，会得到一个json对象。
 
 ### setClipboard ###
 
