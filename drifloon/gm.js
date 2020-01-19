@@ -1,6 +1,5 @@
 const R = require("ramda");
 const Most = require("most");
-const Observable = require("zen-observable");
 const S = require("./stream");
 
 // getValueOr :: JSON a => a -> String -> IO a
