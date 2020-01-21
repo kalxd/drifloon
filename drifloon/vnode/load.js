@@ -58,10 +58,21 @@ const bind = R.curry((f, state) => {
 	}
 });
 
+// or :: a -> LoadState a -> a
+const or = R.curry((def, state) => {
+	if (isFinish(state)) {
+		return state.ctx;
+	}
+	else {
+		return def;
+	}
+});
+
 module.exports = {
 	empty,
 	fmap,
 	pure,
 	ap,
-	bind
+	bind,
+	or
 };
