@@ -12,7 +12,14 @@ const guard = R.curry((isShow, f) => {
 });
 
 // only :: Bool -> View -> View
-const only = R.curry((isShow, view) => guard(isShow, R.always(view)));
+const only = R.curry((isShow, view) => {
+	if (isShow) {
+		return view;
+	}
+	else {
+		return null;
+	}
+});
 
 // select :: String -> Record -> String
 const select = R.curry((baseKlass, option) => {
