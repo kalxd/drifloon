@@ -1,5 +1,5 @@
 ---
-title: drifloon（v0.5.5）使用手册
+title: drifloon（v0.6.0）使用手册
 author: 荀徒之
 documentclass: morelull
 numbersections: true
@@ -39,7 +39,7 @@ M相当于顶层命名空间，包含了以下几个模块。
 
 + 不兼容改动:
   - Tampermonkey内置GM变量，与`GM`冲突，遂改名为[GX]。
-  - `Http`模块移到[X]并精化，移除不必要的方法。
+  - `Http`模块移到[X]并简化，移除不必要的方法。
   - 删除`GM.info`。
   - 删除`GM.listValue`，拆分成两个函数——[G.listAllKey][listAllKey]和[G.listAllValue][listAllValue]。
   - [G.notify][notify]返回流。
@@ -49,6 +49,7 @@ M相当于顶层命名空间，包含了以下几个模块。
   - [X]。
   - [Http.compactQuery][compactQuery]。
   - [G.clearAllValue][clearAllValue]。
+  - [Load]。
 
 # 命名规范 #
 
