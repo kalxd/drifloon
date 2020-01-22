@@ -31,18 +31,18 @@ M相当于顶层命名空间，包含了以下几个模块。
   + [V]，虚拟DOM相关。
   + [S]，流相关函数，包括错误处理。
   + [State]，状态管理。
-  + [G], 暴力猴API再封装。
+  + [GX], 暴力猴API再封装。
   + [X]，“其它”模块，无法分类的模块都归于此。
 
 # 更新日志 #
 
 + 不兼容改动:
-  - Tampermonkey内置GM变量，与`GM`冲突，遂改名为[G]。
+  - Tampermonkey内置GM变量，与`GM`冲突，遂改名为[GX]。
   - `Http`模块移到[X]并精化，移除不必要的方法。
   - 删除`GM.info`。
   - 删除`GM.listValue`，拆分成两个函数——[G.listAllKey][listAllKey]和[G.listAllValue][listAllValue]。
   - [G.notify][notify]返回流。
-  - 旧`G.ajax`对应[G.ajax_][ajax_]；旧`G.json`对应[G.json_][json_]。[G.ajax][ajax]和[G.json][json]都返回响应体内容。
+  - 旧`GM.ajax`对应[G.ajax_][ajax_]；旧`GM.json`对应[G.json_][json_]。[G.ajax][ajax]和[G.json][json]都返回响应体内容。
 
 + 新增:
   - [X]。
@@ -111,7 +111,7 @@ isJust :: Maybe a -> Bool
 ```javascript
 F.isJust(0); // true
 F.isJust(1); // true
-F.isJUst({}); // true
+F.isJust({}); // true
 F.isJust(null); // false
 ```
 
@@ -818,7 +818,7 @@ state.get(); // 3
 const modify = f => put(f(get()));
 ```
 
-# X #
+## X ##
 
 “其它”分类。
 
@@ -855,7 +855,7 @@ json :: Url -> FetchOption -> Stream JSON
 json_ :: Url -> Stream JSON
 ```
 
-## G ##
+## GX ##
 
 封装了[Tampermonkey的API](https://www.tampermonkey.net/documentation.php?version=4.10.6105&ext=fire)。
 

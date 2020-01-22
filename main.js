@@ -3,7 +3,7 @@ const Most = require("most");
 const DOM = require("@cycle/dom");
 
 const F = require("./drifloon/function");
-const G = require("./drifloon/gm");
+const GX = require("./drifloon/gm");
 const Z = require("./drifloon/zoo");
 const S = require("./drifloon/stream");
 const V = require("./drifloon/vnode");
@@ -20,7 +20,7 @@ const M = {
 	Z,
 	V,
 	F,
-	G,
+	GX,
 	S,
 	State,
 	X,
