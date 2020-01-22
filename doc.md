@@ -31,6 +31,7 @@ M相当于顶层命名空间，包含了以下几个模块。
   + [V]，虚拟DOM相关。
   + [S]，流相关函数，包括错误处理。
   + [State]，状态管理。
+  + [Load]，页面状态。
   + [GX], 暴力猴API再封装。
   + [X]，“其它”模块，无法分类的模块都归于此。
 
@@ -854,6 +855,54 @@ send_ :: Url -> Stream a
 json :: Url -> FetchOption -> Stream JSON
 json_ :: Url -> Stream JSON
 ```
+
+## Load ##
+
+页面状态，包含“请求中”与“请求完成”两种状态，用haskell表示如下：
+
+```haskell
+data LoadState a = Loading | Finish a
+```
+
+### empty ###
+
+```haskell
+empty :: LoadState a
+empty = Loading
+```
+
+### fmap ###
+
+```haskell
+fmap :: (a -> b) -> LoadState a -> LoadState b
+```
+
+### pure ###
+
+```haskell
+pure :: a -> LoadState a
+pure = Finish
+```
+
+### ap ###
+
+```haskell
+ap :: LoadState (a -> b) -> LoadState a -> LoadState b
+```
+
+### bind ###
+
+```haskell
+bind :: (a -> LoadState b) -> LoadState a -> LoadState b
+```
+
+### or ###
+
+```haskell
+or :: a -> LoadState a -> a
+```
+
+同`R.defaultTo`。
 
 ## GX ##
 
