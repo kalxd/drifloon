@@ -964,7 +964,7 @@ listAllKey :: () -> IO [String]
 
 列出已保存所有KEY。
 
-### listALLValue ###
+### listAllValue ###
 
 ```haskell
 listAllValue :: JSON a => () -> IO [a]
