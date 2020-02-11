@@ -205,7 +205,7 @@ value();
 ### guard ###
 
 ```haskell
-guard :: Bool -> (() -> View) -> View
+guard :: Bool -> (() -> View) -> Maybe View
 ```
 
 `guard`第一个参数表示是否显示，第二个参数是渲染函数，之所以要求是个函数，在于js没有惰性计算，直接接受`View`可能导致意外。如果`View`十分确定，可以使用[only]。
@@ -221,7 +221,7 @@ render(false); // null
 ### only ###
 
 ```haskell
-only :: Bool -> View -> View
+only :: Bool -> View -> Maybe View
 ```
 
 [guard]特殊版。

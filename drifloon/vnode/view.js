@@ -1,7 +1,6 @@
-/** @cycle/dom一些函数 */
 const R = require("ramda");
 
-// guard :: Bool -> (() -> View) -> View
+// guard :: Bool -> (() -> View) -> Maybe View
 const guard = R.curry((isShow, f) => {
 	if (isShow) {
 		return f();
@@ -11,7 +10,7 @@ const guard = R.curry((isShow, f) => {
 	}
 });
 
-// only :: Bool -> View -> View
+// only :: Bool -> View -> Maybe View
 const only = R.curry((isShow, view) => {
 	if (isShow) {
 		return view;
