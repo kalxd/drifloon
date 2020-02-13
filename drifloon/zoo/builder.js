@@ -31,9 +31,25 @@ const blankAtBodyBegin = () => blankAtBegin(document.body);
 // blankAtBodyEnd :: () -> IO Element
 const blankAtBodyEnd = () => blankAtEnd(document.body);
 
+// whichPos :: Element -> IO Int
+const whichPos = node => {
+	let index = 0;
+	const parent = node.parentNode;
+	for (const el of parent.children) {
+		if (el === node) {
+			return index;
+		}
+		else {
+			++index;
+		}
+	}
+	return 0;
+};
+
 module.exports = {
 	blankAtBegin,
 	blankAtEnd,
 	blankAtBodyBegin,
-	blankAtBodyEnd
+	blankAtBodyEnd,
+	whichPos
 };

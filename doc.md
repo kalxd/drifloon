@@ -1,5 +1,5 @@
 ---
-title: drifloon（v0.6.0）使用手册
+title: drifloon（v0.6.1）使用手册
 author: 荀徒之
 documentclass: morelull
 numbersections: true
@@ -37,19 +37,8 @@ M相当于顶层命名空间，包含了以下几个模块。
 
 # 更新日志 #
 
-+ 不兼容改动:
-  - Tampermonkey内置GM变量，与`GM`冲突，遂改名为[GX]。
-  - `Http`模块移到[X]并简化，移除不必要的方法。
-  - 删除`GM.info`。
-  - 删除`GM.listValue`，拆分成两个函数——[G.listAllKey][listAllKey]和[G.listAllValue][listAllValue]。
-  - [G.notify][notify]返回流。
-  - 旧`GM.ajax`对应[G.ajax_][ajax_]；旧`GM.json`对应[G.json_][json_]。[G.ajax][ajax]和[G.json][json]都返回响应体内容。
-
 + 新增:
-  - [X]。
-  - [Http.compactQuery][compactQuery]。
-  - [G.clearAllValue][clearAllValue]。
-  - [Load]。
+  - [Z.whichPos][whichPos]。
 
 # 命名规范 #
 
@@ -593,6 +582,14 @@ blankAtBodyEnd :: () -> IO Element
 ```
 
 `body`最后一个位置创建空`div`。
+
+### whichPos ###
+
+```haskell
+whichPos :: Element -> IO Int
+```
+
+找出该元素的位置，排在哪一位。HTML可能不提供当前元素所在位置，此时可以使该方法找出位置。
 
 ## S ##
 
