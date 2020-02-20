@@ -38,7 +38,7 @@ M相当于顶层命名空间，包含了以下几个模块。
 # 更新日志 #
 
 + 新增:
-  - [Z.whichPos][whichPos]。
+  - [Z.nodeIndex][nodeIndex]。
 
 # 命名规范 #
 
@@ -583,13 +583,27 @@ blankAtBodyEnd :: () -> IO Element
 
 `body`最后一个位置创建空`div`。
 
-### whichPos ###
+### nodeIndex ###
 
 ```haskell
-whichPos :: Element -> IO Int
+nodeIndex :: Element -> IO (Maybe Int)
 ```
 
-找出该元素的位置，排在哪一位。HTML可能不提供当前元素所在位置，此时可以使该方法找出位置。
+找出该元素的位置。
+
+```html
+<ul>
+	<li>1</li>
+	<li>2</li>
+	<li>3</li>
+</ul>
+```
+
+```javascript
+Z.nodeIndex(ul.firstChild) // 0
+Z.nodeIndex(ul.lastChild) // 2
+Z.nodeIndex(document.creatElement("button")) // null
+```
 
 ## S ##
 

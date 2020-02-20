@@ -1,5 +1,6 @@
 /** 创建新元素 */
 const R = require("ramda");
+const { fmap }  = require("../function");
 
 // mkElement :: (Element -> IO ()) -> IO Element
 const mkElement = f => {
@@ -31,19 +32,22 @@ const blankAtBodyBegin = () => blankAtBegin(document.body);
 // blankAtBodyEnd :: () -> IO Element
 const blankAtBodyEnd = () => blankAtEnd(document.body);
 
-// whichPos :: Element -> IO Int
-const whichPos = node => {
-	let index = 0;
+// nodeIndex :: Element -> IO (Maybe Int)
+const nodeIndex = node => {
 	const parent = node.parentNode;
-	for (const el of parent.children) {
-		if (el === node) {
-			return index;
+
+	return fmap(parent => {
+		let index = 0;
+		for (const el of parent.children) {
+			if (el === node) {
+				return index;
+			}
+			else {
+				++index;
+			}
 		}
-		else {
-			++index;
-		}
-	}
-	return 0;
+		return index;
+	})(parent);
 };
 
 module.exports = {
@@ -51,5 +55,5 @@ module.exports = {
 	blankAtEnd,
 	blankAtBodyBegin,
 	blankAtBodyEnd,
-	whichPos
+	nodeIndex
 };
