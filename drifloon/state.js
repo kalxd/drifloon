@@ -13,7 +13,7 @@ class State {
 			ob.next(initValue);
 		});
 
-		this.stream$ = Most.from(o);
+		this.stream$ = Most.from(o).multicast();
 	}
 
 	put(v) {
