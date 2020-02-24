@@ -38,7 +38,10 @@ M相当于顶层命名空间，包含了以下几个模块。
 # 更新日志 #
 
 + 新增:
-  - [Z.nodeIndex][nodeIndex]。
+  * [Z.nodeIndex][nodeIndex]。
+
++ 修正：
+  * `State.stream$`自动multicast，所有引用`stream$`的地方都是同个流。
 
 # 命名规范 #
 
