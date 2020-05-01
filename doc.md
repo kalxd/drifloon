@@ -3,6 +3,7 @@ title: drifloon（v0.6.1）使用手册
 author: 荀徒之
 documentclass: morelull
 numbersections: true
+indent: true
 ---
 
 # 使用 #
