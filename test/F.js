@@ -98,3 +98,17 @@ testProp(
 		}
 	}
 );
+
+testProp(
+	"isJust",
+	[
+		fc.integer(),
+		fc.object(),
+		fc.string(),
+		fc.array(fc.anything()),
+		fc.constantFrom(undefined, null)
+	],
+	(a, b, c, d, e) => {
+		return F.isJust(a) && F.isJust(b) && F.isJust(c) && F.isJust(d) && !F.isJust(e);
+	}
+);
