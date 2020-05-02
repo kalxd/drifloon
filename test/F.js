@@ -79,3 +79,22 @@ testProp(
 		)(ma, mb, mc, md, me);
 	}
 );
+
+testProp(
+	"traverse",
+	[
+		fc.option(fc.integer()),
+		fc.array(fc.string()).filter(R.complement(R.isEmpty))
+	],
+	(n, xs) => {
+		const f = R.always(n);
+		const ys = F.traverse(f, xs);
+
+		if (R.isNil(n) && R.isNil(ys)) {
+			return true;
+		}
+		else {
+			return R.all(R.equals(n), ys);
+		}
+	}
+);
