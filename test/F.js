@@ -40,3 +40,16 @@ testProp(
 		)(ma, mb);
 	}
 );
+
+testProp(
+	"fmap3 - liftA3",
+	[arbInt(), arbInt(), arbInt()],
+	([a, ma], [b, mb], [c, mc]) => {
+		const f = R.curry((a, b, c) => a + b + c);
+
+		return R.pipe(
+			F.fmap3(f),
+			checkMaybe(f(a, b, c))
+		)(ma, mb, mc);
+	}
+);
