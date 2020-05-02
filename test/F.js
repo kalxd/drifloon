@@ -66,3 +66,16 @@ testProp(
 		)(ma, mb, mc, md);
 	}
 );
+
+testProp(
+	"fmap5 - liftA5",
+	[arbInt(), arbInt(), arbInt(), arbInt(), arbInt()],
+	([a, ma], [b, mb], [c, mc], [d, md], [e, me]) => {
+		const f = R.curry((a, b, c, d, e) => a + b + c + d + e);
+
+		return R.pipe(
+			F.fmap5(f),
+			checkMaybe(f(a, b, c, d, e))
+		)(ma, mb, mc, md, me);
+	}
+);
