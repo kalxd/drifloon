@@ -53,3 +53,16 @@ testProp(
 		)(ma, mb, mc);
 	}
 );
+
+testProp(
+	"fmap4 - liftA4",
+	[arbInt(), arbInt(), arbInt(), arbInt()],
+	([a, ma], [b, mb], [c, mc], [d, md]) => {
+		const f = R.curry((a, b, c, d) => a + b + c + d);
+
+		return R.pipe(
+			F.fmap4(f),
+			checkMaybe(f(a, b, c, d))
+		)(ma, mb, mc, md);
+	}
+);
