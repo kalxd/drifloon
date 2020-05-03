@@ -11,7 +11,7 @@ const v1 = DOM.div("hello")
 const v2 = DOM.div("world");
 
 testProp(
-	"guard",
+	"guard & only",
 	[fc.boolean(), fc.constantFrom(v1, v2)],
 	b => {
 		const v = V.guard(b, R.always(v1));
@@ -27,7 +27,7 @@ testProp(
 
 
 testProp(
-	"select",
+	"select & select_",
 	[
 		fc.object({
 			maxDepth: 0,
