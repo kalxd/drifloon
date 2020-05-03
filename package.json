@@ -4,7 +4,7 @@
     "@cycle/dom": "^22.7.0",
     "@cycle/most-run": "^8.3.0",
     "most": "^1.8.1",
-    "ramda": "^0.26.1",
+    "ramda": "^0.27.0",
     "zen-observable": "^0.8.14"
   },
   "devDependencies": {
