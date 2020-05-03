@@ -142,3 +142,40 @@ testProp(
 		}
 	}
 );
+
+testProp(
+	"makeValue",
+	[fc.string(), fc.array(fc.integer())],
+	(init, xs) => {
+		const f = F.makeValue(init);
+		const g = x => {
+			f(x);
+			return x === f(x);
+		};
+
+		return R.all(g, xs);
+	}
+);
+
+testProp(
+	"genValue",
+	[
+		fc.integer(),
+		fc.array(fc.option(fc.integer()))
+	],
+	(init, xs) => {
+		const f = F.genValue(R.always(init));
+
+		const g = x => {
+			f(x);
+			if (R.isNil(x)) {
+				return f() === init;
+			}
+			else {
+				return f() === x;
+			}
+		};
+
+		return R.all(g, xs);
+	}
+);
