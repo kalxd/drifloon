@@ -112,3 +112,18 @@ testProp(
 		return F.isJust(a) && F.isJust(b) && F.isJust(c) && F.isJust(d) && !F.isJust(e);
 	}
 );
+
+testProp(
+	"maybe",
+	[fc.option(fc.integer()), fc.integer()],
+	(ma, b) => {
+		const c = F.maybe(b, R.identity, ma);
+
+		if (R.isNil(ma)) {
+			return c === b;
+		}
+		else {
+			return c === ma;
+		}
+	}
+);
