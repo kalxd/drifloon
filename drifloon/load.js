@@ -9,22 +9,25 @@
  */
 const R = require("ramda");
 
+// finishLens :: Lens (LoadState a) Bool
+const finishLens = R.lensProp("finish");
+
+// ctxLens :: Lens (LoadState a) a
+const ctxLens = R.lensProp("ctx");
+
+// isFinish :: LoadState a -> Bool
+const isFinish = R.view(finishLens);
+
 // empty :: LoadState a
 const empty = Object.freeze({
 	finish: false,
 	ctx: null
 });
 
-// isFinish :: LoadState a -> Bool
-const isFinish = R.prop("finish");
-
 // fmap :: (a -> b) -> LoadState a -> LoadState b
 const fmap = R.curry((f, state) => {
 	if (isFinish(state)) {
-		const trans = {
-			ctx: f
-		};
-		return R.evolve(trans, state);
+		return R.over(ctxLens, f, state);
 	}
 	else {
 		return empty;
