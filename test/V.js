@@ -14,7 +14,7 @@ testProp(
 	"guard & only",
 	[fc.boolean(), fc.constantFrom(v1, v2)],
 	b => {
-		const v = V.guard(b, R.always(v1));
+		const v = V.guard(R.always(v1), b);
 
 		if (b) {
 			return v === v1;

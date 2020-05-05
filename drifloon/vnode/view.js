@@ -1,7 +1,7 @@
 const R = require("ramda");
 
-// guard :: Bool -> (() -> View) -> Maybe View
-const guard = R.curry((isShow, f) => {
+// guard :: (() -> View ) -> Bool -> Maybe View
+const guard = R.curry((f, isShow) => {
 	if (isShow) {
 		return f();
 	}
@@ -10,8 +10,8 @@ const guard = R.curry((isShow, f) => {
 	}
 });
 
-// only :: Bool -> View -> Maybe View
-const only = R.curry((isShow, view) => {
+// only :: View -> Bool -> Maybe View
+const only = R.curry((view, isShow) => {
 	if (isShow) {
 		return view;
 	}

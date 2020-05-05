@@ -40,7 +40,9 @@ M相当于顶层命名空间，包含了以下几个模块。
 升级大部分第三库，依然保持向下兼容。
 
 不兼容改动：
-- 删除`X`模块，Http操作直接调用内置类型。
+
+* 删除`X`模块，Http操作直接调用内置类型。
+* [guard]、[only]调整参数顺序。
 
 # 命名规范 #
 
@@ -196,10 +198,10 @@ value();
 ### guard ###
 
 ```haskell
-guard :: Bool -> (() -> View) -> Maybe View
+guard :: (() -> Maybe View) -> Bool -> Maybe View
 ```
 
-`guard`第一个参数表示是否显示，第二个参数是渲染函数，之所以要求是个函数，在于js没有惰性计算，直接接受`View`可能导致意外。如果`View`十分确定，可以使用[only]。
+`guard`第一个参数是渲染函数，第二个参数表示是否显示，之所以要求是个函数，在于js没有惰性计算，直接接受`View`可能导致意外。如果`View`十分确定，可以使用[only]。
 
 ```javascript
 // render :: Bool -> View
@@ -212,7 +214,7 @@ render(false); // null
 ### only ###
 
 ```haskell
-only :: Bool -> View -> Maybe View
+only :: Maybe View -> Bool -> Maybe View
 ```
 
 [guard]特殊版。
