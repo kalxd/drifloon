@@ -34,11 +34,13 @@ M相当于顶层命名空间，包含了以下几个模块。
   + [State]，状态管理。
   + [Load]，页面状态。
   + [GX], 暴力猴API再封装。
-  + [X]，“其它”模块，无法分类的模块都归于此。
 
 # 更新日志 #
 
 升级大部分第三库，依然保持向下兼容。
+
+不兼容改动：
+- 删除`X`模块，Http操作直接调用内置类型。
 
 # 命名规范 #
 
@@ -829,43 +831,6 @@ state.get(); // 3
 
 ```javascript
 const modify = f => put(f(get()));
-```
-
-## X ##
-
-“其它”分类。
-
-### Http ###
-
-同源网络请求。
-
-#### compactQuery ####
-
-```haskell
-compactQuery :: Url -> Maybe Query -> Url
-```
-
-合并url和query。**暂不支持数组。**
-
-```javascript
-const url = "http://my.site";
-
-compactQuery(url, {}); // http://my.site
-compactQuery(url, {a: 1}); // http://my.site?a=1
-```
-
-#### send和send_ ####
-
-```haskell
-send :: Url -> FetchOption -> Stream a
-send_ :: Url -> Stream a
-```
-
-#### json和json_ ####
-
-```haskell
-json :: Url -> FetchOption -> Stream JSON
-json_ :: Url -> Stream JSON
 ```
 
 ## Load ##
