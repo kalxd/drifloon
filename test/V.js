@@ -4,20 +4,21 @@ const DOM = require("@cycle/dom");
 
 const { V } = require("../main");
 
-// v1 :: View
-const v1 = DOM.div("hello")
-
-// v2 :: View
-const v2 = DOM.div("world");
+// genDiv :: () -> View
+const genDiv = () => {
+	return fc.string()
+		.map(s => DOM.div(s))
+	;
+};
 
 testProp(
-	"guard & only",
-	[fc.boolean(), fc.constantFrom(v1, v2)],
-	b => {
-		const v = V.guard(R.always(v1), b);
+	"guard",
+	[fc.boolean(), genDiv()],
+	(b, div) => {
+		const v = V.guard(R.always(div), b);
 
 		if (b) {
-			return v === v1;
+			return v === div;
 		}
 		else {
 			return R.isNil(v);
@@ -25,6 +26,19 @@ testProp(
 	}
 );
 
+testProp(
+	"only",
+	[fc.boolean(), genDiv()],
+	(b, div) => {
+		const v = V.only(div, b);
+		if (b) {
+			return v === div;
+		}
+		else {
+			return R.isNil(v);
+		}
+	}
+);
 
 testProp(
 	"select & select_",

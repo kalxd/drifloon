@@ -205,7 +205,7 @@ guard :: (() -> Maybe View) -> Bool -> Maybe View
 
 ```javascript
 // render :: Bool -> View
-const render = R.flip(V.guard)(_ => DOM.div("hello"));
+const render = V.guard(_ => DOM.div("hello"));
 
 render(true); // DOM.div("hello")
 render(false); // null
