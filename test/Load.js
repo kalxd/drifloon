@@ -3,10 +3,10 @@ const R = require("ramda");
 
 const { Load } = require("../main");
 
-// genEmpty :: () > Arbitray (LoadState Int)
+// genEmpty :: () -> Arbitraty (LoadState Int)
 const genEmpty = () => fc.constant(Load.empty);
 
-// genLoad :: () -> Arbitray (LoadState Int)
+// genLoad :: () -> Arbitraty (LoadState Int)
 const genLoad = () => {
 	return fc.integer()
 		.map(Load.pure)
@@ -23,7 +23,7 @@ testProp(
 );
 
 testProp(
-	"fmap f . g = fmap f . g",
+	"fmap f . g = fmap f . fmap g",
 	[genEmpty(), genLoad()],
 	(s1, s2) => {
 		const h1 = Load.fmap(
