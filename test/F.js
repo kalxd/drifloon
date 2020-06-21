@@ -1,5 +1,6 @@
 const { testProp, fc } = require("ava-fast-check");
 const R = require("ramda");
+const Most = require("most");
 
 const { F } = require("../main");
 
