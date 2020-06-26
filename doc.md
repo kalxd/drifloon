@@ -41,6 +41,10 @@ M相当于顶层命名空间，包含了以下几个模块。
 
 * 删除`S.init`，有了[State]估计该函数用处不大，大不了再写一次，几行代码的事。
 
+新增：
+
+* [runAtEnd]。
+
 # 命名规范 #
 
 在[V]和[Z]模块中出现了同名函数，有的函数名十分相近，此处以[fromClick]做个简要说明：
@@ -1143,6 +1147,23 @@ const app = source => {
 };
 
 M.runAt(node, app);
+```
+
+### runAtEnd ###
+
+```haskell
+runAtEnd :: Application -> IO ()
+```
+
+在body的最后位置，自动创建一块空白div，并将应用挂载上去。以下两种写法等价。
+
+```javascript
+// runAtEnd写法：
+M.runAtEnd(app);
+
+// runAt写法：
+const div = blankAtBodyEnd();
+M.runAt(div, app);
 ```
 
 ## 模态对话框 ##

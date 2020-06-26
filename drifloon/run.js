@@ -4,6 +4,7 @@ const { run, setup } = require("@cycle/most-run");
 const { makeDOMDriver } = require("@cycle/dom");
 
 const { fmap } = require("./function");
+const { blankAtBodyEnd } = require("./zoo/builder");
 
 // takeFirst :: Stream a -> Maybe (Stream a)
 const takeFirst = stream$ => stream$.take(1);
@@ -19,6 +20,12 @@ const runAt = R.curry((node, app) => {
 
 	return run(app, driver);
 });
+
+// runAtEnd :: Application -> IO ();
+const runAtEnd = app => {
+	const mountNode = blankAtBodyEnd();
+	return runAt(mountNode, app);
+};
 
 // runModalAt :: Element -> Application -> IO (() -> IO (), Sinks);
 const runModalAt = R.curry((node, app) => {
@@ -51,6 +58,7 @@ const execModalAt = R.curry((node, app) => {
 
 module.exports = {
 	runAt,
+	runtAtEnd,
 	runModalAt,
 	execModalAt
 };
