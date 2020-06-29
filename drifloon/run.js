@@ -58,7 +58,7 @@ const execModalAt = R.curry((node, app) => {
 
 module.exports = {
 	runAt,
-	runtAtEnd,
+	runAtEnd,
 	runModalAt,
 	execModalAt
 };

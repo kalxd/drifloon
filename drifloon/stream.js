@@ -42,7 +42,6 @@ const throwNilMsg = throwNil(Error);
 module.exports = {
 	create,
 	fromCallback,
-	init,
 
 	throwError,
 	throwMsg,
