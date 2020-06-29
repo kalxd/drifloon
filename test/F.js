@@ -130,16 +130,30 @@ testProp(
 );
 
 testProp(
-	"maybeOr",
+	"maybeElse",
 	[fc.option(fc.integer()), fc.integer(), fc.integer()],
 	(ma, b, c) => {
-		const x = F.maybeOr(b, c, ma);
+		const x = F.maybeElse(b, c, ma);
 
 		if (R.isNil(ma)) {
 			return x === b;
 		}
 		else {
 			return x === c;
+		}
+	}
+);
+
+testProp(
+	"maybeOr",
+	[fc.option(fc.integer()), fc.integer()],
+	(ma, a) => {
+		const v = F.maybeOr(a, ma);
+		if (R.isNil(ma)) {
+			return v === a;
+		}
+		else {
+			return v === ma;
 		}
 	}
 );

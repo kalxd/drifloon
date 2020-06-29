@@ -79,8 +79,8 @@ const maybe = R.curry((b, f, c) => {
 	}
 });
 
-// maybeOr :: b -> b -> Maybe a -> b
-const maybeOr = R.curry((a, b, c) => {
+// maybeElse :: b -> b -> Maybe a -> b
+const maybeElse = R.curry((a, b, c) => {
 	if (R.isNil(c)) {
 		return a;
 	}
@@ -88,6 +88,9 @@ const maybeOr = R.curry((a, b, c) => {
 		return b;
 	}
 });
+
+// maybeOr :: a -> Maybe a -> a
+const maybeOr = R.curry((a, ma) => maybe(a, R.identity, ma));
 
 const makeValue = v => {
 	let innerValue = v;
@@ -134,6 +137,7 @@ module.exports = {
 
 	isJust,
 	maybe,
+	maybeElse,
 	maybeOr,
 
 	makeValue,
