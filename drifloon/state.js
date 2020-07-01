@@ -22,6 +22,8 @@ class State {
 		if (this.ob) {
 			this.ob.next(v);
 		}
+
+		return v;
 	}
 
 	get() {
@@ -30,7 +32,7 @@ class State {
 
 	modify(f) {
 		const v = this.get();
-		this.put(f(v));
+		return this.put(f(v));
 	}
 }
 
