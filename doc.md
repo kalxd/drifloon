@@ -1,5 +1,5 @@
 ---
-title: drifloon（v0.7.0）使用手册
+title: drifloon（v0.8.0）使用手册
 author: 荀徒之
 documentclass: morelull
 numbersections: true
@@ -130,21 +130,34 @@ f("hello world"); // "HELLO WORLD"
 f(null); // "failed"
 ```
 
-### maybeOr ###
+### maybeElse ###
 
 ```haskell
-maybeOr :: b -> b -> Maybe a -> b
+maybeElse :: b -> b -> Maybe a -> b
 ```
 
 形似三元表达式，前者作用于`Maybe a`，后者作用于`Bool`。
 
 ```javascript
 // f :: Maybe a -> String
-const f = maybeOr("failed", "OK");
+const f = maybeElse("failed", "OK");
 
 f(1); // "OK"
 f("hello"); // "OK"
 f(null); // "failed"
+```
+
+### maybeOr ###
+
+```haskell
+maybeOr :: a -> Maybe a -> a
+```
+
+类似于rust的`Option.unwrap`。
+
+```javascript
+maybeOr(1, 0); // 1
+maybeOr(1, null); // 1
 ```
 
 ### makeValue
