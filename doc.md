@@ -678,25 +678,6 @@ const input$ = S.fromCallback(f => {
 // 4
 ```
 
-### init ###
-
-```haskell
-init :: a -> Stream (a -> a) -> Stream a
-```
-
-初始函数，常用于多处状态更新。
-
-```javascript
-const main = source => {
-	// update$ :: Stream (a -> a)
-	const update$ = intent(source);
-
-	// state$ :: Stream a
-	const state$ = update$.thru(S.init(1));
-	// ...
-};
-```
-
 ### throwError
 
 ```haskell
