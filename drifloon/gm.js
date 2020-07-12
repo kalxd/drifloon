@@ -1,6 +1,6 @@
 const R = require("ramda");
-const Most = require("most");
 const S = require("./stream");
+const { fmap } = require("./function");
 
 // getValueOr :: JSON a => a -> String -> IO a
 const getValueOr = R.curry((def, key) => GM_getValue(key, def));
@@ -35,8 +35,8 @@ const getResourceText = name => GM_getResourceText(name);
 // getResourceUrl :: String -> IO (Maybe String)
 const getResourceUrl = name => GM_getResourceURL(name);
 
-// addStyle :: String -> Stream String
-const addStyle = text => Most.fromPromise(GM_addStyle(text));
+// addStyle :: String -> IO Element
+const addStyle = text => GM_addStyle(text);
 
 // mkRequest :: (Option a -> Option b) -> Option a -> Stream c
 const mkRequest = R.curry((f, option) => {
@@ -106,9 +106,9 @@ const notifyText = R.curry((title, text) => GM_notification(text, title));
 /** end */
 
 /** 在GM基础上，扩展出更强的功能 */
-// injectCSS :: String -> Stream String
+// injectCSS :: String -> IO (Maybe Element)
 const injectCSS = R.compose(
-	addStyle,
+	fmap(addStyle),
 	getResourceText
 );
 /** end */

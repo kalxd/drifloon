@@ -1,5 +1,5 @@
 ---
-title: drifloon（v0.8.0）使用手册
+title: drifloon（v0.8.1）使用手册
 author: 荀徒之
 documentclass: morelull
 numbersections: true
@@ -37,15 +37,7 @@ M相当于顶层命名空间，包含了以下几个模块。
 
 # 更新日志 #
 
-不兼容改动：
-
-* 删除`S.init`，有了[State]估计该函数用处不大，大不了再写一次，几行代码的事。
-* 原`maybeOr`更名为[MaybeElse]。
-
-新增：
-
-* [runAtEnd]。
-* [maybeOr]（与旧版`maybeOr`意义不同）。
+* Tampermonkey的`GM_addStyle`返回的是`<style>`，不是一个Promise。
 
 # 命名规范 #
 
@@ -1088,17 +1080,17 @@ notifyText :: Title -> Content -> IO ()
 ### addStyle ###
 
 ```haskell
-addStyle :: String -> Stream String
+addStyle :: String -> IO (Maybe Element)
 ```
 
 + `GM_addStyle`
 
-注入样式，需要注意它返回的是一条流。
+注入样式，注入成功后返回`<style>`元素。
 
 ### injectCSS
 
 ```haskell
-injectCSS :: String -> Stream String
+injectCSS :: String -> IO (Maybe Element)
 ```
 
 + `GM_getResourceText`
