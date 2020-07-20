@@ -44,3 +44,50 @@ testProp(
 		return R.equals(h1(s), h2(s));
 	}
 );
+
+testProp(
+	"Monad(Left identity): return a >>= f = f a",
+	[fc.integer()],
+	n => {
+		const f = Load.pure;
+
+		const a = R.pipe(
+			Load.pure,
+			Load.bind(f)
+		)(n);
+
+		const b = f(n);
+
+		R.equals(a, b);
+	}
+);
+
+testProp(
+	"Monad(Right identity): m >>= return = m",
+	[gen()],
+	s => {
+		const ss = Load.bind(Load.pure, s);
+		return R.equals(s, ss);
+	}
+);
+
+testProp(
+	"Monad(associativity): (m >>= f) >>= g = m >>= (\\x -> f x >>= g)",
+	[gen()],
+	s => {
+		const f = Load.pure;
+		const g = Load.pure;
+
+		const a = R.pipe(
+			Load.bind(f),
+			Load.bind(g)
+		)(s);
+
+		const b = Load.bind(
+			x => Load.bind(g, f(x)),
+			s
+		);
+
+		return R.equals(a, b);
+	}
+);
