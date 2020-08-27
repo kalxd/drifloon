@@ -1,5 +1,5 @@
 ---
-title: drifloon（v0.8.1）使用手册
+title: drifloon（v0.9.0）使用手册
 author: 荀徒之
 documentclass: morelull
 numbersections: true
@@ -26,6 +26,7 @@ M相当于顶层命名空间，包含了以下几个模块。
   + R，[ramda][ramda]。
   + Most, [most.js][mostjs]。
   + DOM, [cycle dom][cycle/dom]。
+  * L, [partial.lenses][partial.lenses]。
 * 内部模块
   + [F]，辅助函数。
   + [Z]，页面元素相关。
@@ -37,11 +38,12 @@ M相当于顶层命名空间，包含了以下几个模块。
 
 # 更新日志 #
 
-* Tampermonkey的`GM_addStyle`返回的是`<style>`，不是一个Promise。
+* 添加第三方模块[partial.lenses][partial.lenses]。
+* 仿racket简易版的[struct](https://docs.racket-lang.org/reference/define-struct.html)，见[struct]。
 
 # 命名规范 #
 
-在[V]和[Z]模块中出现了同名函数，有的函数名十分相近，此处以[fromClick]做个简要说明：
+[V]、[Z]模块存在同名函数，有的函数名十分相近，此处以[fromClick]做个简要说明：
 
 - [fromClick]，后面不带任何符号，仅仅表示普通的点击事件，原接口返回什么此处也返回什么。
 - [fromClick_]，带下划线版本，表示抖动函数，多次点击仅发送最后一次点击事件。
@@ -872,6 +874,61 @@ or :: a -> LoadState a -> a
 
 同`R.defaultTo`。
 
+## struct ##
+
+提供类似于racket struct功能的函数，定义一个结构体，能够自动生成对应的lenses。
+
+`struct`目前仅有一个参数，参数类型为`[String]`，里面是每个字段的名字。
+调用之后，返回整个模块，包含名为`gen`的构造函数，及每个字段对应的lenses，命名规则为`${字段名}Lens`。
+
+```javascript
+// 定义User。
+// 同时生成userLens和ageLens。
+const User = M.struct([
+	"name",
+	"age"
+]);
+
+// 定义Contact。
+// 同是生成idLens和usersLens。
+const Contact = M.struct([
+	"id",
+	"users"
+]);
+
+// 批量生成用户 :: Int -> [User]
+const mkUser = R.times(i => User.gen(`name ${i}`, i));
+
+// contact :: Contact
+const contact = Contact.gen(1, mkUser(3));
+
+// 查看第一个用户信息。
+const firstUserLens = L.compose(
+	Contact.usersLens,
+	L.index(0)
+);
+L.get(firstUserLens, contact); // Object { name: "name 0", age: 0 }
+
+// 提到所有用户名字。
+const allUserNameLens = L.compose(
+	Contact.usersLens,
+	L.elems,
+	User.nameLens
+);
+L.collect(allUserNameLens, contact); // Array(3) [ "name 0", "name 1", "name 2" ]
+```
+
+`struct`直白地定义出新结构体，与以往注释方式相比，不仅缩短代码，而且“类型”信息体现在代码上。
+若需要指明每条字段的类型，我们依然可以像普通函数那样声明：
+```javascript
+const User = M.struct([
+    // String
+    "name",
+    // Int
+    "age"
+]);
+```
+
 ## GX ##
 
 封装了[Tampermonkey的API](https://www.tampermonkey.net/documentation.php?version=4.10.6105&ext=fire)。
@@ -1235,3 +1292,4 @@ M.execModalAt(node, app).drain();
 [cycle/dom]: https://cycle.js.org/api/dom.html
 [cycle/isolate]: https://cycle.js.org/api/isolate.html
 [cycle/state]: https://cycle.js.org/api/state.html
+[partial.lenses]: https://github.com/calmm-js/partial.lenses

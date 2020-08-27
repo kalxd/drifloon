@@ -1,6 +1,7 @@
 const R = require("ramda");
 const Most = require("most");
 const DOM = require("@cycle/dom");
+const L = require("partial.lenses")
 
 const F = require("./drifloon/function");
 const GX = require("./drifloon/gm");
@@ -9,6 +10,7 @@ const S = require("./drifloon/stream");
 const V = require("./drifloon/vnode");
 const State = require("./drifloon/state");
 const Load = require("./drifloon/load");
+const struct = require("./drifloon/struct");
 
 const Run = require("./drifloon/run");
 
@@ -16,6 +18,7 @@ const M = {
 	R,
 	Most,
 	DOM,
+	L,
 
 	Z,
 	V,
@@ -24,6 +27,8 @@ const M = {
 	S,
 	State,
 	Load,
+
+	struct,
 
 	...Run
 };
