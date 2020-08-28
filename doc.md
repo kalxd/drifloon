@@ -1,5 +1,5 @@
 ---
-title: drifloon（v0.9.0）使用手册
+title: drifloon（v0.9.1）使用手册
 author: 荀徒之
 documentclass: morelull
 numbersections: true
@@ -38,8 +38,7 @@ M相当于顶层命名空间，包含了以下几个模块。
 
 # 更新日志 #
 
-* 添加第三方模块[partial.lenses][partial.lenses]。
-* 仿racket简易版的[struct](https://docs.racket-lang.org/reference/define-struct.html)，见[struct]。
+* [struct]添加[values]方法。
 
 # 命名规范 #
 
@@ -927,6 +926,27 @@ const User = M.struct([
     // Int
     "age"
 ]);
+```
+
+### gen ###
+
+构造函数。
+
+```javascript
+const Id = M.struct(["id"]);
+
+const id = Id.gen(1); // { id: 1 }
+```
+
+### values ###
+
+获得所有的值。
+
+```javascript
+const User = M.struct(["name", "age"]);
+
+const user = User.gen("user", 1);
+User.values(user); // ["user", 1];
 ```
 
 ## GX ##
