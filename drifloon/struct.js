@@ -24,6 +24,9 @@ const struct = fields => {
 		return o;
 	});
 
+	// 全部字段。
+	m.values = R.props(fields);
+
 	// 生成每个字段的lens。
 	for (const field of fields) {
 		m[`${field}Lens`] = L.prop(field);
