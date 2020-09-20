@@ -85,8 +85,25 @@ const setClipboard = R.curry((data, type) => GM_setClipboard(data, type));
 // setClipboardPlain :: String -> IO ()
 const setClipboardPlain = R.flip(setClipboard)("text/plain");
 
-// download :: Option -> IO ()
-const download = option => GM_download(option);
+// download :: Option -> Stream a
+const download = option => {
+	return S.create(ob => {
+		const ok = r => {
+			ob.next(r);
+			ob.complete();
+		};
+		const err = e => {
+			ob.error(e);
+		};
+
+		const option_ = R.pipe(
+			R.assoc("onload", ok),
+			R.assoc("onerror", err)
+		)(option);
+
+		GM_download(option_);
+	});
+};
 
 // downloadUrl :: String -> Url -> IO ()
 const downloadUrl = R.curry((name, url) => GM_download(url, name));
