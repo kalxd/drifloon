@@ -1,12 +1,12 @@
 {
-  "version": "0.9.1",
+  "version": "0.10.0",
   "dependencies": {
-    "@cycle/dom": "^22.7.0",
-    "@cycle/most-run": "^8.3.0",
+    "@cycle/dom": "22.8.0",
+    "@cycle/most-run": "8.4.0",
     "most": "^1.8.1",
-    "partial.lenses": "^14.17.0",
-    "ramda": "^0.27.0",
-    "zen-observable": "^0.8.14"
+    "partial.lenses": "14.17.0",
+    "ramda": "0.27.1",
+    "zen-observable": "0.8.15"
   },
   "devDependencies": {
     "ava": "^3.8.1",
