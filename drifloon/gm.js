@@ -1,6 +1,6 @@
 const R = require("ramda");
 const S = require("./stream");
-const { fmap } = require("./function");
+const { fmap, isJust } = require("./function");
 
 // getValueOr :: JSON a => a -> String -> IO a
 const getValueOr = R.curry((def, key) => GM_getValue(key, def));
@@ -85,9 +85,9 @@ const setClipboard = R.curry((data, type) => GM_setClipboard(data, type));
 // setClipboardPlain :: String -> IO ()
 const setClipboardPlain = R.flip(setClipboard)("text/plain");
 
-// download :: Option -> Stream a
+// download :: Option -> Stream ()
 const download = option => {
-	return S.create(ob => {
+	const download$ = S.create(ob => {
 		const ok = r => {
 			ob.next(r);
 			ob.complete();
@@ -103,6 +103,23 @@ const download = option => {
 
 		GM_download(option_);
 	});
+
+	const filter$ = download$
+		.multicast()
+		.recoverWith(e => {
+			if (e.error === "Download canceled by the user") {
+				return Most.of(null);
+			}
+			else {
+				return Most.throwError(e);
+			}
+		})
+	;
+
+	// 用户点击取消，直接订阅掉该条流。
+	filter$.filter(R.isNil).drain();
+
+	return filter$.filter(isJust);
 };
 
 // downloadUrl :: String -> Url -> IO ()

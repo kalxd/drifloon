@@ -1,5 +1,5 @@
 ---
-title: drifloon（v0.9.1）使用手册
+title: drifloon（v0.10.0）使用手册
 author: 荀徒之
 documentclass: morelull
 numbersections: true
@@ -38,7 +38,8 @@ M相当于顶层命名空间，包含了以下几个模块。
 
 # 更新日志 #
 
-* [struct]添加[values]方法。
+* 全面升级依赖版本。
+  * [GX.download][download]返回一条流，并自动处理用户取消下载。
 
 # 命名规范 #
 
@@ -146,10 +147,10 @@ f(null); // "failed"
 maybeOr :: a -> Maybe a -> a
 ```
 
-类似于rust的`Option.unwrap`。
+类似于rust的`Option.unwrap_or`。
 
 ```javascript
-maybeOr(1, 0); // 1
+maybeOr(1, 0); // 0
 maybeOr(1, null); // 1
 ```
 
@@ -1112,12 +1113,12 @@ setClipboardPlain :: String -> IO ()
 ### download ###
 
 ```haskell
-download :: Option -> IO ()
+download :: Option -> Stream ()
 ```
 
 + GM_download
 
-下载文件。
+下载文件。如果用户取消下载，该接口会自动订阅，默认不作任何处理。
 
 ### downloadUrl ###
 
