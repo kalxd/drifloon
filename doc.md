@@ -1114,6 +1114,12 @@ setClipboardPlain :: String -> IO ()
 
 ```haskell
 download :: Option -> Stream ()
+
+type Option = { url :: String
+              , name :: String
+              , saveAs :: Maybe Bool
+              , headers :: Maybe Object
+              }
 ```
 
 + GM_download
@@ -1123,12 +1129,12 @@ download :: Option -> Stream ()
 ### downloadUrl ###
 
 ```haskell
-downloadUrl :: String -> String -> IO ()
+downloadUrl :: String -> String -> IO (() -> IO)
 ```
 
 + GM_download
 
-下载文件。
+下载文件。返回一个取消函数。
 
 ### notify ###
 

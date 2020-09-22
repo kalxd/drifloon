@@ -122,7 +122,7 @@ const download = option => {
 	return filter$.filter(isJust);
 };
 
-// downloadUrl :: String -> Url -> IO ()
+// downloadUrl :: String -> Url -> IO (() -> IO ())
 const downloadUrl = R.curry((name, url) => GM_download(url, name));
 
 // notify :: Option -> Stream Bool
