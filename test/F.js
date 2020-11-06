@@ -25,6 +25,11 @@ const arbInt = () => {
 	;
 };
 
+// mkArbIntN :: Int -> [() -> Arbitraty (Int, Maybe Int)]
+const mkArbIntN = R.times(arbInt);
+
+const adds = (...ns) => R.sum(ns);
+
 testProp(
 	"fmap",
 	[fc.option(fc.string())],
@@ -81,6 +86,91 @@ testProp(
 	}
 );
 
+testProp(
+	"fmap6 - liftA6",
+	mkArbIntN(6),
+	(
+		[a1, m1],
+		[a2, m2],
+		[a3, m3],
+		[a4, m4],
+		[a5, m5],
+		[a6, m6]
+	) => {
+		const f = R.curryN(6, adds);
+
+		return R.pipe(
+			F.fmap6(f),
+			checkMaybe(f(a1, a2, a3, a4, a5, a6))
+		)(m1, m2, m3, m4, m5, m6);
+	}
+);
+
+testProp(
+	"fmap8 - liftA8",
+	mkArbIntN(8),
+	(
+		[a1, m1],
+		[a2, m2],
+		[a3, m3],
+		[a4, m4],
+		[a5, m5],
+		[a6, m6],
+		[a7, m7],
+		[a8, m8],
+	) => {
+		const f = R.curryN(8, adds);
+
+		return R.pipe(
+			F.fmap8(f),
+			checkMaybe(f(a1, a2, a3, a4, a5, a6, a7, a8))
+		)(m1, m2, m3, m4, m5, m6, m7, m8);
+	}
+);
+
+testProp(
+	"fmap9 - liftA9",
+	mkArbIntN(9),
+	(
+		[a1, m1],
+		[a2, m2],
+		[a3, m3],
+		[a4, m4],
+		[a5, m5],
+		[a6, m6],
+		[a7, m7],
+		[a8, m8],
+		[a9, m9]
+	) => {
+		const f = R.curryN(9, adds);
+
+		return R.pipe(
+			F.fmap9(f),
+			checkMaybe(f(a1, a2, a3, a4, a5, a6, a7, a8, a9))
+		)(m1, m2, m3, m4, m5, m6, m7, m8, m9);
+	}
+);
+
+testProp(
+	"fmap7 - liftA7",
+	mkArbIntN(7),
+	(
+		[a1, m1],
+		[a2, m2],
+		[a3, m3],
+		[a4, m4],
+		[a5, m5],
+		[a6, m6],
+		[a7, m7]
+	) => {
+		const f = R.curryN(7, adds);
+
+		return R.pipe(
+			F.fmap7(f),
+			checkMaybe(f(a1, a2, a3, a4, a5, a6, a7))
+		)(m1, m2, m3, m4, m5, m6, m7);
+	}
+);
 testProp(
 	"traverse",
 	[

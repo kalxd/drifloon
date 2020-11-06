@@ -48,7 +48,74 @@ const fmap5 = R.curry((f, a, b, c, d, e) => {
 	return f(a, b, c, d, e);
 });
 
-// traverse :: (a -> Maybe b) -> [a] -> Maybe [b]
+// fmap6 :: (a1 -> a2 -> a3 -> a4 -> a5 -> a6 -> z)
+//       -> Maybe a1
+//       -> Maybe a2
+//       -> Maybe a3
+//       -> Maybe a4
+//       -> Maybe a5
+//       -> Maybe a6
+//       -> Maybe z
+const fmap6 = R.curry((f, a1, a2, a3, a4, a5, a6) => {
+	if (isAnyNil([a1, a2, a3, a4, a5, a6])) {
+		return null;
+	}
+	return f(a1, a2, a3, a4, a5, a6);
+});
+
+// fmap7 :: (a1 -> a2 -> a3 -> a4 -> a5 -> a6 -> a7 -> z)
+//       -> Maybe a1
+//       -> Maybe a2
+//       -> Maybe a3
+//       -> Maybe a4
+//       -> Maybe a5
+//       -> Maybe a6
+//       -> Maybe a7
+//       -> Maybe z
+const fmap7 = R.curry((f, a1, a2, a3, a4, a5, a6, a7) => {
+	if (isAnyNil([a1, a2, a3, a4, a5, a6, a7])) {
+		return null;
+	}
+	return f(a1, a2, a3, a4, a5, a6, a7);
+});
+
+// fmap8 :: (a1 -> a2 -> a3 -> a4 -> a5 -> a6 -> a7 -> a8 -> z)
+//       -> Maybe a1
+//       -> Maybe a2
+//       -> Maybe a3
+//       -> Maybe a4
+//       -> Maybe a5
+//       -> Maybe a6
+//       -> Maybe a7
+//       -> Maybe a8
+//       -> Maybe z
+const fmap8 = R.curry((f, a1, a2, a3, a4, a5, a6, a7, a8) => {
+	if (isAnyNil([a1, a2, a3, a4, a5, a6, a7, a8])) {
+		return null;
+	}
+	return f(a1, a2, a3, a4, a5, a6, a7, a8);
+});
+
+
+// fmap9 :: (a1 -> a2 -> a3 -> a4 -> a5 -> a6 -> a7 -> a8 -> a9 -> z)
+//       -> Maybe a1
+//       -> Maybe a2
+//       -> Maybe a3
+//       -> Maybe a4
+//       -> Maybe a5
+//       -> Maybe a6
+//       -> Maybe a7
+//       -> Maybe a8
+//       -> Maybe a9
+//       -> Maybe z
+const fmap9 = R.curry((f, a1, a2, a3, a4, a5, a6, a7, a8, a9) => {
+	if (isAnyNil([a1, a2, a3, a4, a5, a6, a7, a8, a9])) {
+		return null;
+	}
+	return f(a1, a2, a3, a4, a5, a6, a7, a8, a9);
+});
+
+// traverse :: Foldable t => (a -> Maybe b) -> t a -> Maybe (t b)
 const traverse = R.curry((f, xs) => {
 	let r = [];
 
@@ -132,6 +199,10 @@ module.exports = {
 	fmap3,
 	fmap4,
 	fmap5,
+	fmap6,
+	fmap7,
+	fmap8,
+	fmap9,
 
 	traverse,
 
