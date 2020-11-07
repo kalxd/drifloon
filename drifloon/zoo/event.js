@@ -20,7 +20,10 @@ const fromEvent = R.curry((type, el) => {
 });
 
 // fromClick :: Maybe Element -> Stream Event
-const fromClick = fromEvent("click");
+const fromClick = el => {
+	const click$ = fromEvent("click", el);
+	return click$.tap(e => e.stopPropagation());
+};
 
 // fromClick_ :: Maybe Element -> Stream Event
 const fromClick_ = R.compose(

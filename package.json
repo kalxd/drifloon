@@ -1,5 +1,5 @@
 {
-  "version": "0.10.0",
+  "version": "0.10.1",
   "dependencies": {
     "@cycle/dom": "22.8.0",
     "@cycle/most-run": "8.4.0",

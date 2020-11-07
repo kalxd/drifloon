@@ -1,5 +1,5 @@
 ---
-title: drifloon（v0.10.0）使用手册
+title: drifloon（v0.10.1）使用手册
 author: 荀徒之
 documentclass: morelull
 numbersections: true
@@ -38,8 +38,8 @@ M相当于顶层命名空间，包含了以下几个模块。
 
 # 更新日志 #
 
-* 全面升级依赖版本。
-  * [GX.download][download]返回一条流，并自动处理用户取消下载。
+* 扩充fmapN至fmap9。
+* [fromClick]默认阻止事件冒泡。
 
 # 命名规范 #
 
@@ -86,10 +86,68 @@ fmap4 :: (a -> b -> c -> d -> e) -> Maybe a -> Maybe b -> Maybe c -> Maybe d -> 
 fmap5 :: (a -> b -> c -> d -> e -> f) -> Maybe a -> Maybe b -> Maybe c -> Maybe d -> Maybe e -> Maybe f
 ```
 
+### fmap6 ###
+
+```haskell
+fmap6 :: (a1 -> a2 -> a3 -> a4 -> a5 -> a6 -> z)
+      -> Maybe a1
+      -> Maybe a2
+      -> Maybe a3
+      -> Maybe a4
+      -> Maybe a5
+      -> Maybe a6
+      -> Maybe z
+```
+
+### fmap7 ###
+
+```haskell
+fmap7 :: (a1 -> a2 -> a3 -> a4 -> a5 -> a6 -> -> a7 -> z)
+      -> Maybe a1
+      -> Maybe a2
+      -> Maybe a3
+      -> Maybe a4
+      -> Maybe a5
+      -> Maybe a6
+      -> Maybe a7
+      -> Maybe z
+```
+
+### fmap8 ###
+
+```haskell
+fmap8 :: (a1 -> a2 -> a3 -> a4 -> a5 -> a6 -> -> a7 -> a8 -> z)
+      -> Maybe a1
+      -> Maybe a2
+      -> Maybe a3
+      -> Maybe a4
+      -> Maybe a5
+      -> Maybe a6
+      -> Maybe a7
+      -> Maybe a8
+      -> Maybe z
+```
+
+### fmap9 ###
+
+```haskell
+fmap9 :: (a1 -> a2 -> a3 -> a4 -> a5 -> a6 -> -> a7 -> a8 -> a9 -> z)
+      -> Maybe a1
+      -> Maybe a2
+      -> Maybe a3
+      -> Maybe a4
+      -> Maybe a5
+      -> Maybe a6
+      -> Maybe a7
+      -> Maybe a8
+      -> Maybe a9
+      -> Maybe z
+```
+
 ### traverse ###
 
 ```haskell
-traverse :: (a -> Maybe b) -> [a] -> Maybe [b]
+traverse :: Foldable t => (a -> Maybe b) -> t a -> Maybe (t b)
 ```
 
 ### isJust ###
