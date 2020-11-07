@@ -96,26 +96,6 @@ testProp(
 );
 
 testProp(
-	"fmap7 - liftA7",
-	mkArbIntN(7),
-	(
-		[a1, m1],
-		[a2, m2],
-		[a3, m3],
-		[a4, m4],
-		[a5, m5],
-		[a6, m6],
-		[a7, m7]
-	) => {
-		const f = R.curryN(7, adds);
-
-		return R.pipe(
-			F.fmap7(f),
-			checkMaybe(f(a1, a2, a3, a4, a5, a6, a7))
-		)(m1, m2, m3, m4, m5, m6, m7);
-	}
-);
-testProp(
 	"traverse",
 	[
 		fc.option(fc.integer()),
