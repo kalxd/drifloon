@@ -1,9 +1,9 @@
 {
-  "version": "0.10.1",
+  "version": "0.10.2",
   "dependencies": {
     "@cycle/dom": "22.8.0",
     "@cycle/most-run": "8.4.0",
-    "most": "^1.8.1",
+    "most": "^1.9.0",
     "partial.lenses": "14.17.0",
     "ramda": "0.27.1",
     "zen-observable": "0.8.15"
