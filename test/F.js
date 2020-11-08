@@ -7,7 +7,7 @@ const { F } = require("../main");
 // checkMaybe :: Eq a => a -> Maybe a -> Bool
 const checkMaybe = R.curry((a, ma) => {
 	if (R.isNil(ma)) {
-		true
+		return true
 	}
 	else {
 		return a === ma;
@@ -44,55 +44,55 @@ const checkFmap = (f, inputs) => {
 testProp(
 	"fmap",
 	[fc.option(fc.string())],
-	n => F.fmap(R.identity, n) === n
+	(t, n) => t.true(F.fmap(R.identity, n) === n)
 );
 
 testProp(
 	"fmap2 - liftA2",
 	mkArbIntN(2),
-	(...inputs) => checkFmap(F.fmap2, inputs)
+	(t, ...inputs) => t.true(checkFmap(F.fmap2, inputs))
 );
 
 testProp(
 	"fmap3 - liftA3",
 	mkArbIntN(3),
-	(...inputs) => checkFmap(F.fmap3, inputs)
+	(t, ...inputs) => t.true(checkFmap(F.fmap3, inputs))
 );
 
 testProp(
 	"fmap4 - liftA4",
 	mkArbIntN(4),
-	(...inputs) => checkFmap(F.fmap4, inputs)
+	(t, ...inputs) => t.true(checkFmap(F.fmap4, inputs))
 );
 
 testProp(
 	"fmap5 - liftA5",
 	mkArbIntN(5),
-	(...inputs) => checkFmap(F.fmap5, inputs)
+	(t, ...inputs) => t.true(checkFmap(F.fmap5, inputs))
 );
 
 testProp(
 	"fmap6 - liftA6",
 	mkArbIntN(6),
-	(...inputs) => checkFmap(F.fmap6, inputs)
+	(t, ...inputs) => t.true(checkFmap(F.fmap6, inputs))
 );
 
 testProp(
 	"fmap7 - liftA7",
 	mkArbIntN(7),
-	(...inputs) => checkFmap(F.fmap7, inputs)
+	(t, ...inputs) => t.true(checkFmap(F.fmap7, inputs))
 );
 
 testProp(
 	"fmap8 - liftA8",
 	mkArbIntN(8),
-	(...inputs) => checkFmap(F.fmap8, inputs)
+	(t, ...inputs) => t.true(checkFmap(F.fmap8, inputs))
 );
 
 testProp(
 	"fmap9 - liftA9",
 	mkArbIntN(9),
-	(...inputs) => checkFmap(F.fmap9, inputs)
+	(t, ...inputs) => t.true(checkFmap(F.fmap9, inputs))
 );
 
 testProp(
@@ -101,15 +101,15 @@ testProp(
 		fc.option(fc.integer()),
 		fc.array(fc.string()).filter(R.complement(R.isEmpty))
 	],
-	(n, xs) => {
+	(t, n, xs) => {
 		const f = R.always(n);
 		const ys = F.traverse(f, xs);
 
 		if (R.isNil(n) && R.isNil(ys)) {
-			return true;
+			return t.pass();
 		}
 		else {
-			return R.all(R.equals(n), ys);
+			return t.true(R.all(R.equals(n), ys));
 		}
 	}
 );
@@ -123,22 +123,23 @@ testProp(
 		fc.array(fc.anything()),
 		fc.constantFrom(undefined, null)
 	],
-	(a, b, c, d, e) => {
-		return F.isJust(a) && F.isJust(b) && F.isJust(c) && F.isJust(d) && !F.isJust(e);
+	(t, a, b, c, d, e) => {
+		const result = F.isJust(a) && F.isJust(b) && F.isJust(c) && F.isJust(d) && !F.isJust(e);
+		return t.true(result);
 	}
 );
 
 testProp(
 	"maybe",
 	[fc.option(fc.integer()), fc.integer()],
-	(ma, b) => {
+	(t, ma, b) => {
 		const c = F.maybe(b, R.identity, ma);
 
 		if (R.isNil(ma)) {
-			return c === b;
+			t.true(c === b);
 		}
 		else {
-			return c === ma;
+			t.true(c === ma);
 		}
 	}
 );
@@ -146,14 +147,14 @@ testProp(
 testProp(
 	"maybeElse",
 	[fc.option(fc.integer()), fc.integer(), fc.integer()],
-	(ma, b, c) => {
+	(t, ma, b, c) => {
 		const x = F.maybeElse(b, c, ma);
 
 		if (R.isNil(ma)) {
-			return x === b;
+			t.true(x === b);
 		}
 		else {
-			return x === c;
+			t.true(x === c);
 		}
 	}
 );
@@ -161,13 +162,13 @@ testProp(
 testProp(
 	"maybeOr",
 	[fc.option(fc.integer()), fc.integer()],
-	(ma, a) => {
+	(t, ma, a) => {
 		const v = F.maybeOr(a, ma);
 		if (R.isNil(ma)) {
-			return v === a;
+			t.true(v === a);
 		}
 		else {
-			return v === ma;
+			t.true(v === ma);
 		}
 	}
 );
@@ -175,14 +176,14 @@ testProp(
 testProp(
 	"makeValue",
 	[fc.string(), fc.array(fc.integer())],
-	(init, xs) => {
+	(t, init, xs) => {
 		const f = F.makeValue(init);
 		const g = x => {
 			f(x);
 			return x === f(x);
 		};
 
-		return R.all(g, xs);
+		t.true(R.all(g, xs));
 	}
 );
 
@@ -192,7 +193,7 @@ testProp(
 		fc.integer(),
 		fc.array(fc.option(fc.integer()))
 	],
-	(init, xs) => {
+	(t, init, xs) => {
 		const f = F.genValue(R.always(init));
 
 		const g = x => {
@@ -205,6 +206,6 @@ testProp(
 			}
 		};
 
-		return R.all(g, xs);
+		t.true(R.all(g, xs));
 	}
 );

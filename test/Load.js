@@ -20,16 +20,16 @@ const gen = () => {
 testProp(
 	"fmap id = id",
 	[gen()],
-	s => {
+	(t, s) => {
 		const f = Load.fmap(R.identity);
-		return R.equals(s, f(s));
+		t.deepEqual(s, f(s));
 	}
 );
 
 testProp(
 	"fmap f . g = fmap f . fmap g",
 	[gen()],
-	s => {
+	(t, s) => {
 		const f = R.inc;
 		const g = R.add(10);
 
@@ -41,14 +41,14 @@ testProp(
 			Load.fmap(g)
 		);
 
-		return R.equals(h1(s), h2(s));
+		t.deepEqual(h1(s), h2(s));
 	}
 );
 
 testProp(
 	"Monad(Left identity): return a >>= f = f a",
 	[fc.integer()],
-	n => {
+	(t, n) => {
 		const f = Load.pure;
 
 		const a = R.pipe(
@@ -58,23 +58,23 @@ testProp(
 
 		const b = f(n);
 
-		R.equals(a, b);
+		t.deepEqual(a, b);
 	}
 );
 
 testProp(
 	"Monad(Right identity): m >>= return = m",
 	[gen()],
-	s => {
+	(t, s) => {
 		const ss = Load.bind(Load.pure, s);
-		return R.equals(s, ss);
+		t.deepEqual(s, ss);
 	}
 );
 
 testProp(
 	"Monad(associativity): (m >>= f) >>= g = m >>= (\\x -> f x >>= g)",
 	[gen()],
-	s => {
+	(t, s) => {
 		const f = Load.pure;
 		const g = Load.pure;
 
@@ -88,6 +88,6 @@ testProp(
 			s
 		);
 
-		return R.equals(a, b);
+		t.deepEqual(a, b);
 	}
 );

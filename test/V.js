@@ -14,14 +14,14 @@ const genDiv = () => {
 testProp(
 	"guard",
 	[fc.boolean(), genDiv()],
-	(b, div) => {
+	(t, b, div) => {
 		const v = V.guard(R.always(div), b);
 
 		if (b) {
-			return v === div;
+			t.deepEqual(v, div);
 		}
 		else {
-			return R.isNil(v);
+			t.falsy(v);
 		}
 	}
 );
@@ -29,13 +29,13 @@ testProp(
 testProp(
 	"only",
 	[fc.boolean(), genDiv()],
-	(b, div) => {
+	(t, b, div) => {
 		const v = V.only(div, b);
 		if (b) {
-			return v === div;
+			t.deepEqual(v, div);
 		}
 		else {
-			return R.isNil(v);
+			t.falsy(v);
 		}
 	}
 );
@@ -49,13 +49,15 @@ testProp(
 			values: [fc.boolean()]
 		})
 	],
-	o => {
+	(t, o) => {
 		const css = V.select("", o);
 
-		return R.pipe(
+		const r = R.pipe(
 			R.split("."),
 			R.drop(1),
 			R.all(R.flip(R.prop)(o))
 		)(css);
+
+		t.true(r);
 	}
 );

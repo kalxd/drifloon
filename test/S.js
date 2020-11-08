@@ -5,18 +5,18 @@ const Most = require("most");
 const { S } = require("../main");
 
 // coc :: a -> b -> b
-const coc = R.curry((a, b) => b)
+const coc = R.curry((_, b) => b)
 
 testProp(
 	"create stream",
 	[fc.array(fc.integer())],
-	ns => {
+	(t, ns) => {
 		return S.create(ob => {
 			ns.forEach(n => ob.next(n));
 			ob.complete();
 		})
 			.reduce(R.flip(R.append), [])
-			.then(R.equals(ns))
+			.then(xs => t.deepEqual(ns, xs))
 		;
 	}
 );
@@ -24,11 +24,11 @@ testProp(
 testProp(
 	"create stream from callback",
 	[fc.array(fc.integer())],
-	ns => {
+	(t, ns) => {
 		return S.fromCallback(f => ns.forEach(f))
 			.take(ns.length)
 			.reduce(R.flip(R.append), [])
-			.then(R.equals(ns))
+			.then(xs => t.deepEqual(ns, xs))
 		;
 	}
 );
@@ -36,11 +36,11 @@ testProp(
 testProp(
 	"throwError",
 	[fc.string()],
-	s => {
+	(t, s) => {
 		return Most.of(s)
 			.concatMap(S.throwError(Error))
 			.drain()
-			.catch(e => e.message === s)
+			.catch(e => t.true(e.message === s))
 		;
 	}
 );
@@ -48,11 +48,11 @@ testProp(
 testProp(
 	"throwMsg",
 	[fc.string()],
-	s => {
+	(t, s) => {
 		return Most.of(s)
 			.concatMap(S.throwMsg)
 			.drain()
-			.catch(e => e.message === s)
+			.catch(e => t.true(e.message === s))
 		;
 	}
 );
@@ -60,12 +60,12 @@ testProp(
 testProp(
 	"throwNil",
 	[fc.option(fc.integer()), fc.string()],
-	(ma, s) => {
+	(t, ma, s) => {
 		return Most.of(ma)
 			.concatMap(S.throwNil(Error, s))
 			.reduce(coc, null)
-			.then(a => a === ma)
-			.catch(e => e.message === s)
+			.then(a => t.true(a === ma))
+			.catch(e => t.true(e.message === s))
 		;
 	}
 );
@@ -73,12 +73,12 @@ testProp(
 testProp(
 	"throwNilMsg",
 	[fc.option(fc.integer()), fc.string()],
-	(ma, s) => {
+	(t, ma, s) => {
 		return Most.of(ma)
 			.concatMap(S.throwNilMsg(s))
 			.reduce(coc, null)
-			.then(a => a === ma)
-			.catch(e => e.message === s)
+			.then(a => t.true(a === ma))
+			.catch(e => t.true(e.message === s))
 		;
 	}
 );
