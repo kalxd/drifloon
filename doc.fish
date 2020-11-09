@@ -1,7 +1,7 @@
 #!/usr/bin/env fish
 
 # 版本号
-set PKG_VERSION (cat package.json | jq ".version" | tr -d "\"" | tr -d "\r")
+set PKG_VERSION (jq -r ".version" package.json | string trim)
 
 set_color yellow; and echo 开始制作drifloon-{$PKG_VERSION}.pdf……
 
