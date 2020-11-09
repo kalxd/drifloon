@@ -6,7 +6,7 @@ const config = {
 	mode: "production",
 	output: {
 		path: path.resolve("./dist"),
-		filename: `drifloon.dep.${pkg.version}.js`,
+		filename: `drifloon.${pkg.version}.js`,
 		library: "M",
 		libraryTarget: "umd2"
 	}
