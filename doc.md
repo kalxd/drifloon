@@ -1,5 +1,5 @@
 ---
-title: drifloon（v0.10.1）使用手册
+title: drifloon（v0.10.2）使用手册
 author: 荀徒之
 documentclass: morelull
 numbersections: true
@@ -38,8 +38,8 @@ M相当于顶层命名空间，包含了以下几个模块。
 
 # 更新日志 #
 
-* 扩充fmapN至fmap9。
-* [fromClick]默认阻止事件冒泡。
+* 升级测试依赖版本号。
+* 修正因依赖大版本升级而导致的代码不兼容问题。
 
 # 命名规范 #
 
