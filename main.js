@@ -1,7 +1,6 @@
 const R = require("rambda");
 const Most = require("most");
 const DOM = require("@cycle/dom");
-const L = require("partial.lenses")
 
 const F = require("./drifloon/function");
 const GX = require("./drifloon/gm");
@@ -18,7 +17,6 @@ const M = {
 	R,
 	Most,
 	DOM,
-	L,
 
 	Z,
 	V,

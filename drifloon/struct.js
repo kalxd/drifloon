@@ -3,7 +3,6 @@
  * 声明新struct，自动生成对应字段操作，
  * 一切都以lenses为基础。
  */
-const L = require("partial.lenses");
 const R = require("rambda");
 
 const struct = fields => {
@@ -29,7 +28,7 @@ const struct = fields => {
 
 	// 生成每个字段的lens。
 	for (const field of fields) {
-		m[`${field}Lens`] = L.prop(field);
+		m[`${field}Lens`] = R.prop(field);
 	}
 
 	return m;
