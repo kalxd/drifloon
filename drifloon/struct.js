@@ -28,7 +28,7 @@ const struct = fields => {
 
 	// 生成每个字段的lens。
 	for (const field of fields) {
-		m[`${field}Lens`] = R.prop(field);
+		m[`${field}Lens`] = R.lensProp(field);
 	}
 
 	return m;
