@@ -13,15 +13,10 @@ const struct = fields => {
 	const fieldCount = R.length(fields);
 
 	// 构造函数
-	m.gen = R.curryN(fieldCount, (...args) => {
-		let o = {};
-		for (let i = 0; i < fieldCount; ++i) {
-			const fieldName = fields[i];
-			o[fieldName] = args[i];
-		}
-
-		return o;
-	});
+	m.gen = R.curryN(fieldCount, (...args) => R.pipe(
+		R.zip(fields),
+		R.fromPairs
+	)(args));
 
 	// 全部字段。
 	m.values = R.props(fields);
