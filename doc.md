@@ -1,5 +1,5 @@
 ---
-title: drifloon（v0.10.2）使用手册
+title: drifloon（v0.11.0）使用手册
 author: 荀徒之
 documentclass: morelull
 numbersections: true
@@ -23,10 +23,9 @@ console.log(M);
 M相当于顶层命名空间，包含了以下几个模块。
 
 * 第三方模块
-  + R，[ramda][ramda]。
+  + R，[rambda][rambda]。
   + Most, [most.js][mostjs]。
   + DOM, [cycle dom][cycle/dom]。
-  * L, [partial.lenses][partial.lenses]。
 * 内部模块
   + [F]，辅助函数。
   + [Z]，页面元素相关。
@@ -38,8 +37,12 @@ M相当于顶层命名空间，包含了以下几个模块。
 
 # 更新日志 #
 
-* 升级测试依赖版本号。
-* 修正因依赖大版本升级而导致的代码不兼容问题。
+此次是大更新：
+
+* [rambda]代替ramda.js，减少体积、提高效能。
+* 删除使用率不高的partial.lenses，lenses使用[rambda]提供的功能。
+
+* 添加大量测试。
 
 # 命名规范 #
 
@@ -1371,10 +1374,9 @@ const app = source => {
 M.execModalAt(node, app).drain();
 ```
 
-[ramda]: https://ramdajs.com/
+[rambda]: https://github.com/selfrefactor/rambda
 [mostjs]: https://github.com/cujojs/most
 [cycle]: https://cycle.js.org/
 [cycle/dom]: https://cycle.js.org/api/dom.html
 [cycle/isolate]: https://cycle.js.org/api/isolate.html
 [cycle/state]: https://cycle.js.org/api/state.html
-[partial.lenses]: https://github.com/calmm-js/partial.lenses
