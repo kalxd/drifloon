@@ -1,5 +1,5 @@
 /** 方便取元素事件 */
-const R = require("ramda");
+const R = require("rambda");
 
 const {
 	toElement,

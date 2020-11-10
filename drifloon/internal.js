@@ -1,5 +1,5 @@
 /** 内部模块，用于代码共享 */
-const R = require("ramda");
+const R = require("rambda");
 
 // toElement :: Stream Event -> Stream Element
 const toElement = s$ => s$.map(e => e.target);

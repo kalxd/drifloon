@@ -1,4 +1,4 @@
-const R = require("ramda");
+const R = require("rambda");
 
 // guard :: (() -> View ) -> Bool -> Maybe View
 const guard = R.curry((f, isShow) => {

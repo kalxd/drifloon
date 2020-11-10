@@ -1,4 +1,4 @@
-const R = require("ramda");
+const R = require("rambda");
 
 const { run, setup } = require("@cycle/most-run");
 const { makeDOMDriver } = require("@cycle/dom");

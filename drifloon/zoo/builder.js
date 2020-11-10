@@ -1,5 +1,5 @@
 /** 创建新元素 */
-const R = require("ramda");
+const R = require("rambda");
 const { fmap }  = require("../function");
 
 // mkElement :: (Element -> IO ()) -> IO Element

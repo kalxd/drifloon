@@ -1,4 +1,4 @@
-const R = require("ramda");
+const R = require("rambda");
 
 // isAnyNil :: [Maybe a] -> Bool
 const isAnyNil = R.any(R.isNil);

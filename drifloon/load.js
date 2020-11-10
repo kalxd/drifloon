@@ -7,7 +7,7 @@
  *                    , ctx :: Maybe a
  *                    }
  */
-const R = require("ramda");
+const R = require("rambda");
 
 // finishLens :: Lens (LoadState a) Bool
 const finishLens = R.lensProp("finish");

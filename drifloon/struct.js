@@ -4,7 +4,7 @@
  * 一切都以lenses为基础。
  */
 const L = require("partial.lenses");
-const R = require("ramda");
+const R = require("rambda");
 
 const struct = fields => {
 	// 模拟模块。

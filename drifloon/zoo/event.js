@@ -1,5 +1,5 @@
 /** 事件绑定 */
-const R = require("ramda");
+const R = require("rambda");
 const Most = require("most");
 
 const {

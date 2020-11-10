@@ -1,4 +1,4 @@
-const R = require("ramda");
+const R = require("rambda");
 const Most = require("most");
 const DOM = require("@cycle/dom");
 const L = require("partial.lenses")

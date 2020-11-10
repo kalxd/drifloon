@@ -1,4 +1,4 @@
-const R = require("ramda");
+const R = require("rambda");
 const S = require("./stream");
 const { fmap, isJust } = require("./function");
 

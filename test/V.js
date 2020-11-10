@@ -1,5 +1,5 @@
 const { testProp, fc } = require("ava-fast-check");
-const R = require("ramda");
+const R = require("rambda");
 const DOM = require("@cycle/dom");
 
 const { V } = require("../main");
