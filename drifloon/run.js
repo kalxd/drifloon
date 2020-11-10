@@ -6,7 +6,7 @@ const { makeDOMDriver } = require("@cycle/dom");
 const { fmap } = require("./function");
 const { blankAtBodyEnd } = require("./zoo/builder");
 
-// takeFirst :: Stream a -> Maybe (Stream a)
+// takeFirst :: Stream a -> Stream a
 const takeFirst = stream$ => stream$.take(1);
 
 // mkDriver :: Element -> Driver
@@ -30,7 +30,7 @@ const runAtEnd = app => {
 // runModalAt :: Element -> Application -> IO (() -> IO (), Sinks);
 const runModalAt = R.curry((node, app) => {
 	const driver = mkDriver(node);
-	const {sources, sinks, run} = setup(app, driver);
+	const { sinks, run } = setup(app, driver);
 	const down = run();
 
 	const dispose = R.compose(
