@@ -41,6 +41,7 @@ M相当于顶层命名空间，包含了以下几个模块。
 
 * [rambda]代替ramda.js，减少体积、提高效能。
 * 删除使用率不高的partial.lenses，lenses使用[rambda]提供的功能。
+* 添加[splitBy]、[split]。
 
 * 添加大量测试。
 
@@ -791,6 +792,32 @@ Most.from([1, 2, null]).concatMap(S.throwNilMsg("wrong"));
 // 2
 // Error: wrong
 ```
+
+### splitBy ###
+
+```haskell
+splitBy :: (a -> Bool) -> Stream a -> (Stream a, Stream a)
+```
+
+把一条流分割成两条，接受一个分割函数`(a -> Bool)`，值为真的为左，假的为右。
+
+```javascript
+
+const stream$ = Most.from(1..10);
+
+const [left$, right$] = stream$.thru(S.splitBy(n > 5));
+
+// left$: 6-7-8-9
+// right$: 1-2-3-4-5
+```
+
+### split ###
+
+```haskell
+split :: Stream Bool -> (Stream Bool, Stream Bool)
+```
+
+[splitBy]特殊版，根据流中的布尔值，自动分割。
 
 ## State ##
 

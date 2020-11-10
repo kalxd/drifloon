@@ -82,3 +82,35 @@ testProp(
 		;
 	}
 );
+
+testProp(
+	"splitBy",
+	[fc.array(fc.integer({ min: 10 }))],
+	(t, xs) => {
+		const origin$ = Most.from(xs);
+		const [left$, right$] = origin$.thru(S.splitBy(n => n > 9));
+
+		const left = left$.reduce(R.add, 0);
+		const right = right$.reduce(R.add, 0);
+
+		return left.then(left => right.then(right => {
+			return t.true(left === R.sum(xs) && 0 === right);
+		}));
+	}
+);
+
+testProp(
+	"split",
+	[fc.array(fc.boolean())],
+	(t, xs) => {
+		const origin$ = Most.from(xs);
+		const [true$, false$] = origin$.thru(S.split);
+
+		const left = true$.reduce(R.or, true);
+		const right = false$.reduce(R.xor, false);
+
+		return left.then(left => right.then(right => {
+			return t.true(left === true && right === false);
+		}));
+	}
+);

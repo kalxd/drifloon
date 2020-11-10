@@ -39,6 +39,19 @@ const throwNil = R.curry((klass, msg , v) => {
 // throwNilMsg :: String -> Maybe a -> Stream a
 const throwNilMsg = throwNil(Error);
 
+// splitBy :: (a -> Bool) -> Stream a -> (Stream a, Stream a)
+const splitBy = R.curry((f, stream$) => {
+	const s$ = stream$.multicast();
+	const g = R.complement(f);
+
+	const left$ = s$.filter(f);
+	const right$ = s$.filter(g);
+	return [left$, right$];
+});
+
+// split :: Stream Bool -> (Stream Bool, Stream Bool)
+const split = splitBy(R.equals(true));
+
 module.exports = {
 	create,
 	fromCallback,
@@ -46,5 +59,8 @@ module.exports = {
 	throwError,
 	throwMsg,
 	throwNil,
-	throwNilMsg
+	throwNilMsg,
+
+	splitBy,
+	split,
 };
