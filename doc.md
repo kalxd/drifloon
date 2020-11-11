@@ -42,7 +42,7 @@ M相当于顶层命名空间，包含了以下几个模块。
 * [rambda]代替ramda.js，减少体积、提高效能。
 * 删除使用率不高的partial.lenses，lenses使用[rambda]提供的功能。
 * 添加[splitBy]、[split]。
-
+* 删除F.maybeOr，已有R.defaultTo。
 * 添加大量测试。
 
 # 命名规范 #
@@ -201,19 +201,6 @@ const f = maybeElse("failed", "OK");
 f(1); // "OK"
 f("hello"); // "OK"
 f(null); // "failed"
-```
-
-### maybeOr ###
-
-```haskell
-maybeOr :: a -> Maybe a -> a
-```
-
-类似于rust的`Option.unwrap_or`。
-
-```javascript
-maybeOr(1, 0); // 0
-maybeOr(1, null); // 1
 ```
 
 ### makeValue

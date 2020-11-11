@@ -156,9 +156,6 @@ const maybeElse = R.curry((a, b, c) => {
 	}
 });
 
-// maybeOr :: a -> Maybe a -> a
-const maybeOr = R.curry((a, ma) => maybe(a, R.identity, ma));
-
 const makeValue = v => {
 	let innerValue = v;
 
@@ -209,7 +206,6 @@ module.exports = {
 	isJust,
 	maybe,
 	maybeElse,
-	maybeOr,
 
 	makeValue,
 	genValue

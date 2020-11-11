@@ -160,20 +160,6 @@ testProp(
 );
 
 testProp(
-	"maybeOr",
-	[fc.option(fc.integer()), fc.integer()],
-	(t, ma, a) => {
-		const v = F.maybeOr(a, ma);
-		if (R.isNil(ma)) {
-			t.true(v === a);
-		}
-		else {
-			t.true(v === ma);
-		}
-	}
-);
-
-testProp(
 	"makeValue",
 	[fc.string(), fc.array(fc.integer())],
 	(t, init, xs) => {
