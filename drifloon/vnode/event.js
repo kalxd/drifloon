@@ -62,48 +62,6 @@ const fromChangeV_ = R.compose(
 	fromChange_
 );
 
-// fromKeydown :: Selector -> Source -> Stream Event
-const fromKeydown = fromEvent("keydown");
-
-// fromKeydown_ :: Selector -> Source -> Stream Event
-const fromKeydown_ = R.compose(
-	debounceAction,
-	fromKeydown
-);
-
-// fromKeydownV :: Selector -> Source -> Stream String
-const fromKeydownV = R.compose(
-	toValue,
-	fromKeydown
-);
-
-// fromKeydownV_ :: Selector -> Source -> Stream String
-const fromKeydownV_ = R.compose(
-	toValue,
-	fromKeydown_
-);
-
-// fromKeyup :: Selector -> Source -> Stream Event
-const fromKeyup = fromEvent("keyup");
-
-// fromKeyup_ :: Selector -> Source -> Stream Event
-const fromKeyup_ = R.compose(
-	debounceAction,
-	fromKeyup
-);
-
-// fromKeyupV :: Selector -> Source -> Stream String
-const fromKeyupV = R.compose(
-	toValue,
-	fromKeyup
-);
-
-// fromKeyupV_ :: Selector -> Source -> Stream String
-const fromKeyupV_ = R.compose(
-	toValue,
-	fromKeyup_
-);
-
 // fromEnterPress :: Selector -> Source -> Stream Event
 const fromEnterPress = R.compose(
 	filterEnterCode,
@@ -182,16 +140,6 @@ module.exports = {
 	fromChange_,
 	fromChangeV,
 	fromChangeV_,
-
-	fromKeydown,
-	fromKeydown_,
-	fromKeydownV,
-	fromKeydownV_,
-
-	fromKeyup,
-	fromKeyup_,
-	fromKeyupV,
-	fromKeyupV_,
 
 	fromEnterPress,
 	fromEnterPress_,

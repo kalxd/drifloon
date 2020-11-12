@@ -64,54 +64,6 @@ const fromChangeV_ = R.compose(
 	fromChangeV
 );
 
-// fromKeydown :: Maybe Element -> Stream Event
-const fromKeydown = fromEvent("keydown");
-
-// fromKeydown :: Maybe Element -> Stream Event
-const fromKeydown_ = R.compose(
-	debounceAction,
-	fromKeydown
-);
-
-// fromKeydownV :: Maybe Element -> Stream String
-const fromKeydownV = R.compose(
-	toValue,
-	fromKeydown
-);
-
-// fromKeydownV_ :: Maybe Element -> Stream String
-const fromKeydownV_ = R.compose(
-	debounceAction,
-	fromKeydownV
-);
-
-// fromKeyup :: Maybe Element -> Stream Event
-const fromKeyup = fromEvent("keyup");
-
-// fromKeyup_ :: Maybe Element -> Stream Event
-const fromKeyup_ = R.compose(
-	debounceAction,
-	fromKeyup
-);
-
-// fromKeyupV :: Maybe Element -> Stream String
-const fromKeyupV = R.compose(
-	toValue,
-	fromKeyup
-);
-
-// fromKeyupV_ :: Maybe Element -> Stream String
-const fromKeyupV_ = R.compose(
-	debounceAction,
-	fromKeyupV
-);
-
-// fromEnterPress :: Maybe Element -> Stream Event
-const fromEnterPress = R.compose(
-	filterEnterCode,
-	fromKeyup
-);
-
 // fromEnterPress_ :: Maybe Element -> Stream Event
 const fromEnterPress_ = R.compose(
 	debounceAction,
@@ -142,16 +94,6 @@ module.exports = {
 	fromChange_,
 	fromChangeV,
 	fromChangeV_,
-
-	fromKeydown,
-	fromKeydown_,
-	fromKeydownV,
-	fromKeydownV_,
-
-	fromKeyup,
-	fromKeyup_,
-	fromKeyupV,
-	fromKeyupV_,
 
 	fromEnterPress,
 	fromEnterPress_,

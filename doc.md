@@ -358,54 +358,6 @@ fromChangeV :: Selector -> Source -> Stream String
 fromChangeV_ :: Selector -> Source -> Stream String
 ```
 
-### fromKeydown ###
-
-```haskell
-fromKeydown :: Selector -> Source -> Stream Event
-```
-
-### fromKeydown_ ###
-
-```haskell
-fromKeydown_ :: Selector -> Source -> Stream Event
-```
-
-### fromKeydownV ###
-
-```haskell
-fromKeydownV :: Selector -> Source -> Stream String
-```
-
-### fromKeydownV_ ###
-
-```haskell
-fromKeydownV_ :: Selector -> Source -> Stream String
-```
-
-### fromKeyup ###
-
-```haskell
-fromKeyup :: Selector -> Source -> Stream Event
-```
-
-### fromKeyup_ ###
-
-```haskell
-fromKeyup_ :: Selector -> Source -> Stream Event
-```
-
-### fromKeyupV ###
-
-```haskell
-fromKeyupV :: Selector -> Source -> Stream String
-```
-
-### fromKeyupV_ ###
-
-```haskell
-fromKeyupV_ :: Selector -> Source -> Stream String
-```
-
 ### fromEnterPress ###
 
 ```haskell
@@ -538,54 +490,6 @@ fromChangeV :: Maybe Element -> Stream String
 
 ```haskell
 fromChangeV_ :: Maybe Element -> Stream String
-```
-
-### fromKeydown ###
-
-```haskell
-fromKeydown :: Maybe Element -> Stream Event
-```
-
-### fromKeydown_ ###
-
-```haskell
-fromKeydown_ :: Maybe Element -> Stream Event
-```
-
-### fromKeydownV ###
-
-```haskell
-fromKeydownV :: Maybe Element -> Stream String
-```
-
-### fromKeydownV_ ###
-
-```haskell
-fromKeydownV_ :: Maybe Element -> Stream String
-```
-
-### fromKeyup ###
-
-```haskell
-fromKeyup :: Maybe Element -> Stream Event
-```
-
-### fromKeyup_ ###
-
-```haskell
-fromKeyup_ :: Maybe Element -> Stream Event
-```
-
-### fromKeyupV ###
-
-```haskell
-fromKeyupV :: Maybe Element -> Stream String
-```
-
-### fromKeyupV_ ###
-
-```haskell
-fromKeyupV_ :: Maybe Element -> Stream String
 ```
 
 ### fromEnterPress ###
