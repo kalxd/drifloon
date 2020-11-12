@@ -64,6 +64,12 @@ const fromChangeV_ = R.compose(
 	fromChangeV
 );
 
+// fromEnterPress :: Maybe Element -> Stream Event
+const fromEnterPress = R.compose(
+	filterEnterCode,
+	fromEvent("keyup"),
+);
+
 // fromEnterPress_ :: Maybe Element -> Stream Event
 const fromEnterPress_ = R.compose(
 	debounceAction,

@@ -4,6 +4,7 @@ const R = require("rambda");
 const {
 	toElement,
 	toValue,
+	toInt,
 	filterEnterCode,
 	debounceAction
 } = require("../internal");
@@ -41,6 +42,18 @@ const fromClickE_ = R.compose(
 	fromClick_
 );
 
+// fromClickI :: Selector -> Source -> Stream Int
+const fromClickI = R.compose(
+	toInt,
+	fromClickE
+);
+
+// fromClickI_ :: Selector -> Source -> Stream Int
+const fromClickI_ = R.compose(
+	toInt,
+	fromClickE_
+);
+
 // fromChange :: Selector -> Source -> Stream Event
 const fromChange = fromEvent("change");
 
@@ -65,7 +78,7 @@ const fromChangeV_ = R.compose(
 // fromEnterPress :: Selector -> Source -> Stream Event
 const fromEnterPress = R.compose(
 	filterEnterCode,
-	fromKeyup
+	fromEvent("keyup")
 );
 
 // fromEnterPress_ :: Selector -> Source -> Stream Event
@@ -135,6 +148,8 @@ module.exports = {
 	fromClick_,
 	fromClickE,
 	fromClickE_,
+	fromClickI,
+	fromClickI_,
 
 	fromChange,
 	fromChange_,
