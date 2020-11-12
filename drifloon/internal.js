@@ -1,6 +1,5 @@
 /** 内部模块，用于代码共享 */
 const R = require("rambda");
-const { maybe } = require("./function");
 
 // toElement :: Stream Event -> Stream Element
 const toElement = s$ => s$.map(e => e.target);
@@ -11,7 +10,10 @@ const toValue = s$ => s$.map(e => e.target.value.trim());
 // toInt :: Stream Element -> IO Int
 const toInt = stream$ => stream$
 	.map(el => el.dataset.index)
-	.map(maybe(0, Number))
+	.map(R.compose(
+		R.defaultTo(0),
+		Number
+	))
 ;
 
 // filterEnterCode :: Stream a -> Stream a

@@ -43,6 +43,7 @@ M相当于顶层命名空间，包含了以下几个模块。
 * 删除使用率不高的partial.lenses，lenses使用[rambda]提供的功能。
 * 添加[splitBy]、[split]。
 * 删除F.maybeOr，已有R.defaultTo。
+* 添加[fromClickI]、[fromClickI_]。
 * 添加大量测试。
 
 # 命名规范 #
@@ -53,6 +54,7 @@ M相当于顶层命名空间，包含了以下几个模块。
 - [fromClick_]，带下划线版本，表示抖动函数，多次点击仅发送最后一次点击事件。
 - [fromClickE]，`E`表示Element，返回DOM Element，同理，`V`表示Value，返回用户输入。
 - [fromClickE_]，与`fromClick_`同理，表示`fromClickE`抖动版本。
+- [fromClickI]，与`fromClickE`相似，自动将`dataset.index`转化为整型，如果转化失败，默认为`0`。
 
 # 内部模块
 
@@ -332,6 +334,18 @@ fromClickE :: Selector -> Source -> Stream Element
 
 ```haskell
 fromClickE_ :: Selector -> Source -> Stream Element
+```
+
+### fromClickI ###
+
+```haskell
+fromClickI :: Selector -> Source -> Stream Int
+```
+
+### fromClickI_ ###
+
+```haskell
+fromClickI_ :: Selector -> Source -> Stream Int
 ```
 
 ### fromChange ###
