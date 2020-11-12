@@ -1,5 +1,8 @@
 {
   "version": "0.11.0",
+  "scripts": {
+	  "test": "./node_modules/.bin/ava"
+  },
   "dependencies": {
     "@cycle/dom": "22.8.0",
     "@cycle/most-run": "8.4.0",
