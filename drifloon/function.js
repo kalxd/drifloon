@@ -156,6 +156,12 @@ const maybeElse = R.curry((a, b, c) => {
 	}
 });
 
+// _fst :: Lens (a, b) -> a
+const _fst = R.lensIndex(0);
+
+// _snd :: Lens (a, b) -> b
+const _snd = R.lensIndex(1);
+
 const makeValue = v => {
 	let innerValue = v;
 
@@ -206,6 +212,9 @@ module.exports = {
 	isJust,
 	maybe,
 	maybeElse,
+
+	_fst,
+	_snd,
 
 	makeValue,
 	genValue

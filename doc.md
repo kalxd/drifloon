@@ -43,6 +43,7 @@ M相当于顶层命名空间，包含了以下几个模块。
 * 删除使用率不高的partial.lenses，lenses使用[rambda]提供的功能。
 * 添加[splitBy]、[split]。
 * 删除F.maybeOr，已有R.defaultTo。
+* 添加[\_fst]、[\_snd]。
 * 添加[fromClickI]、[fromClickI_]。
 * 添加大量测试。
 
@@ -203,6 +204,18 @@ const f = maybeElse("failed", "OK");
 f(1); // "OK"
 f("hello"); // "OK"
 f(null); // "failed"
+```
+
+### \_fst ###
+
+```haskell
+_fst :: Lens (a, b) -> a
+```
+
+### \_snd ###
+
+```haskell
+_snd :: Lens (a, b) -> b
 ```
 
 ### makeValue

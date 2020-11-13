@@ -160,6 +160,24 @@ testProp(
 );
 
 testProp(
+	"_fst lens",
+	[fc.tuple(fc.nat(), fc.string())],
+	(t, xs) => {
+		const fst = R.view(F._fst, xs);
+		return t.true(fst === xs[0]);
+	}
+);
+
+testProp(
+	"_snd lens",
+	[fc.tuple(fc.nat(), fc.string())],
+	(t, xs) => {
+		const snd = R.view(F._snd, xs);
+		return t.true(snd === xs[1]);
+	}
+);
+
+testProp(
 	"makeValue",
 	[fc.string(), fc.array(fc.integer())],
 	(t, init, xs) => {
