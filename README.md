@@ -1,6 +1,8 @@
 # drifloon #
 
-专为油猴脚本制作的依赖库，集成[cycle.js][cycle.js]和[ramda.js][ramda]，在此基础上扩展出更多方便书写代码的函数，详见doc.md。
+![drifloon](https://media.52poke.com/wiki/archive/e/eb/20140413170939%21425Drifloon.png)
+
+专为油猴脚本制作的依赖库，集成[cycle.js][cycle.js]和[rambda.js][rambda]，在此基础上扩展出更多方便书写代码的函数，详见doc.md。
 
 # 安装依赖 #
 
@@ -31,6 +33,6 @@ $ ./doc.fish
 ```
 
 
-[ramda]: https://github.com/ramda/ramda
+[rambda]: https://github.com/selfrefactor/rambda
 [cycle.js]: https://github.com/cyclejs
 [morelull]: https://github.com/kalxd/morelull
