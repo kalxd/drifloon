@@ -1,6 +1,6 @@
 {
   "name": "drifloon",
-  "version": "0.11.0",
+  "version": "0.12.0",
   "description": "主打油猴依赖库，并附加前端工程化。",
   "scripts": {
 	  "test": "./node_modules/.bin/ava"

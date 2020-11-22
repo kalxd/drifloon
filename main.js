@@ -9,6 +9,7 @@ const S = require("./drifloon/stream");
 const V = require("./drifloon/vnode");
 const State = require("./drifloon/state");
 const Load = require("./drifloon/load");
+const C = require("./drifloon/comfey");
 const struct = require("./drifloon/struct");
 
 const Run = require("./drifloon/run");
@@ -25,6 +26,7 @@ const M = {
 	S,
 	State,
 	Load,
+	C,
 
 	struct,
 
