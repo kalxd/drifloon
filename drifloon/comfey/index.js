@@ -4,6 +4,7 @@
  */
 
 const Alert = require("./alert");
+const Confirm = require("./confirm");
 
 const { injectCSS } = require("../gm")
 
@@ -12,5 +13,6 @@ const inject = () => injectCSS("comfey");
 
 module.exports = {
 	inject,
-	Alert
+	Alert,
+	Confirm
 };

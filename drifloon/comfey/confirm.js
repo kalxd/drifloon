@@ -20,6 +20,7 @@ const show$ = R.curry((title, msg) => {
 			fmap(renderTitle, title),
 			renderContent(msg),
 			renderFooter([
+				DOM.button("._.red.button.reject", "不好"),
 				DOM.button("._.blue.button.accept", "好")
 			])
 		]);

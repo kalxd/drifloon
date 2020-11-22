@@ -1,4 +1,6 @@
 /** 模态对话框实现 */
+const R = require("rambda");
+const DOM = require("@cycle/dom");
 
 const { blankAtBodyEnd } = require("../zoo/builder");
 
@@ -18,7 +20,23 @@ const createDimmer = () => {
 	return dimmer;
 };
 
+// renderBy :: Selector -> View -> View
+const renderBy = R.curry((klass, view) => DOM.div(klass, view));
+
+// renderTitle :: View -> View
+const renderTitle = renderBy(".title");
+
+// renderContent :: View -> View
+const renderContent = renderBy(".content");
+
+// renderContent :: View -> View
+const renderFooter = renderBy(".footer");
+
 module.exports = {
 	BASE_MODAL_STYLE,
-	createDimmer
+	createDimmer,
+
+	renderTitle,
+	renderContent,
+	renderFooter
 };
