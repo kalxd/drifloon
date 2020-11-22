@@ -2,7 +2,7 @@ const R = require("rambda");
 const Most = require("most");
 const DOM = require("@cycle/dom");
 
-const { createDimmer } = require("./modal");
+const { createDimmer, BASE_MODAL_STYLE } = require("./modal");
 const { execModalAt } = require("../run");
 const { fromAccept, fromReject } = require("../vnode/event");
 
@@ -21,7 +21,7 @@ const footer = DOM.div(".footer", [
 // show :: String -> String -> Stream ()
 const show = R.curry((title, msg) => {
 	const app = source => {
-		const view = DOM.div("._.modal.small", [
+		const view = DOM.div("._.modal.small", { style: BASE_MODAL_STYLE }, [
 			drawTitle(title),
 			drawContent(msg),
 			footer
