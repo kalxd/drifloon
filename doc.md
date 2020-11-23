@@ -1,5 +1,5 @@
 ---
-title: drifloon（v0.11.0）使用手册
+title: drifloon（v0.12.0）使用手册
 author: 荀徒之
 documentclass: morelull
 numbersections: true
@@ -33,19 +33,16 @@ M相当于顶层命名空间，包含了以下几个模块。
   + [S]，流相关函数，包括错误处理。
   + [State]，状态管理。
   + [Load]，页面状态。
-  + [GX], 暴力猴API再封装。
+  + [GX]， 暴力猴API再封装。
+  + [C]，comfey封装。
 
 # 更新日志 #
 
-此次是大更新：
+此次更新仅添加对comfey的支持。新增了[C]模块。
 
-* [rambda]代替ramda.js，减少体积、提高效能。
-* 删除使用率不高的partial.lenses，lenses使用[rambda]提供的功能。
-* 添加[splitBy]、[split]。
-* 删除F.maybeOr，已有R.defaultTo。
-* 添加[\_fst]、[\_snd]。
-* 添加[fromClickI]、[fromClickI_]。
-* 添加大量测试。
+* 添加[C.inject][inject]，注入名为comfey的资源。
+* 添加[createDimmer]等函数。
+* 添加[alert]等函数。
 
 # 命名规范 #
 
@@ -1192,6 +1189,100 @@ injectCSS :: String -> IO (Maybe Element)
 // @resource mycss //path/to/my.css
 
 GM.injectCSS("mycss");
+```
+
+## C ##
+
+### inject ###
+
+```haskell
+inject :: () -> IO (Maybe Element)
+```
+
+注入名为comfey的资源。
+
+### createDimmer ###
+
+```haskell
+createDimmer :: () -> IO Element
+```
+
+### renderModal ###
+
+```haskell
+renderModal :: View -> View
+```
+
+### renderTitle ###
+
+```haskell
+renderTitle :: View -> View
+```
+
+### renderContent ###
+
+```haskell
+renderContent :: View -> View
+```
+
+### renderFooter ###
+
+```haskell
+renderFooter :: View -> View
+```
+
+### footer ###
+
+```haskell
+footer :: View
+```
+
+### alert$ ###
+
+```haskell
+alert$ :: Maybe String -> String -> Stream ()
+```
+
+### alert_$ ###
+
+```haskell
+alert_$ :: String -> Stream ()
+```
+
+### alert ###
+
+```haskell
+alert :: Maybe String -> String -> Promise ()
+```
+
+### alert_ ###
+
+```haskell
+alert_ :: Maybe String -> String -> Promise ()
+```
+
+### confirm$ ###
+
+```haskell
+confirm$ :: Maybe String -> String -> Stream ()
+```
+
+### confirm_$ ###
+
+```haskell
+confirm_$ :: String -> Stream ()
+```
+
+### confirm ###
+
+```haskell
+confirm :: Maybe String -> String -> Promise ()
+```
+
+### confirm_ ###
+
+```haskell
+confirm_ :: Maybe String -> String -> Promise ()
 ```
 
 # cycle.js
