@@ -3,8 +3,8 @@ const Most = require("most");
 const DOM = require("@cycle/dom");
 
 const {
-	BASE_MODAL_STYLE,
 	createDimmer,
+	renderModal,
 	renderTitle,
 	renderContent,
 	renderFooter
@@ -13,10 +13,10 @@ const { execModalAt } = require("../run");
 const { fromAccept, fromReject } = require("../vnode/event");
 const { fmap } = require("../function");
 
-// show$ :: Maybe String -> String -> Stream ()
-const show$ = R.curry((title, msg) => {
+// alert$ :: Maybe String -> String -> Stream ()
+const alert$ = R.curry((title, msg) => {
 	const app = source => {
-		const view = DOM.div("._.modal.small", { style: BASE_MODAL_STYLE }, [
+		const view = renderModal([
 			fmap(renderTitle, title),
 			renderContent(msg),
 			renderFooter([
@@ -40,20 +40,20 @@ const show$ = R.curry((title, msg) => {
 	return execModalAt(node, app);
 });
 
-// show_$ :: String -> Stream ()
-const show_$ = show$(null);
+// alert_$ :: String -> Stream ()
+const alert_$ = alert$(null);
 
-// show :: Maybe String -> String -> Promise ()
-const show = R.curry((title, msg) => {
-	return show$(title, msg).drain();
+// alert :: Maybe String -> String -> Promise ()
+const alert = R.curry((title, msg) => {
+	return alert$(title, msg).drain();
 });
 
-// show_ :: String -> Promise ()
-const show_ = show(null);
+// alert_ :: String -> Promise ()
+const alert_ = alert(null);
 
 module.exports = {
-	show$,
-	show_$,
-	show,
-	show_
+	alert$,
+	alert_$,
+	alert,
+	alert_
 };

@@ -2,7 +2,7 @@
  * Comfey模块的js实现。
  * 需要依赖comfey项目。
  */
-
+const Modal = require("./modal");
 const Alert = require("./alert");
 const Confirm = require("./confirm");
 
@@ -13,6 +13,7 @@ const inject = () => injectCSS("comfey");
 
 module.exports = {
 	inject,
-	Alert,
-	Confirm
+	...Modal,
+	...Alert,
+	...Confirm
 };

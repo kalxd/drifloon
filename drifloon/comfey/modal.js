@@ -23,6 +23,13 @@ const createDimmer = () => {
 // renderBy :: Selector -> View -> View
 const renderBy = R.curry((klass, view) => DOM.div(klass, view));
 
+// renderModal :: View -> View
+const renderModal = view => DOM.div(
+	"._.small.modal",
+	{ style: BASE_MODAL_STYLE},
+	view
+);
+
 // renderTitle :: View -> View
 const renderTitle = renderBy(".title");
 
@@ -32,11 +39,18 @@ const renderContent = renderBy(".content");
 // renderContent :: View -> View
 const renderFooter = renderBy(".footer");
 
+// footer :: View
+const footer = renderFooter([
+	DOM.button("._.red.reject.button", "不好"),
+	DOM.button("._.blue.accept.button", "好")
+]);
+
 module.exports = {
-	BASE_MODAL_STYLE,
 	createDimmer,
 
+	renderModal,
 	renderTitle,
 	renderContent,
-	renderFooter
+	renderFooter,
+	footer
 };

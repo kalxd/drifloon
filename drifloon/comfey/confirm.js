@@ -1,28 +1,24 @@
 const R = require("rambda");
 const Most = require("most");
-const DOM = require("@cycle/dom");
 
 const {
-	BASE_MODAL_STYLE,
 	createDimmer,
+	renderModal,
 	renderTitle,
 	renderContent,
-	renderFooter
+	footer
 } = require("./modal");
 const { execModalAt } = require("../run");
 const { fromAccept, fromReject } = require("../vnode/event");
 const { fmap } = require("../function");
 
-// show$ :: Maybe String -> String -> Stream ()
-const show$ = R.curry((title, msg) => {
+// confirm$ :: Maybe String -> String -> Stream ()
+const confirm$ = R.curry((title, msg) => {
 	const app = source => {
-		const view = DOM.div("._.modal.small", { style: BASE_MODAL_STYLE }, [
+		const view = renderModal([
 			fmap(renderTitle, title),
 			renderContent(msg),
-			renderFooter([
-				DOM.button("._.red.button.reject", "不好"),
-				DOM.button("._.blue.button.accept", "好")
-			])
+			footer
 		]);
 
 		const DOM$ = Most.of(view);
@@ -41,20 +37,20 @@ const show$ = R.curry((title, msg) => {
 	return execModalAt(node, app);
 });
 
-// show_$ :: String -> Stream ()
-const show_$ = show$(null);
+// confirm_$ :: String -> Stream ()
+const confirm_$ = confirm$(null);
 
-// show :: Maybe String -> String -> Promise ()
-const show = R.curry((title, msg) => {
-	return show$(title, msg).drain();
+// confirm :: Maybe String -> String -> Promise ()
+const confirm = R.curry((title, msg) => {
+	return confirm$(title, msg).drain();
 });
 
-// show_ :: String -> Promise ()
-const show_ = show(null);
+// confirm_ :: String -> Promise ()
+const confirm_ = confirm(null);
 
 module.exports = {
-	show$,
-	show_$,
-	show,
-	show_
+	confirm$,
+	confirm_$,
+	confirm,
+	confirm_
 };
