@@ -17,7 +17,7 @@ $ npm install
 需要webpack环境，版本应该没什么要求。
 
 ```bash
-$ webpack
+$ npm run build
 ```
 
 # 使用 #
@@ -32,6 +32,11 @@ $ webpack
 $ ./doc.fish
 ```
 
+# 运行测试 #
+
+```bash
+$ npm run test
+```
 
 [rambda]: https://github.com/selfrefactor/rambda
 [cycle.js]: https://github.com/cyclejs
