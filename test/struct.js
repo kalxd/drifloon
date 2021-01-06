@@ -2,10 +2,10 @@ const { testProp, fc } = require("ava-fast-check");
 const R = require("rambda");
 const { struct } = require("../main");
 
-const T = struct([
+const T = struct(
 	"id",
 	"name"
-]);
+);
 
 testProp(
 	"create struct",
