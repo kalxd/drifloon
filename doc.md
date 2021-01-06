@@ -1,5 +1,5 @@
 ---
-title: drifloon（v0.12.0）使用手册
+title: drifloon（v0.12.1）使用手册
 author: 荀徒之
 documentclass: morelull
 numbersections: true
@@ -38,11 +38,7 @@ M相当于顶层命名空间，包含了以下几个模块。
 
 # 更新日志 #
 
-此次更新仅添加对comfey的支持。新增了[C]模块。
-
-* 添加[C.inject][inject]，注入名为comfey的资源。
-* 添加[createDimmer]等函数。
-* 添加[alert]等函数。
+此次是不兼容更新，[struct]接受不定长参数，不再是以前的数组，同时接受的参数更为复杂。
 
 # 命名规范 #
 
@@ -880,57 +876,118 @@ or :: a -> LoadState a -> a
 ## struct ##
 
 提供类似于racket struct功能的函数，定义一个结构体，能够自动生成对应的lenses。
+除了显式指定类型外，它还可以直接与JSON相互转换。
 
-`struct`目前仅有一个参数，参数类型为`[String]`，里面是每个字段的名字。
-调用之后，返回整个模块，包含名为`gen`的构造函数，及每个字段对应的lenses，命名规则为`${字段名}Lens`。
+> 注意：`struct`仅生成一系列对应方法，并不是真正意义上创建新类型。它操作的依然是js的原始类型。
+> 像鸭子接口。
+
+### 一般类型定义 ###
+
+仅是定义一般类型，直接指定字段即可。
 
 ```javascript
-// 定义User。
-// 同时生成userLens和ageLens。
-const User = M.struct([
-	"name",
-	"age"
-]);
-
-// 定义Contact。
-// 同是生成idLens和usersLens。
-const Contact = M.struct([
+const T = M.struct(
+	// Int
 	"id",
-	"users"
-]);
-
-// 批量生成用户 :: Int -> [User]
-const mkUser = R.times(i => User.gen(`name ${i}`, i));
-
-// contact :: Contact
-const contact = Contact.gen(1, mkUser(3));
-
-// 查看第一个用户信息。
-const firstUserLens = L.compose(
-	Contact.usersLens,
-	L.index(0)
+	// String
+	"name"
 );
-L.get(firstUserLens, contact); // Object { name: "name 0", age: 0 }
 
-// 提到所有用户名字。
-const allUserNameLens = L.compose(
-	Contact.usersLens,
-	L.elems,
-	User.nameLens
-);
-L.collect(allUserNameLens, contact); // Array(3) [ "name 0", "name 1", "name 2" ]
+T.gen(1, "my name");
+// 生成：
+// {
+//   id: 1,
+//   name: "my name"
+// }
 ```
 
-`struct`直白地定义出新结构体，与以往注释方式相比，不仅缩短代码，而且“类型”信息体现在代码上。
-若需要指明每条字段的类型，我们依然可以像普通函数那样声明：
+### Lens支持 ###
+
+`struct`能生成每个字段对应的Lens。
+生成规则同是每个字段后面跟上`Lens`，例如`struct("myField")`，那么会生成`myFieldLens`，以此类推。
+以上述代码为例：
+
 ```javascript
-const User = M.struct([
-    // String
-    "name",
-    // Int
-    "age"
-]);
+const t = T.gen(1, "my name");
+// { id: 1, name: "my name" }
+
+R.over(T.nameLens, R.toUpper, t);
+// { id: 1, name: "MY NAME" }
 ```
+
+### JSON相互转化 ###
+
+JSON不就是object嘛？[gen]生成的不也是object嘛？为什么还要加个转化？
+
+原因在于有些JSON格式并不如我们所想，需要额外转化一次，举了常见例子：一个下拉框，要接受`{ key }`的object，而服务传来的是`{ id }`，这就需要我们再转一遍。同样的，我们也能把一个object转成另一个格式的JSON。
+
+```javascript
+const T = struct(
+	// Int
+	"id",
+	// String
+	["label", "text"]
+);
+```
+`["label", "text"]`前者是object字段，后者是JSON字段，用一个元组将它们联系在一起。
+
+```javascript
+/** 由json生成 */
+T.fromJSON({ id: 1, text: "hello" });
+// { id: 1, label: "hello" }
+
+/** 生成json */
+const t = T.gen(1, "hello");
+// { id: 1, label: "hello" }
+
+T.toJSON(t);
+// { id: 1, text: "hello" }
+```
+
+### 嵌套声明 ###
+
+上面例子都是一层结构，`struct`支持嵌套结构。
+
+```javascript
+const T = struct(
+	// Int
+	["id", "key"]
+);
+
+const P = struct(
+	// Int
+	"id",
+	// T
+	["t", T]
+);
+
+const json = {
+	id: 1,
+	t: {
+		key: 2
+	}
+};
+
+P.fromJSON(json);
+// {
+//   id: 1,
+//   t: {
+//     id: 2
+//   }
+// }
+```
+`["t", T]`第二个参数改成了上面已定义好的类型，指定了遇到`t`这个字段如何转化。
+这个参数还可以继续扩展。
+
+```javascript
+const K = M.struct(
+	// Int
+	"id",
+	// P
+	["value", ["p", P]]
+);
+```
+`["value", ["p", p]]`后面参数变成了二元组，前者指定json字段，后者指定转化的类型。
 
 ### gen ###
 
@@ -952,6 +1009,14 @@ const User = M.struct(["name", "age"]);
 const user = User.gen("user", 1);
 User.values(user); // ["user", 1];
 ```
+
+### toJSON ###
+
+见[JSON相互转化]。
+
+### fromJSON ###
+
+见[JSON相互转化]。
 
 ## GX ##
 
