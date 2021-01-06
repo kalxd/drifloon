@@ -4,7 +4,13 @@ const { struct } = require("../main");
 
 const T = struct(
 	"id",
-	"name"
+	["name"]
+);
+
+const P = struct(
+	"id",
+	["age", "year"],
+	["t", T]
 );
 
 testProp(
@@ -34,5 +40,60 @@ testProp(
 		const nextO = R.over(T.idLens, R.inc, o);
 
 		return t.true(R.propEq("id", nextId, nextO));
+	}
+);
+
+testProp(
+	"struct -> json",
+	[
+		fc.nat(),
+		fc.nat(),
+		fc.record({
+			id: fc.nat(),
+			name: fc.string()
+		})
+	],
+	(t, id, age, tt) => {
+		const p = P.gen(id, age, tt);
+		const json = P.toJSON(p);
+
+		const v = R.where({
+			id: R.is(Number),
+			year: R.is(Number),
+			t: R.where({
+				id: R.is(Number),
+				name: R.is(String)
+			})
+		});
+
+		return t.true(v(json));
+	}
+);
+
+testProp(
+	"json -> struct",
+	[
+		fc.record({
+			id: fc.nat(),
+			year: fc.nat(),
+			t: fc.record({
+				id: fc.nat(),
+				name: fc.string()
+			})
+		})
+	],
+	(t, json) => {
+		const p = P.fromJSON(json);
+
+		const v = R.where({
+			id: R.is(Number),
+			year: R.is(Number),
+			t: R.where({
+				id: R.is(Number),
+				name: R.is(String)
+			})
+		});
+
+		return t.true(v(p));
 	}
 );

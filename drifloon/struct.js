@@ -47,7 +47,11 @@ const tr = field => {
 	}
 	else if (n === 2) {
 		const [x, y] = field;
-		return [x, [y, JsonIdentity]];
+
+		if (R.is(String, y)) {
+			return [x, [y, JsonIdentity]];
+		}
+		return [x, [x, y]];
 	}
 	else {
 		return field;
@@ -77,7 +81,11 @@ const struct = (...args) => {
 	// 模拟模块。
 	let M = {};
 
-	const [objKeys, jsonProps] = unzip(args);
+	const [objKeys, jsonProps] = R.pipe(
+		R.map(tr),
+		unzip
+	)(args);
+	const jsonKeys = R.map(R.head, jsonProps);
 
 	// 构造函数
 	M.gen = R.curryN(args.length, (...args) => R.pipe(
@@ -91,7 +99,7 @@ const struct = (...args) => {
 	// 转化成JSON。
 	M.toJSON = R.compose(
 		R.fromPairs,
-		R.map(([key, Type], x) => {
+		R.map(([[key, Type], x]) => {
 			const value = Type.toJSON(x);
 			return [key, value];
 		}),
@@ -102,12 +110,12 @@ const struct = (...args) => {
 	// 转化成JSON。
 	M.fromJSON = R.compose(
 		R.fromPairs,
-		R.map(([key, Type], x) => {
+		R.map(([[key, Type], x]) => {
 			const value = Type.fromJSON(x);
 			return [key, value];
 		}),
 		R.zip(jsonProps),
-		R.props(objKeys)
+		R.props(jsonKeys)
 	);
 
 	// 生成每个字段的lens。
