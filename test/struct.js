@@ -10,7 +10,7 @@ const T = struct(
 const P = struct(
 	"id",
 	["age", "year"],
-	["t", T]
+	["value", ["t", T]]
 );
 
 testProp(
@@ -53,8 +53,8 @@ testProp(
 			name: fc.string()
 		})
 	],
-	(t, id, age, tt) => {
-		const p = P.gen(id, age, tt);
+	(t, id, age, value) => {
+		const p = P.gen(id, age, value);
 		const json = P.toJSON(p);
 
 		const v = R.where({
@@ -88,7 +88,7 @@ testProp(
 		const v = R.where({
 			id: R.is(Number),
 			year: R.is(Number),
-			t: R.where({
+			value: R.where({
 				id: R.is(Number),
 				name: R.is(String)
 			})

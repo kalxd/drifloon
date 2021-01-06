@@ -36,22 +36,29 @@ const JsonIdentity = {
  */
 const tr = field => {
 	if (R.is(String, field)) {
+		// field = "field"
 		return [field, [field, JsonIdentity]];
 	}
 
 	const n = field.length;
 
 	if (n === 1) {
+		// field = ["x"]
 		const [x] = field;
 		return [x, [x, JsonIdentity]];
 	}
 	else if (n === 2) {
+		// field = ["x", ?]
 		const [x, y] = field;
 
 		if (R.is(String, y)) {
+			// field = ["x", "y"]
 			return [x, [y, JsonIdentity]];
 		}
-		return [x, [x, y]];
+		else {
+			// field = ["x", ["y", Type]]
+			return field;
+		}
 	}
 	else {
 		return field;
