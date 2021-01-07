@@ -919,7 +919,7 @@ R.over(T.nameLens, R.toUpper, t);
 
 JSON不就是object嘛？[gen]生成的不也是object嘛？为什么还要加个转化？
 
-原因在于有些JSON格式并不如我们所想，需要额外转化一次，举了常见例子：一个下拉框，要接受`{ key }`的object，而服务传来的是`{ id }`，这就需要我们再转一遍。同样的，我们也能把一个object转成另一个格式的JSON。
+原因在于有些JSON格式并不如我们所想，需要额外转化一次，举一个常见例子：一个下拉框，要接受`{ key }`的object，而服务传来的是`{ id }`，这就需要我们再转一遍。同样的，我们也能把一个object转成另一个格式的JSON。
 
 ```javascript
 const T = struct(
