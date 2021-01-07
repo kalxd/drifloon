@@ -133,4 +133,6 @@ const struct = (...args) => {
 	return M;
 };
 
-module.exports = struct;
+module.exports = {
+	struct
+};

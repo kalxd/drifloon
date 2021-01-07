@@ -1,29 +1,29 @@
 const { testProp, fc } = require("ava-fast-check");
 const R = require("rambda");
-const { struct } = require("../main");
+const { T } = require("../main");
 
-const T = struct(
+const S = T.struct(
 	"id",
 	["name"]
 );
 
-const P = struct(
+const P = T.struct(
 	"id",
 	["age", "year"],
-	["t", T],
-	["value", "tt", T]
+	["t", S],
+	["value", "tt", S]
 );
 
 testProp(
 	"create struct",
 	[fc.nat(), fc.string()],
 	(t, id, name) => {
-		const o = T.gen(id, name);
+		const o = S.gen(id, name);
 
 		const sort = R.sort(R.max);
 
 		const a1 = sort([id, name]);
-		const a2 = sort(T.values(o));
+		const a2 = sort(S.values(o));
 		return t.deepEqual(a1, a2);
 	}
 );
@@ -38,7 +38,7 @@ testProp(
 	],
 	(t, o) => {
 		const nextId = R.inc(o.id);
-		const nextO = R.over(T.idLens, R.inc, o);
+		const nextO = R.over(S.idLens, R.inc, o);
 
 		return t.true(R.propEq("id", nextId, nextO));
 	}

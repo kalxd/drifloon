@@ -10,7 +10,7 @@ const V = require("./drifloon/vnode");
 const State = require("./drifloon/state");
 const Load = require("./drifloon/load");
 const C = require("./drifloon/comfey");
-const struct = require("./drifloon/struct");
+const T = require("./drifloon/type");
 
 const Run = require("./drifloon/run");
 
@@ -27,8 +27,7 @@ const M = {
 	State,
 	Load,
 	C,
-
-	struct,
+	T,
 
 	...Run
 };
