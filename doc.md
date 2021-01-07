@@ -1,5 +1,5 @@
 ---
-title: drifloon（v0.12.1）使用手册
+title: drifloon（v0.13.0）使用手册
 author: 荀徒之
 documentclass: morelull
 numbersections: true

@@ -6,18 +6,20 @@
 const R = require("rambda");
 
 /**
- * unzip :: [(a, b)] -> ([a], [b])
+ * unzip :: [(a, b, c)] -> ([a], [b], [c])
  */
 const unzip = xs => {
 	let as = [];
 	let bs = [];
+	let cs = [];
 
 	for (const x of xs) {
 		as.push(x[0]);
 		bs.push(x[1]);
+		cs.push(x[2]);
 	}
 
-	return [as, bs];
+	return [as, bs, cs];
 };
 
 /**
@@ -31,13 +33,13 @@ const JsonIdentity = {
 /**
  * 将struct一个field完全展开。
  * field要么是`String`，要么是`Array`，其他类型不考虑。
- * 对于`struct("id", ["id", "id"])`，那么field可能对应`id`或`["id", "id"]`。
- * 最后一定是转化成`("id", ("id", tr))`。
+ * 对于`struct("id", ["id", Type])`，那么field可能对应`id`或`["id", Type]`。
+ * 最后一定是转化成`("id", "id", tr)`。
  */
 const tr = field => {
 	if (R.is(String, field)) {
 		// field = "field"
-		return [field, [field, JsonIdentity]];
+		return [field, field, JsonIdentity];
 	}
 
 	const n = field.length;
@@ -45,7 +47,7 @@ const tr = field => {
 	if (n === 1) {
 		// field = ["x"]
 		const [x] = field;
-		return [x, [x, JsonIdentity]];
+		return [x, x, JsonIdentity];
 	}
 	else if (n === 2) {
 		// field = ["x", ?]
@@ -53,14 +55,15 @@ const tr = field => {
 
 		if (R.is(String, y)) {
 			// field = ["x", "y"]
-			return [x, [y, JsonIdentity]];
+			return [x, y, JsonIdentity];
 		}
 		else {
-			// field = ["x", ["y", Type]]
-			return field;
+			// field = ["x", Type]
+			return [x, x, y];
 		}
 	}
 	else {
+		// field = ["x", "y", Type]
 		return field;
 	}
 };
@@ -80,7 +83,9 @@ const tr = field => {
  * const MyUser = struct(
  *   // String
  *   "id",
- *   ["type", ["other-type", MyType]]
+ *   ["type", "other-type"],
+ *   ["type", MyType],
+ *   ["type", "other-type", MyType]
  * );
  * ```
  */
@@ -88,11 +93,10 @@ const struct = (...args) => {
 	// 模拟模块。
 	let M = {};
 
-	const [objKeys, jsonProps] = R.pipe(
+	const [objKeys, jsonKeys, trs] = R.pipe(
 		R.map(tr),
 		unzip
 	)(args);
-	const jsonKeys = R.map(R.head, jsonProps);
 
 	// 构造函数
 	M.gen = R.curryN(args.length, (...args) => R.pipe(
@@ -106,22 +110,18 @@ const struct = (...args) => {
 	// 转化成JSON。
 	M.toJSON = R.compose(
 		R.fromPairs,
-		R.map(([[key, Type], x]) => {
-			const value = Type.toJSON(x);
-			return [key, value];
-		}),
-		R.zip(jsonProps),
+		R.zip(jsonKeys),
+		R.map(([Type, x]) => Type.toJSON(x)),
+		R.zip(trs),
 		R.props(objKeys)
 	);
 
 	// 转化成JSON。
 	M.fromJSON = R.compose(
 		R.fromPairs,
-		R.map(([[key, Type], x]) => {
-			const value = Type.fromJSON(x);
-			return [key, value];
-		}),
-		R.zip(jsonProps),
+		R.zip(objKeys),
+		R.map(([Type, x]) => Type.fromJSON(x)),
+		R.zip(trs),
 		R.props(jsonKeys)
 	);
 

@@ -10,7 +10,8 @@ const T = struct(
 const P = struct(
 	"id",
 	["age", "year"],
-	["value", ["t", T]]
+	["t", T],
+	["value", "tt", T]
 );
 
 testProp(
@@ -54,13 +55,17 @@ testProp(
 		})
 	],
 	(t, id, age, value) => {
-		const p = P.gen(id, age, value);
+		const p = P.gen(id, age, value, value);
 		const json = P.toJSON(p);
 
 		const v = R.where({
 			id: R.is(Number),
 			year: R.is(Number),
 			t: R.where({
+				id: R.is(Number),
+				name: R.is(String)
+			}),
+			tt: R.where({
 				id: R.is(Number),
 				name: R.is(String)
 			})
@@ -74,8 +79,14 @@ testProp(
 	"json -> struct",
 	[
 		fc.record({
-			id: fc.nat(),
+			key: fc.nat(),
 			year: fc.nat(),
+			id: fc.nat(),
+			tt: fc.record({
+				id: fc.nat(),
+				name: fc.string(),
+			}),
+			value: fc.string(),
 			t: fc.record({
 				id: fc.nat(),
 				name: fc.string()
@@ -87,8 +98,12 @@ testProp(
 
 		const v = R.where({
 			id: R.is(Number),
-			year: R.is(Number),
+			age: R.is(Number),
 			value: R.where({
+				id: R.is(Number),
+				name: R.is(String)
+			}),
+			t: R.where({
 				id: R.is(Number),
 				name: R.is(String)
 			})
