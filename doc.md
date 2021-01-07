@@ -984,17 +984,17 @@ const K = M.struct(
 	// Int
 	"id",
 	// P
-	["value", ["p", P]]
+	["value", "p", P]
 );
 ```
-`["value", ["p", p]]`后面参数变成了二元组，前者指定json字段，后者指定转化的类型。
+`["value", "p", p]`参数变成了三元组，最后的参数指定转化的类型。
 
 ### gen ###
 
 构造函数。
 
 ```javascript
-const Id = M.struct(["id"]);
+const Id = M.struct("id");
 
 const id = Id.gen(1); // { id: 1 }
 ```
@@ -1004,7 +1004,7 @@ const id = Id.gen(1); // { id: 1 }
 获得所有的值。
 
 ```javascript
-const User = M.struct(["name", "age"]);
+const User = M.struct("name", "age");
 
 const user = User.gen("user", 1);
 User.values(user); // ["user", 1];
