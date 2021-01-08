@@ -1005,7 +1005,7 @@ const T = M.struct(
 	// Maybe [Item]
 	["items", S]
 );
-``**
+```
 
 **类型签名还是单独加上为好**。
 
