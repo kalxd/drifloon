@@ -1,13 +1,13 @@
 const { testProp, fc } = require("ava-fast-check");
 const R = require("rambda");
-const { T } = require("../main");
+const { struct } = require("../main");
 
-const S = T.struct(
+const S = struct(
 	"id",
 	["name"]
 );
 
-const P = T.struct(
+const P = struct(
 	"id",
 	["age", "year"],
 	["t", S],
@@ -110,5 +110,45 @@ testProp(
 		});
 
 		return t.true(v(p));
+	}
+);
+
+testProp(
+	"struct复杂类型",
+	[
+		fc.record({
+			id: fc.nat(),
+			name: fc.option(fc.string()),
+			items: fc.array(fc.record({
+				key: fc.nat(),
+				prod: fc.option(fc.string())
+			}))
+		})
+	],
+	(t, json) => {
+		const ItemType = struct(
+			"key",
+			["name", "prod"]
+		);
+
+		const T = struct(
+			"id",
+			"name",
+			["items", ItemType]
+		);
+
+		const output = T.fromJSON(json);
+
+		const b1 = t.deepEqual(
+			R.pick(["id", "name"], json),
+			R.pick(["id", "name"], output)
+		);
+
+		const b2 = t.deepEqual(
+			output.items,
+			R.map(ItemType.fromJSON, json.items)
+		);
+
+		return b1 && b2;
 	}
 );
