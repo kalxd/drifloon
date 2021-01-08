@@ -989,6 +989,26 @@ const K = M.struct(
 ```
 `["value", "p", p]`参数变成了三元组，最后的参数指定转化的类型。
 
+### 空值与数组 ###
+
+`["value", "p", p]`的第三个参数指定struct与JSON之间的转换关系，并不是类型意义上的声明。struct在处理这类数据时，自动区别空值、对象、数组等原始类型。
+
+```javascript
+const S = M.struct(
+	// String
+	"name"
+);
+
+const T = M.struct(
+	// Int
+	"id",
+	// Maybe [Item]
+	["items", S]
+);
+``**
+
+**类型签名还是单独加上为好**。
+
 ### gen ###
 
 构造函数。
