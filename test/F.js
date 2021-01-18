@@ -213,3 +213,47 @@ testProp(
 		t.true(R.all(g, xs));
 	}
 );
+
+testProp(
+	"seqWith empty",
+	[fc.integer(), fc.string()],
+	(t, a, b) => {
+		const base = {};
+		const seqBase = F.seqWith(base);
+
+		const output = seqBase(
+			F.Set("a", a),
+			F.Set("b", b)
+		);
+
+		const expected = { a, b };
+
+		t.deepEqual(output, expected);
+	}
+);
+
+testProp(
+	"seqWith optional",
+	[fc.string(), fc.option(fc.string())],
+	(t, a, ma) => {
+		const base = {
+			a: null
+		};
+		const seqBase = F.seqWith(base);
+		const output = seqBase(
+			F.Set("a", a),
+			F.SetWhen("b", ma)
+		);
+
+		const expect = (ma => {
+			if (R.isNil(ma)) {
+				return { a };
+			}
+			else {
+				return { a, b: ma };
+			}
+		})(ma);
+
+		t.deepEqual(output, expect);
+	}
+);

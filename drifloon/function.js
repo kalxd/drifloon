@@ -196,6 +196,37 @@ const genValue = f => {
 	};
 };
 
+/**
+ * seqWith :: a -> [...(a -> a)] -> a
+ */
+const seqWith = init => (...fs) => {
+	return R.reduce((acc, f) => f(acc), init, fs);
+};
+
+/**
+ * Set :: String -> b -> a -> b
+ */
+const Set = R.assocPath;
+
+/**
+ * SetIf :: Bool -> String -> b -> a -> a
+ */
+const SetIf = R.curry((b, key, value, a) => {
+	if (b) {
+		return Set(key, value, a);
+	}
+	else {
+		return a;
+	}
+});
+
+/**
+ * SetWhen :: String -> Maybe b -> a ->
+ */
+const SetWhen = R.curry((key, value, a) => {
+	return SetIf(isJust(value), key, value, a);
+});
+
 module.exports = {
 	fmap,
 	fmap2,
@@ -217,5 +248,10 @@ module.exports = {
 	_snd,
 
 	makeValue,
-	genValue
+	genValue,
+
+	seqWith,
+	Set,
+	SetIf,
+	SetWhen
 };

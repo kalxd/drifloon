@@ -11,7 +11,7 @@ indent: true
 直接引入，得到一个最大模块名——`M`。
 
 ```javascript
-// @require http://<你的域名>.com/dep/drifloon.dep.<哪个版本>.js
+// @require http://<你的域名>.com/dep/drifloon.<哪个版本>.js
 
 console.log(M);
 ```
@@ -38,7 +38,10 @@ M相当于顶层命名空间，包含了以下几个模块。
 
 # 更新日志 #
 
-此次是不兼容更新，[struct]接受不定长参数，不再是以前的数组，同时接受的参数更为复杂。
+* 添加[F.seqWith][seqWith]。
+* 添加[F.Set][Set]。
+* 添加[F.SetIf][SetIf]。
+* 添加[F.SetWhen][SetWhen]。
 
 # 命名规范 #
 
@@ -257,6 +260,99 @@ value();
 // done!
 // 0.171352363719799
 ```
+
+### seqWith ###
+
+> 该函数与[Set]相互配合使用，[SetIf]、[SetWhen]是[Set]扩展版本。
+
+本函数一般用来处理开关式参数选项，在js代码表现为对一个object的处理。我们以http请求为例子，一般而言，一个网站请求分为GET、POST、PUT、DELETE……参数雷同，仅有小部分区别，那么需要提取共有部分，再分别处理。以往的代码需要这样写：
+
+```javascript
+// 十分命令式写法
+const BASE_INIT = {
+	headers: {
+		"Content-Type": "application/json"
+	}
+};
+
+const GET = url => {
+	const init = Object.assign({}, BASE_INIT, {
+		method: "GET"
+	});
+
+	return fetch(url, init);
+};
+
+const POST = (url, body) => {
+	let init = Object.assign({}, BASE_INIT, {
+		method: "POST"
+	});
+
+	if (body) {
+		init.body = JSON.stringify(body);
+	}
+
+	return fetch(url, init);
+};
+```
+
+其中`BASE_INIT`是共用属性，是不能改变的，于是每次函数调用时都要复制一次。整个过程支离破碎，东一块，西一块。用[seqWith]封装这个过程，代码更加语义化：
+
+```javascript
+// 我们依然需要初始配置。
+const BASE_INIT = {
+	headers: {
+		"Content-Type": "application/json"
+	}
+};
+
+// 接受初始配置，之后每次Set都会自动更新该配置。
+const seqInit = F.seqWith(BASE_INIT);
+
+// 对method的“封装”
+const SetMethod = F.Set("method");
+
+const GET = url => {
+	const init = setInit(SetMethod("GET"));
+	return fetch(url, init);
+};
+
+const POST = (url, body) => {
+	const init = setInit(
+		SetMethod("POST"),
+		// SetWhen如果接受一个空的值，不会设置新值。
+		SetWhen("body", F.fmap(JSON.stringify, body))
+	);
+
+	return fetch(url, init);
+};
+```
+
+以上两处代码等价，可以看到代码整体性更强。除了FetchInit处理，常用数据库连接参数选项同样能胜任。
+
+### Set ###
+
+```haskell
+Set :: String -> b -> a -> a
+```
+
+见[seqWith]。
+
+### SetIf ###
+
+```haskell
+SetIf :: Bool -> String -> b -> a -> a
+```
+
+[Set]扩展版本，它的第一个参数为`Bool`，如果该参数为`False`，那么不会设置新值。
+
+### SetWhen ###
+
+```haskell
+SetWhen :: String -> Maybe b -> a -> a
+```
+
+[Set]扩展版本，若接受到一个空值，那么就不会设置新值。
 
 ## V
 
