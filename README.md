@@ -1,5 +1,6 @@
 # drifloon #
 ![drifloon testing](https://github.com/kalxd/drifloon/workflows/drifloon%20testing/badge.svg)
+![drifloon publish](https://github.com/kalxd/drifloon/workflows/drifloon%20publish/badge.svg)
 
 ![drifloon](https://media.52poke.com/wiki/archive/e/eb/20140413170939%21425Drifloon.png)
 
