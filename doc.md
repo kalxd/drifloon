@@ -313,12 +313,12 @@ const seqInit = F.seqWith(BASE_INIT);
 const SetMethod = F.Set("method");
 
 const GET = url => {
-	const init = setInit(SetMethod("GET"));
+	const init = seqInit(SetMethod("GET"));
 	return fetch(url, init);
 };
 
 const POST = (url, body) => {
-	const init = setInit(
+	const init = seqInit(
 		SetMethod("POST"),
 		// SetWhen如果接受一个空的值，不会设置新值。
 		SetWhen("body", F.fmap(JSON.stringify, body))
