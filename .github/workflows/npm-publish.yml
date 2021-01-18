@@ -4,8 +4,8 @@
 name: drifloon publish
 
 on:
-  release:
-    types: [created]
+  push:
+    tags: ["v*.*.*"]
 
 jobs:
   build:
