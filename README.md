@@ -1,4 +1,5 @@
 # drifloon #
+![npm](https://img.shields.io/npm/v/drifloon?color=brightgreen&label=drifloon)
 ![drifloon testing](https://github.com/kalxd/drifloon/workflows/drifloon%20testing/badge.svg)
 ![drifloon publish](https://github.com/kalxd/drifloon/workflows/drifloon%20publish/badge.svg)
 
