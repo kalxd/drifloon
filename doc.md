@@ -1,5 +1,5 @@
 ---
-title: drifloon（v0.13.1）使用手册
+title: drifloon（v0.13.2）使用手册
 author: 荀徒之
 documentclass: morelull
 numbersections: true
@@ -38,10 +38,7 @@ M相当于顶层命名空间，包含了以下几个模块。
 
 # 更新日志 #
 
-* 添加[F.seqWith][seqWith]。
-* 添加[F.Set][Set]。
-* 添加[F.SetIf][SetIf]。
-* 添加[F.SetWhen][SetWhen]。
+更新依赖。
 
 # 命名规范 #
 
