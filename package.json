@@ -1,6 +1,6 @@
 {
 	"name": "drifloon",
-	"version": "0.13.2",
+	"version": "0.14.0",
 	"description": "主打油猴依赖库，并附加前端工程化。",
 	"scripts": {
 		"build": "npx webpack",

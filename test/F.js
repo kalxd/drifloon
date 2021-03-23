@@ -1,6 +1,5 @@
 const { testProp, fc } = require("ava-fast-check");
 const R = require("rambda");
-const Most = require("most");
 
 const { F } = require("../main");
 
@@ -174,43 +173,6 @@ testProp(
 	(t, xs) => {
 		const snd = R.view(F._snd, xs);
 		return t.true(snd === xs[1]);
-	}
-);
-
-testProp(
-	"makeValue",
-	[fc.string(), fc.array(fc.integer())],
-	(t, init, xs) => {
-		const f = F.makeValue(init);
-		const g = x => {
-			f(x);
-			return x === f(x);
-		};
-
-		t.true(R.all(g, xs));
-	}
-);
-
-testProp(
-	"genValue",
-	[
-		fc.integer(),
-		fc.array(fc.option(fc.integer()))
-	],
-	(t, init, xs) => {
-		const f = F.genValue(R.always(init));
-
-		const g = x => {
-			f(x);
-			if (R.isNil(x)) {
-				return f() === init;
-			}
-			else {
-				return f() === x;
-			}
-		};
-
-		t.true(R.all(g, xs));
 	}
 );
 
