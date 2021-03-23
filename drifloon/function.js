@@ -193,6 +193,42 @@ const _fst = R.lensIndex(0);
 const _snd = R.lensIndex(1);
 
 /**
+ * runOnce :: (() -> Promise a) -> () -> Promise a
+ */
+const runOnce = f => {
+	// data ST = INIT | LOADING | FINISH
+	// st :: ST
+	let st = "INIT";
+	let x = undefined;
+
+	const g = () => {
+		if (st === "INIT") {
+			st = "LOADING";
+			return Promise.resolve()
+				.then(_ => f())
+				.then(a => {
+					x = a;
+					st = "FINISH";
+					return a;
+				})
+			;
+		}
+		else if (st === "FINISH") {
+			return Promise.resolve(x);
+		}
+		else {
+			return new Promise(resolve => {
+				setTimeout(resolve, 10);
+			})
+				.then(g)
+			;
+		}
+	};
+
+	return g;
+};
+
+/**
  * seqWith :: a -> [...(a -> a)] -> a
  */
 const seqWith = init => (...fs) => {
@@ -242,6 +278,8 @@ module.exports = {
 
 	_fst,
 	_snd,
+
+	runOnce,
 
 	seqWith,
 	Set,

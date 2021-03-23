@@ -1,5 +1,5 @@
 ---
-title: drifloon（v0.13.2）使用手册
+title: drifloon（v0.14.0）使用手册
 author: 荀徒之
 documentclass: morelull
 numbersections: true
@@ -38,7 +38,11 @@ M相当于顶层命名空间，包含了以下几个模块。
 
 # 更新日志 #
 
-更新依赖。
+* 删除函数：
+  - F.makeValue、F.genValue。
+
+* 新增函数：
+  - [F.runOnce][runOnce]。
 
 # 命名规范 #
 
@@ -211,52 +215,26 @@ _fst :: Lens (a, b) -> a
 _snd :: Lens (a, b) -> b
 ```
 
-### makeValue
+### runOnce ###
 
-`makeValue`接受一个初始值，返回一个getter/setter函数，我们叫它为`f`好了，它既能获取内部保存的状态，又能设定新状态：直接调用`f()`获取状态；`f(新值)`设定新状态。
-
-```javascript
-const value = makeValue("blue");
-
-const printColor = () => {
-	// 得到内部存储的值。
-	const color = value();
-	console.log(color);
-};
-
-printColor(); // blue
-
-value("green");
-printColor(); // green
-
-value("red");
-printColor(); // red
+```haskell
+runOnce :: (() -> Promise a) -> () -> Promise a
 ```
 
-### genValue
-
-`genValue`接受一个初始函数`f`，返回同[makeValue]同性质的getter/setter。使用getter时，如果内部状态为`Nil`，便会调用`f`生产新状态，并保存下来。
-
-初始默认状态即为`Nil`。
+一个简易的单例模式，`runOnce`接受工厂函数，返回getter。无论getter调用几次，该工厂函数只会被调用一次。
 
 ```javascript
-const value = genValue(() => {
-	console.log("done!");
-	return Math.random();
+const g = F.runOnce(() => {
+	console.log("do this?");
+	return 1; // 此次也可以是同步代码，但最终还是会变成一个Promise。
 });
 
-value();
-// done!
-// 0.8292609950388922
-
-value();
-// 0.8292609950388922
-
-value(null);
-value();
-// done!
-// 0.171352363719799
+Promise.all([g(), g(), g()]).then(console.log);
+// "do this"
+// [1, 1, 1]
 ```
+
+`"do this"`仅显示一次，而且生成三个同样的值。
 
 ### seqWith ###
 
