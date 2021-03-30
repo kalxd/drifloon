@@ -32,7 +32,7 @@ M相当于顶层命名空间，包含了以下几个模块。
   + [V]，虚拟DOM相关。
   + [S]，流相关函数，包括错误处理。
   + [State]，状态管理。
-  + [Load]，页面状态。
+  + [struct]、[Data]，数据定义与操作。
   + [GX]， 暴力猴API再封装。
   + [C]，comfey封装。
 
@@ -896,54 +896,6 @@ state.get(); // 3
 const modify = f => put(f(get()));
 ```
 
-## Load ##
-
-页面状态，包含“请求中”与“请求完成”两种状态，用haskell表示如下：
-
-```haskell
-data LoadState a = Loading | Finish a
-```
-
-### empty ###
-
-```haskell
-empty :: LoadState a
-empty = Loading
-```
-
-### fmap ###
-
-```haskell
-fmap :: (a -> b) -> LoadState a -> LoadState b
-```
-
-### pure ###
-
-```haskell
-pure :: a -> LoadState a
-pure = Finish
-```
-
-### ap ###
-
-```haskell
-ap :: LoadState (a -> b) -> LoadState a -> LoadState b
-```
-
-### bind ###
-
-```haskell
-bind :: (a -> LoadState b) -> LoadState a -> LoadState b
-```
-
-### or ###
-
-```haskell
-or :: a -> LoadState a -> a
-```
-
-同`R.defaultTo`。
-
 ## struct ##
 
 提供类似于racket struct功能的函数，定义一个结构体，能够自动生成对应的lenses。
@@ -1108,6 +1060,102 @@ User.values(user); // ["user", 1];
 ### fromJSON ###
 
 见[JSON相互转化]。
+
+## Data ##
+
+该模块模拟了和类型的定义——[Enum]。
+
+### Enum ###
+
+与其说是函数，不如将它定义为一个语法，接受一组字段字面量（String类型），得到对该“类型”操作方法集合（或者说是模块）。
+
+我们可以利用它定义一个`Maybe`。
+
+```javascript
+const Maybe = Enum("Just", "Nothing");
+
+const ReactState = Enum("Render", "Init", "Error");
+```
+
+我们定义两个属性（值）：`Just`和`Nothing`。[Enum]默认第一个参数为多态，其他几组是固定类型（在js里，自然由用户约定），上面写法约等于Haskell：
+
+
+```haskell
+data Maybe a = Just a | Nothing
+
+data ReactState a = Reader a | Init | Error String
+```
+
+定义之后，同时提供了一系列操纵方法。
+
+由于第一个是多态参数，那么它自然满足Functor、Applicative、Monad，所以它们都有各自的对应方法：
+
+### fmap ###
+
+```haskell
+fmap :: Functor f => (a -> b) -> f a -> f b
+```
+
+###  fmapTo ###
+
+```haskell
+fmapTo :: Functor f => a -> f a -> f a
+```
+
+### ap ###
+
+```haskell
+ap :: Applicative f => f (a -> b) -> f a -> f b
+```
+
+### bind ###
+
+```haskell
+bind :: Monad m => (a -> m b) -> m a -> m b
+```
+
+### {Field} ###
+
+构造函数。
+
+```javascript
+const Option = Enum("Some", "None");
+
+Option.Some(1); // Some(1);
+Option.None(); // None;
+```
+
+### is{Field} ###
+
+辨别对应哪个值。
+
+```javascript
+const Maybe = Enum("Just", "None");
+
+const a = Maybe.Just(1);
+Maybe.isJust(a); // true
+Maybe.isNone(a); // false
+```
+
+### get{Field} ###
+
+解包。
+
+```javascript
+const Maybe = Enum("Just", "Nothing");
+
+const a = Maybe.Just(1);
+const b = Maybe.Nothing(2); // 此处可以填写任何值，谁让js是动态类型呢！
+
+Maybe.getJust(a); // 1
+Maybe.getJust(b); // null;
+```
+
+### Load ###
+
+```javascript
+const Load = Enum("Finish", "Init");
+```
 
 ## GX ##
 
