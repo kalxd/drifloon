@@ -69,6 +69,9 @@ const Enum = (primary, ...args) => {
 	return m;
 };
 
+const Load = Enum("Finish", "Loading");
+
 module.exports = {
-	Enum
+	Enum,
+	Load
 };
