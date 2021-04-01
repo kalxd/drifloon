@@ -78,7 +78,7 @@ const Enum = (primary, ...args) => {
 			return f(a);
 		}
 		else {
-			return a;
+			return ma;
 		}
 	});
 

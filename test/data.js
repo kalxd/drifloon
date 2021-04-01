@@ -54,3 +54,15 @@ testProp(
 		it.deepEqual(left, right);
 	}
 );
+
+testProp(
+	"Monad: ma >>= pure = ma",
+	[fc.constantFrom(...fields), fc.integer()],
+	(it, field, x) => {
+		const ma = T[field](x);
+
+		const left = T.bind(T.pure)(ma);
+
+		it.deepEqual(ma, left);
+	}
+);
