@@ -66,3 +66,28 @@ testProp(
 		it.deepEqual(ma, left);
 	}
 );
+
+testProp(
+	"Monad: (ma >>= f) >>= g = ma >>= (\\x -> f x >>= g)",
+	[fc.constantFrom(...fields), fc.integer()],
+	(it, field, x) => {
+		const ma = T[field](x);
+
+		const f = T.fmap(R.inc);
+		const g = T.fmap(R.toString);
+
+		const left = R.pipe(
+			T.bind(f),
+			T.bind(g)
+		)(ma);
+
+		const right = T.bind(
+			R.compose(
+				T.bind(g),
+				f
+			)
+		)(ma);
+
+		it.deepEqual(left, right);
+	}
+);
