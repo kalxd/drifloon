@@ -1099,7 +1099,13 @@ fmap :: Functor f => (a -> b) -> f a -> f b
 ###  fmapTo ###
 
 ```haskell
-fmapTo :: Functor f => a -> f a -> f a
+fmapTo :: Functor f => a -> f b -> f a
+```
+
+### pure ###
+
+```haskell
+pure :: Applicative f => a -> f a
 ```
 
 ### ap ###
@@ -1112,6 +1118,22 @@ ap :: Applicative f => f (a -> b) -> f a -> f b
 
 ```haskell
 bind :: Monad m => (a -> m b) -> m a -> m b
+```
+
+### unwrapOr ###
+
+```haskell
+unwrapOr :: Functor f => a -> f a -> a
+```
+
+解包，如果不是“正常值”，会用默认代替。
+
+```javascript
+Maybe.unwrapOr(100, Maybe.pure(1));
+// 1
+
+Maybe.unwrapOr(100, Maybe.Nothing());
+// 2
 ```
 
 ### {Field} ###
