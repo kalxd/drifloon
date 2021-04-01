@@ -21,6 +21,9 @@ const Enum = (primary, ...args) => {
 	});
 
 	// functor
+	/**
+	 * fmap :: Functor f => (a -> b) -> f a -> f b
+	 */
 	m.fmap = R.curry((f, data) => {
 		if (m[isPrimary](data)) {
 			return R.pipe(
@@ -34,12 +37,22 @@ const Enum = (primary, ...args) => {
 		}
 	});
 
+	/**
+	 * fmapTo :: Functor f => f a -> f b -> f a
+	 */
 	m.fmapTo = R.curry((x, data) => m.fmap(R.always(x), data));
 
 	// applicative
+	/**
+	 * pure :: a -> f a
+	 */
+	m.pure = m[primary];
+
+	/**
+	 * ap :: f (a -> b) -> f a -> f b
+	 */
 	m.ap = R.curry((f, data) => {
 		const v = m[isPrimary];
-
 		if (!v(f)) {
 			return f;
 		}
@@ -50,16 +63,32 @@ const Enum = (primary, ...args) => {
 			const k = m[getPrimary];
 			const g = k(f);
 			const x = k(data);
-			return m[primary](g(x));
+			return m.pure(g(x));
 		}
 	});
 
 	// monad
+	/**
+	 * bind :: Monad m => (a -> m b) -> m a -> m b
+	 */
 	m.bind = R.curry((f, ma) => {
 		const v = m[isPrimary];
 		if (v(ma)) {
 			const a = m[getPrimary](ma);
 			return f(a);
+		}
+		else {
+			return a;
+		}
+	});
+
+	/**
+	 * unwrapOr :: Functor a -> a -> f a -> f a
+	 */
+	m.unwrapOr = R.curry((a, ma) => {
+		const v = m[isPrimary];
+		if (v(ma)) {
+			return m[getPrimary](ma);
 		}
 		else {
 			return a;
