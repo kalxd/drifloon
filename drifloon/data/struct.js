@@ -4,6 +4,7 @@
  * 一切都以lenses为基础。
  */
 const R = require("rambda");
+const { fmap } = require("../function");
 
 /**
  * unzip :: [(a, b, c)] -> ([a], [b], [c])
@@ -114,7 +115,7 @@ const struct = (...args) => {
 		R.map(([Type, x]) => {
 			const f = R.cond([
 				[R.isNil, R.identity],
-				[R.is(Array), R.map(Type.toJSON)],
+				[R.is(Array), R.map(fmap(Type.toJSON))],
 				[R.T, Type.toJSON]
 			]);
 			return f(x);
@@ -130,7 +131,7 @@ const struct = (...args) => {
 		R.map(([Type, x]) => {
 			const f = R.cond([
 				[R.isNil, R.identity],
-				[R.is(Array), R.map(Type.fromJSON)],
+				[R.is(Array), R.map(fmap(Type.fromJSON))],
 				[R.T, Type.fromJSON]
 			]);
 			return f(x);

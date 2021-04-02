@@ -38,11 +38,11 @@ M相当于顶层命名空间，包含了以下几个模块。
 
 # 更新日志 #
 
-* 删除函数：
-  - F.makeValue、F.genValue。
+此次主要新建[Data]模块，合并了旧版的[Struct]，并新添了[Enum]，从此以后，JS不再像JS！
 
-* 新增函数：
-  - [F.runOnce][runOnce]。
+* 新增[Enum]定义数据接口。
+* 旧版`struct`更名为[Struct]，并移动到[Data]模块下。
+* [Struct]可以正确处理任何位置的空值。
 
 # 命名规范 #
 
@@ -896,7 +896,125 @@ state.get(); // 3
 const modify = f => put(f(get()));
 ```
 
-## struct ##
+## Data ##
+
+该模块提供了定义新“类型”的接口（或长得像javascript函数的语法），说是“类型”，其本质还是一个普通的`object`，创建出来的“类型”有能力对该对象进行**合理**处理。
+
+### Enum ###
+
+与其说是函数，不如将它视为一种定义新类型的语法：接受一组字段字面量（String类型），得到对该“类型”操作方法集合（或者说是模块）。
+
+我们可以利用它定义一个`Maybe`。
+
+```javascript
+const Maybe = Enum("Just", "Nothing");
+
+const ReactState = Enum("Render", "Init", "Error");
+```
+
+我们定义两个属性（值）：`Just`和`Nothing`。[Enum]默认第一个参数为多态，其他几组是固定类型（在js里，自然由用户约定），上面写法约等于Haskell：
+
+
+```haskell
+data Maybe a = Just a | Nothing
+
+data ReactState a = Reader a | Init | Error String
+```
+
+定义之后，同时提供了一系列操纵方法。
+
+由于第一个是多态参数，那么它自然满足Functor、Applicative、Monad，所以它们都有各自的对应方法：
+
+### fmap ###
+
+```haskell
+fmap :: Functor f => (a -> b) -> f a -> f b
+```
+
+###  fmapTo ###
+
+```haskell
+fmapTo :: Functor f => a -> f b -> f a
+```
+
+### pure ###
+
+```haskell
+pure :: Applicative f => a -> f a
+```
+
+### ap ###
+
+```haskell
+ap :: Applicative f => f (a -> b) -> f a -> f b
+```
+
+### bind ###
+
+```haskell
+bind :: Monad m => (a -> m b) -> m a -> m b
+```
+
+### unwrapOr ###
+
+```haskell
+unwrapOr :: Functor f => a -> f a -> a
+```
+
+解包，如果不是“正常值”，会用默认代替。
+
+```javascript
+Maybe.unwrapOr(100, Maybe.pure(1));
+// 1
+
+Maybe.unwrapOr(100, Maybe.Nothing());
+// 2
+```
+
+### {Field} ###
+
+构造函数。
+
+```javascript
+const Option = Enum("Some", "None");
+
+Option.Some(1); // Some(1);
+Option.None(); // None;
+```
+
+### is{Field} ###
+
+辨别对应哪个值。
+
+```javascript
+const Maybe = Enum("Just", "None");
+
+const a = Maybe.Just(1);
+Maybe.isJust(a); // true
+Maybe.isNone(a); // false
+```
+
+### get{Field} ###
+
+解包。
+
+```javascript
+const Maybe = Enum("Just", "Nothing");
+
+const a = Maybe.Just(1);
+const b = Maybe.Nothing(2); // 此处可以填写任何值，谁让js是动态类型呢！
+
+Maybe.getJust(a); // 1
+Maybe.getJust(b); // null;
+```
+
+### Load ###
+
+```javascript
+const Load = Enum("Finish", "Init");
+```
+
+### struct ###
 
 提供类似于racket struct功能的函数，定义一个结构体，能够自动生成对应的lenses。
 除了显式指定类型外，它还可以直接与JSON相互转换。
@@ -1060,124 +1178,6 @@ User.values(user); // ["user", 1];
 ### fromJSON ###
 
 见[JSON相互转化]。
-
-## Data ##
-
-该模块模拟了和类型的定义——[Enum]。
-
-### Enum ###
-
-与其说是函数，不如将它定义为一个语法，接受一组字段字面量（String类型），得到对该“类型”操作方法集合（或者说是模块）。
-
-我们可以利用它定义一个`Maybe`。
-
-```javascript
-const Maybe = Enum("Just", "Nothing");
-
-const ReactState = Enum("Render", "Init", "Error");
-```
-
-我们定义两个属性（值）：`Just`和`Nothing`。[Enum]默认第一个参数为多态，其他几组是固定类型（在js里，自然由用户约定），上面写法约等于Haskell：
-
-
-```haskell
-data Maybe a = Just a | Nothing
-
-data ReactState a = Reader a | Init | Error String
-```
-
-定义之后，同时提供了一系列操纵方法。
-
-由于第一个是多态参数，那么它自然满足Functor、Applicative、Monad，所以它们都有各自的对应方法：
-
-### fmap ###
-
-```haskell
-fmap :: Functor f => (a -> b) -> f a -> f b
-```
-
-###  fmapTo ###
-
-```haskell
-fmapTo :: Functor f => a -> f b -> f a
-```
-
-### pure ###
-
-```haskell
-pure :: Applicative f => a -> f a
-```
-
-### ap ###
-
-```haskell
-ap :: Applicative f => f (a -> b) -> f a -> f b
-```
-
-### bind ###
-
-```haskell
-bind :: Monad m => (a -> m b) -> m a -> m b
-```
-
-### unwrapOr ###
-
-```haskell
-unwrapOr :: Functor f => a -> f a -> a
-```
-
-解包，如果不是“正常值”，会用默认代替。
-
-```javascript
-Maybe.unwrapOr(100, Maybe.pure(1));
-// 1
-
-Maybe.unwrapOr(100, Maybe.Nothing());
-// 2
-```
-
-### {Field} ###
-
-构造函数。
-
-```javascript
-const Option = Enum("Some", "None");
-
-Option.Some(1); // Some(1);
-Option.None(); // None;
-```
-
-### is{Field} ###
-
-辨别对应哪个值。
-
-```javascript
-const Maybe = Enum("Just", "None");
-
-const a = Maybe.Just(1);
-Maybe.isJust(a); // true
-Maybe.isNone(a); // false
-```
-
-### get{Field} ###
-
-解包。
-
-```javascript
-const Maybe = Enum("Just", "Nothing");
-
-const a = Maybe.Just(1);
-const b = Maybe.Nothing(2); // 此处可以填写任何值，谁让js是动态类型呢！
-
-Maybe.getJust(a); // 1
-Maybe.getJust(b); // null;
-```
-
-### Load ###
-
-```javascript
-const Load = Enum("Finish", "Init");
-```
 
 ## GX ##
 
