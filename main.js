@@ -11,8 +11,6 @@ const State = require("./drifloon/state");
 const C = require("./drifloon/comfey");
 const Data = require("./drifloon/data");
 
-const struct = require("./drifloon/struct");
-
 const Run = require("./drifloon/run");
 
 const M = {
@@ -28,8 +26,6 @@ const M = {
 	State,
 	C,
 	Data,
-
-	struct,
 
 	...Run
 };

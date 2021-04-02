@@ -1,7 +1,7 @@
 const { testProp, fc } = require("ava-fast-check");
 const R = require("rambda");
 
-const { Data: { Enum } } = require("../main");
+const { Data: { Enum } } = require("../../main");
 
 const fields = ["Done", "Polling", "Error"];
 

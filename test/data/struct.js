@@ -1,13 +1,13 @@
 const { testProp, fc } = require("ava-fast-check");
 const R = require("rambda");
-const { struct } = require("../main");
+const { Data: { Struct } } = require("../../main");
 
-const S = struct(
+const S = Struct(
 	"id",
 	["name"]
 );
 
-const P = struct(
+const P = Struct(
 	"id",
 	["age", "year"],
 	["t", S],
@@ -15,7 +15,7 @@ const P = struct(
 );
 
 testProp(
-	"create struct",
+	"create Struct",
 	[fc.nat(), fc.string()],
 	(t, id, name) => {
 		const o = S.gen(id, name);
@@ -29,7 +29,7 @@ testProp(
 );
 
 testProp(
-	"struct Lens",
+	"Struct Lens",
 	[
 		fc.record({
 			id: fc.nat(),
@@ -45,7 +45,7 @@ testProp(
 );
 
 testProp(
-	"struct -> json",
+	"Struct -> json",
 	[
 		fc.nat(),
 		fc.nat(),
@@ -76,7 +76,7 @@ testProp(
 );
 
 testProp(
-	"json -> struct",
+	"json -> Struct",
 	[
 		fc.record({
 			key: fc.nat(),
@@ -114,7 +114,7 @@ testProp(
 );
 
 testProp(
-	"struct复杂类型",
+	"Struct复杂类型",
 	[
 		fc.record({
 			id: fc.nat(),
@@ -126,12 +126,12 @@ testProp(
 		})
 	],
 	(t, json) => {
-		const ItemType = struct(
+		const ItemType = Struct(
 			"key",
 			["name", "prod"]
 		);
 
-		const T = struct(
+		const T = Struct(
 			"id",
 			"name",
 			["items", ItemType]
