@@ -6,27 +6,62 @@
 
 ![drifloon](https://media.52poke.com/wiki/archive/e/eb/20140413170939%21425Drifloon.png)
 
-专为油猴脚本制作的依赖库，集成[cycle.js][cycle.js]和[rambda.js][rambda]，在此基础上扩展出更多方便书写代码的函数，详见doc.md。
+该项目既像类库（提供能单独使用的工具函数），又有一套框架（基于流式的[cycle.js][cycle.js]），她更像是能够快速开发油猴脚本的方案。
 
-# 安装依赖 #
+内部提供非常多的函数用于交互DOM；又集成了[cycle.js][cycle.js]，编写复杂的界面也不在话下。
 
-node肯定少不了。
+整个方案都围绕**函数式**，我们并不排斥副作用，我们关心的是如何将它们隔离。更多用法与例子，参见[文档](./doc.md)。
+
+# 编译、发布 #
+
+代码都在当前`node LTS`下运行、编译。项目中并未使用到什么新颖特性，为安全起见，最好能使用相同版本node。
+
+## 安装依赖 ##
 
 ```bash
 $ npm install
 ```
 
-# 编译 #
-
-需要webpack环境，版本应该没什么要求。
+## 编译 ##
 
 ```bash
 $ npm run build
 ```
 
-# 使用 #
+顺利之后，在`dist/`中就能看到对应版本的目标文件，格式为`drifloon.{version}.js`，`{version}`即是`package.json`中的version。
 
-编译之后只会到一个打包完整的大文件，输出目录在`dist/`，放到任意静态服务上就能使用。
+## 发布、使用 ##
+
+编译后得到就是一整个依赖库。可以像普通的js文件一样，托管到静态服务，通过浏览器就能直接访问。
+
+部署完成后，进行油猴管理界面（不同扩展用法不同），新建脚本，并添加几行：
+
+```javascript
+// @require http:://你的静态服务地址/drifloon.{版本}.js
+
+// 以下正文
+const { F } = M;
+
+// ...
+```
+
+一切顺利就能得么整个模块`M`，之后就能愉快地写脚本了。
+
+# typescript #
+
+不打算提供typescript支持，或更换成typescript，最核心的理由就是ts不支持柯里化，[rambda][rambda]提供的`curry`函数，最终还是生成各种`any`类型，与其如此，不如直接用js。
+
+# 作为依赖库 #
+
+已在[npm](https://www.npmjs.com/package/drifloon)发布，可以通过npm安装正常使用。
+
+**需要注意，不要使用`GX`模块，该模块封装了油猴`GM_*`，除非运行于油猴环境中。**
+
+```javascript
+const { F } = require("drifloon");
+
+// ...
+```
 
 # 生成文档 #
 
