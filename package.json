@@ -14,10 +14,10 @@
 		"./main.js"
 	],
 	"dependencies": {
-		"@cycle/dom": "22.8.0",
+		"@cycle/dom": "23.0.0",
 		"@cycle/most-run": "8.4.0",
 		"most": "^1.9.0",
-		"rambda": "6.6.0",
+		"rambda": "6.7.0",
 		"zen-observable": "0.8.15"
 	},
 	"devDependencies": {
