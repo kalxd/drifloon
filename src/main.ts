@@ -1,6 +1,14 @@
-function showMe<T>(a: T): void {
-	console.log(a);
+import { curry } from "purify-ts/Function";
+
+interface Dog {
+	name: string;
 }
 
-showMe(24);
-showMe("hello world");
+const f = curry(<T, R extends Dog>(a: T, b: R): void => {
+	console.log(a);
+	console.log(b.name);
+});
+
+f(1, 2);
+
+f("hello")(1)
