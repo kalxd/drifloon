@@ -1,14 +1,9 @@
-import { curry } from "purify-ts/Function";
+import * as m from "mithril";
 
-interface Dog {
-	name: string;
+import { Button } from "./element/button";
+
+const mountNode = document.getElementById("app");
+
+if (mountNode !== null) {
+	m.mount(mountNode, Button);
 }
-
-const f = curry(<T, R extends Dog>(a: T, b: R): void => {
-	console.log(a);
-	console.log(b.name);
-});
-
-f(1, 2);
-
-f("hello")(1)
