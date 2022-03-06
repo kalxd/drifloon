@@ -1,0 +1,10 @@
+{
+	"dependencies": {
+		"drifloon": "file:.."
+	},
+	"devDependencies": {
+		"ts-loader": "^9.2.7",
+		"webpack": "^5.70.0",
+n		"webpack-cli": "^4.9.2"
+	}
+}

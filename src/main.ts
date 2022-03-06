@@ -1,9 +1,5 @@
-import * as m from "mithril";
+import { curry } from "purify-ts";
 
-import { Button } from "./element/button";
-
-const mountNode = document.getElementById("app");
-
-if (mountNode !== null) {
-	m.mount(mountNode, Button);
-}
+export const add = curry((a: number, b: number): number => {
+	return a + b;
+});

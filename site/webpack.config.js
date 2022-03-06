@@ -2,8 +2,11 @@ const path = require("path");
 
 const config = {
 	mode: "development",
-	target: "web",
 	entry: "./src/main.ts",
+	output: {
+		path: path.resolve("dist")
+	},
+
 	module: {
 		rules: [
 			{
