@@ -2,9 +2,12 @@
 	"compilerOptions": {
 		"strict": true,
 		"lib": ["es2020", "dom"],
-		"outDir": "dist",
+		"rootDir": "./src/",
+		"baseUrl": "./src/",
+		"outDir": "./dist",
 		"declaration": true,
 		"declarationDir": "./types"
 	},
-	"include": ["src/**/*.ts"]
+	"include": ["src/**/*.ts"],
+	"exclude": ["site"]
 }

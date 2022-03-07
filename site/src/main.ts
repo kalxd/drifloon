@@ -1,4 +1,15 @@
-import { add } from "drifloon";
+import * as m from "mithril";
+import { Column, ColumSize } from "drifloon";
 
-console.log(add);
-console.log(add(1));
+const app: m.Component = {
+	view: () => {
+		return m("main", [
+			m(Column, { size: ColumSize.One }),
+		])
+	}
+};
+
+const mountNode = document.getElementById("app");
+if (mountNode !== null) {
+	m.mount(mountNode, app);
+}
