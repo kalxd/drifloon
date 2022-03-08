@@ -1,4 +1,5 @@
 import * as m from "mithril";
+import { appendIsPrefix, combineClass } from "prelude/z";
 
 export const Columns: m.Component = {
 	view: vnode => m("div.columns", vnode.children)
@@ -36,7 +37,11 @@ export interface ColumnAttr {
 
 export const Column: m.Component<ColumnAttr> = {
 	view: vnode => {
-		const klass = vnode.attrs.size ?? "";
+		const klass = combineClass([
+			[vnode.attrs.size, appendIsPrefix],
+			[vnode.attrs.offset, appendIsPrefix]
+		]);
+
 		return m("div.column", { class: klass }, vnode.children);
 	}
 };
