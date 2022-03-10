@@ -1,9 +1,7 @@
 import * as m from "mithril";
-import { appendIsPrefix, combineClass } from "prelude/z";
+import { prependIs, prependKlass, combineClass } from "./prelude/z";
 
-export const Columns: m.Component = {
-	view: vnode => m("div.columns", vnode.children)
-};
+const prependIsOffset = prependKlass("is-offset");
 
 export enum ColumSize {
 	ThreeQuarters = "three-quarters",
@@ -30,6 +28,12 @@ export enum ColumSize {
 	Twelve = "12"
 }
 
+
+export const Columns: m.Component = {
+	view: vnode => m("div.columns", vnode.children)
+};
+
+
 export interface ColumnAttr {
 	size?: ColumSize;
 	offset?: ColumSize;
@@ -38,8 +42,8 @@ export interface ColumnAttr {
 export const Column: m.Component<ColumnAttr> = {
 	view: vnode => {
 		const klass = combineClass([
-			[vnode.attrs.size, appendIsPrefix],
-			[vnode.attrs.offset, appendIsPrefix]
+			[vnode.attrs.size, prependIs],
+			[vnode.attrs.offset, prependIsOffset]
 		]);
 
 		return m("div.column", { class: klass }, vnode.children);
