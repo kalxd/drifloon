@@ -1,10 +1,11 @@
 import * as m from "mithril";
-import { Column, ColumSize } from "drifloon";
+import { Column, ColumnAttr, Columns, ColumSize } from "drifloon";
 
 const app: m.Component = {
 	view: () => {
-		return m("main", [
+		return m(Columns, [
 			m(Column, { size: ColumSize.One }),
+			m(Column, { isNarrow: false } as ColumnAttr),
 		])
 	}
 };

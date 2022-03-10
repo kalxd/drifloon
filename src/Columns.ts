@@ -1,7 +1,5 @@
 import * as m from "mithril";
-import { prependIs, prependKlass, combineClass } from "./prelude/z";
-
-const prependIsOffset = prependKlass("is-offset");
+import { prependIs, pickKlass, fmapKlass, selectKlassWhen } from "./prelude/z";
 
 export enum ColumSize {
 	ThreeQuarters = "three-quarters",
@@ -28,22 +26,36 @@ export enum ColumSize {
 	Twelve = "12"
 }
 
+export interface ColumnsAttr {
+	isGapless?: boolean;
+	isMultiline?: boolean;
+}
 
-export const Columns: m.Component = {
-	view: vnode => m("div.columns", vnode.children)
+export const Columns: m.Component<ColumnsAttr> = {
+	view: vnode => {
+		const klass = pickKlass([
+			selectKlassWhen(vnode.attrs.isMultiline, prependIs("multiline")),
+			selectKlassWhen(vnode.attrs.isGapless, prependIs("gapless"))
+		]);
+
+		return m("div.columns", { class: klass }, vnode.children);
+	}
 };
 
 
 export interface ColumnAttr {
 	size?: ColumSize;
 	offset?: ColumSize;
+	isNarrow?: boolean;
 };
 
 export const Column: m.Component<ColumnAttr> = {
 	view: vnode => {
-		const klass = combineClass([
-			[vnode.attrs.size, prependIs],
-			[vnode.attrs.offset, prependIsOffset]
+		const klass = pickKlass([
+			fmapKlass(vnode.attrs.size, prependIs),
+			fmapKlass(vnode.attrs.size, prependIs),
+			fmapKlass(vnode.attrs.offset, prependIs),
+			selectKlassWhen(vnode.attrs.isNarrow, prependIs("narrow"))
 		]);
 
 		return m("div.column", { class: klass }, vnode.children);
