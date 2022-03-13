@@ -53,7 +53,6 @@ export const Column: m.Component<ColumnAttr> = {
 	view: vnode => {
 		const klass = pickKlass([
 			fmapKlass(vnode.attrs.size, prependIs),
-			fmapKlass(vnode.attrs.size, prependIs),
 			fmapKlass(vnode.attrs.offset, prependIs),
 			selectKlassWhen(vnode.attrs.isNarrow, prependIs("narrow"))
 		]);
