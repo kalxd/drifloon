@@ -7,8 +7,9 @@
 		"watch": "npx webpack -w",
 		"test": "npx ava"
 	},
-	"main": "dist/main.js",
-	"types": "types/main.d.ts",
+	"main": "main.js",
+	"module": "main.js",
+	"types": "main.d.ts",
 	"dependencies": {
 		"@types/mithril": "^2.0.9",
 		"mithril": "^2.0.4",

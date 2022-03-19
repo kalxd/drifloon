@@ -1,6 +1,7 @@
-dist/
-types/
 node_modules/
+/drifloon
+dist/
+
 *.un\~
 *.swp
 .log/
