@@ -42,7 +42,6 @@ export const Columns: m.Component<ColumnsAttr> = {
 	}
 };
 
-
 export interface ColumnAttr {
 	size?: ColumSize;
 	offset?: ColumSize;
