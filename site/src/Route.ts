@@ -19,6 +19,4 @@ const Route: m.RouteDefs = {
 	"/": mkLayout(Home)
 };
 
-console.log(Route);
-
 export default Route;
