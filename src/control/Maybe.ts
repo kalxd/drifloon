@@ -167,4 +167,4 @@ export const doMaybe = async <T>(f: () => Maybe<T>): Promise<T | null> => {
 };
 
 export const Just = mkJust;
-export const Nothing = mkNothing();
+export const Nothing = mkNothing<any>();
