@@ -1,8 +1,8 @@
 /**
- * 无法分类的函数们
+ * 组件属性处理
  */
 
-import { curry, Maybe, NonEmptyList } from "purify-ts";
+import { curry, identity, Maybe, NonEmptyList } from "purify-ts";
 import { Nil } from "./t";
 
 export const prependKlass = curry((
@@ -17,7 +17,8 @@ export const selectKlassWhen = curry((
 	klass: string
 ): Maybe<string> =>
 	Maybe.fromNullable(cond)
-		.chain(cond => Maybe.fromPredicate(_ => cond, klass)));
+		.filter(identity)
+		.map(_ => klass));
 
 export const fmapKlass = curry((
 	name: Nil<string>,
