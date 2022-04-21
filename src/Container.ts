@@ -1,26 +1,42 @@
 import * as m from "mithril";
-import { pickKlass, prependIs, selectKlassWhen } from "./prelude/attr";
+import { Size } from "./V";
+import { fmapIsKlass, pickKlass } from "./prelude/attr";
 import { genWrapWidget } from "./prelude/widget";
 
 export const Block = genWrapWidget("div.block");
 export const Box = genWrapWidget("div.box");
 
+export enum ContainerSize {
+	Widescreen = "wildscreen",
+	Fullhd = "fullhd",
+	MaxDesktop = "max-desktop",
+	MaxWildscreen = "max-wildscree"
+}
+
 export interface ContainerAttr {
-	isWidescreen?: boolean;
-	isFullhd?: boolean;
-	isMaxDesktop?: boolean;
-	isMaxWildscreen?: boolean;
+	size?: ContainerSize
 }
 
 export const Container: m.Component<ContainerAttr> = ({
 	view: ({ attrs, children }) => {
 		const klass = pickKlass([
-			selectKlassWhen(attrs.isMaxWildscreen, prependIs("wildscreen")),
-			selectKlassWhen(attrs.isFullhd, prependIs("fullhd")),
-			selectKlassWhen(attrs.isMaxDesktop, prependIs("max-desktop")),
-			selectKlassWhen(attrs.isMaxWildscreen, prependIs("max-wildscreen"))
+			fmapIsKlass(attrs.size)
 		]);
 
 		return m("div.container", { class: klass }, children);
+	}
+});
+
+export interface ContentAttr {
+	size?: Size
+}
+
+export const Content: m.Component<ContentAttr> = ({
+	view: ({ attrs, children }) => {
+		const klass = pickKlass([
+			fmapIsKlass(attrs.size)
+		]);
+
+		return m("div.content", { class: klass }, children)
 	}
 });

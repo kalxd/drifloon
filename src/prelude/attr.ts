@@ -21,12 +21,14 @@ export const selectKlassWhen = curry((
 		.map(_ => klass));
 
 export const fmapKlass = curry((
+	f: (name: string) => string,
 	name: Nil<string>,
-	f: (name: string) => string
 ): Maybe<string> => {
 	return Maybe.fromNullable(name)
 		.map(f);
 });
+
+export const fmapIsKlass = fmapKlass(prependIs);
 
 export const pickKlass = (xs: Array<Maybe<string>>): Nil<string> => {
 	return NonEmptyList.fromArray(Maybe.catMaybes(xs))

@@ -1,5 +1,5 @@
 import * as m from "mithril";
-import { prependIs, pickKlass, fmapKlass, selectKlassWhen } from "./prelude/attr";
+import { prependIs, pickKlass, selectKlassWhen, fmapIsKlass } from "./prelude/attr";
 
 export enum ColumSize {
 	ThreeQuarters = "three-quarters",
@@ -51,8 +51,8 @@ export interface ColumnAttr {
 export const Column: m.Component<ColumnAttr> = {
 	view: vnode => {
 		const klass = pickKlass([
-			fmapKlass(vnode.attrs.size, prependIs),
-			fmapKlass(vnode.attrs.offset, prependIs),
+			fmapIsKlass(vnode.attrs.size),
+			fmapIsKlass(vnode.attrs.offset),
 			selectKlassWhen(vnode.attrs.isNarrow, prependIs("narrow"))
 		]);
 
