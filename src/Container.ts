@@ -1,5 +1,5 @@
 import * as m from "mithril";
-import { Size } from "./V";
+import { Size } from "./Type";
 import { fmapIsKlass, pickKlass } from "./prelude/attr";
 import { genWrapWidget } from "./prelude/widget";
 
