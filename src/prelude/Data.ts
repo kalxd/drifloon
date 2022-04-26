@@ -2,29 +2,26 @@
  * 一些常用数据
  */
 
-type IsNil<T> = T | null | undefined;
+import { isNil, IsNil, PickRequired } from "./Type";
 
-const isNil = <T>(value: IsNil<T>): value is null | undefined =>
-	value === null || value === undefined;
+export interface AttrBuilder<T> {
+	attr: () => T;
 
-export interface AttrBuilder<V, T extends V> {
-	attr: () => Partial<T> & V;
-
-	field: <K extends keyof T>(key: K, value: T[K]) => AttrBuilder<V, T>;
-	fieldOnly: <K extends keyof T>(key: K, value: IsNil<T[K]>) => AttrBuilder<V, T>;
-	fieldWhen: <K extends keyof T>(cond: boolean, key: K, value: T[K]) => AttrBuilder<V, T>;
+	field: <K extends keyof T>(key: K, value: T[K]) => AttrBuilder<T>;
+	fieldOnly: <K extends keyof T>(key: K, value: IsNil<T[K]>) => AttrBuilder<T>;
+	fieldWhen: <K extends keyof T>(cond: boolean, key: K, value: T[K]) => AttrBuilder<T>;
 }
 
-export const buildAttrWith = <V, T extends V>(base: V): AttrBuilder<V, T> => {
-	const attr = () => base;
+export const buildAttrWith = <T>(base: PickRequired<T>): AttrBuilder<T> => {
+	const attr = () => base as T;
 
-	const field = <K extends keyof T>(key: K, value: T[K]): AttrBuilder<V, T> =>
+	const field = <K extends keyof T>(key: K, value: T[K]): AttrBuilder<T> =>
 		buildAttrWith({
 			...base,
 			[key]: value
 		});
 
-	const fieldOnly = <K extends keyof T>(key: K, value: IsNil<T[K]>): AttrBuilder<V, T> => {
+	const fieldOnly = <K extends keyof T>(key: K, value: IsNil<T[K]>): AttrBuilder<T> => {
 		if (isNil(value)) {
 			return buildAttrWith(base);
 		}
@@ -33,7 +30,7 @@ export const buildAttrWith = <V, T extends V>(base: V): AttrBuilder<V, T> => {
 		}
 	};
 
-	const fieldWhen = <K extends keyof T>(cond: boolean, key: K, value: T[K]): AttrBuilder<V, T> => {
+	const fieldWhen = <K extends keyof T>(cond: boolean, key: K, value: T[K]): AttrBuilder<T> => {
 		if (cond) {
 			return buildAttrWith(base);
 		}
@@ -50,4 +47,4 @@ export const buildAttrWith = <V, T extends V>(base: V): AttrBuilder<V, T> => {
 	};
 };
 
-export const buildAttr = <T>(): AttrBuilder<{}, T> => buildAttrWith({});
+export const buildAttr = <T>(): AttrBuilder<T> => buildAttrWith({} as PickRequired<T>);
