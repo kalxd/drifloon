@@ -1,7 +1,7 @@
 import * as m from "mithril";
 import { Size } from "./Type";
-import { fmapIsKlass, pickKlass } from "./prelude/attr";
-import { genWrapWidget } from "./prelude/widget";
+import { fmapIsKlass, pickKlass } from "./prelude/Attr";
+import { genWrapWidget } from "./prelude/Wrap";
 
 export const Block = genWrapWidget("div.block");
 export const Box = genWrapWidget("div.box");

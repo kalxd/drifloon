@@ -1,5 +1,5 @@
 import * as m from "mithril";
-import { genWrapWidget } from "./prelude/widget";
+import { genWrapWidget } from "./prelude/Wrap";
 import { NaviLinkAttr, NaviLink } from "./Link";
 
 export const Menu = genWrapWidget("div.menu");

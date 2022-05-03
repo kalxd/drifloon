@@ -1,5 +1,5 @@
 import * as m from "mithril";
-import { prependIs, pickKlass, selectKlassWhen, fmapIsKlass } from "./prelude/attr";
+import { prependIs, pickKlass, selectKlassWhen, fmapIsKlass } from "./prelude/Attr";
 
 export enum ColumSize {
 	ThreeQuarters = "three-quarters",
