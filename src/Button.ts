@@ -28,20 +28,20 @@ interface BaseProp {
 
 const generateAttr = <T extends ButtonAttr>(attr: T): BaseProp => {
 	const klass = pickKlass([
-			fmapIsKlass(attr.color),
-			fmapIsKlass(attr.size),
-			selectKlassWhen(attr.light, prependIs("light")),
-			selectKlassWhen(attr.fullwidth, prependIs("fullwidth")),
-			selectKlassWhen(attr.inverted, prependIs("inverted")),
-			selectKlassWhen(attr.rounded, prependIs("rounded")),
-			selectKlassWhen(attr.hovered, prependIs("hovered")),
-			selectKlassWhen(attr.focused, prependIs("focused")),
-			selectKlassWhen(attr.actived, prependIs("actived")),
-			selectKlassWhen(attr.loading, prependIs("loading"))
-		]);
+		fmapIsKlass(attr.color),
+		fmapIsKlass(attr.size),
+		selectKlassWhen(attr.light, prependIs("light")),
+		selectKlassWhen(attr.fullwidth, prependIs("fullwidth")),
+		selectKlassWhen(attr.inverted, prependIs("inverted")),
+		selectKlassWhen(attr.rounded, prependIs("rounded")),
+		selectKlassWhen(attr.hovered, prependIs("hovered")),
+		selectKlassWhen(attr.focused, prependIs("focused")),
+		selectKlassWhen(attr.actived, prependIs("actived")),
+		selectKlassWhen(attr.loading, prependIs("loading"))
+	]);
 
-		const disabled = Maybe.fromNullable(attr.disabled)
-			.orDefault(false);
+	const disabled = Maybe.fromNullable(attr.disabled)
+		.orDefault(false);
 
 	return { class: klass, disabled };
 };

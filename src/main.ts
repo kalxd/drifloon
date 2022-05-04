@@ -4,4 +4,6 @@ export * from "./Menu";
 
 /** Element */
 export * from "./Container";
+export * from "./Button";
+export * from "./Title";
 /** end */
