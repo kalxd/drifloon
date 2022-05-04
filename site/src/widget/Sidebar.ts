@@ -6,7 +6,7 @@ const Sidebar: m.Component = ({
 		m(MenuLabel, "菜单"),
 		m(MenuList, [
 			m(MenuLink, { to: "/" }, "菜单一"),
-			m(MenuLink, { to: "/home" }, "菜单二")
+			m(MenuLink, { to: "/element/button" }, "按钮")
 		])
 	])
 });

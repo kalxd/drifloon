@@ -4,6 +4,7 @@ import Sidebar from "./widget/Sidebar";
 
 import Home from "./page/Home";
 import { Box, Container } from "drifloon/Container";
+import Main from "./page/Button";
 
 const Layout: m.Component = {
 	view: vnode => m(Box, [
@@ -23,7 +24,8 @@ const mkLayout = <A, S>(c: m.Component<A, S>): m.RouteResolver => ({
 });
 
 const Route: m.RouteDefs = {
-	"/": mkLayout(Home)
+	"/": mkLayout(Home),
+	"/element/button": mkLayout(Main)
 };
 
 export default Route;

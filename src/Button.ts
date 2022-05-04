@@ -1,7 +1,7 @@
 import * as m from "mithril";
-import { fmapIsKlass, pickKlass, prependIs, selectKlassWhen } from "prelude/Attr";
+import { fmapIsKlass, pickKlass, prependIs, selectKlassWhen } from "./prelude/Attr";
 import { Maybe } from "purify-ts";
-import { Color, Size } from "Type";
+import { Color, Size } from "./Type";
 
 /**
  * 最基本的按钮属性。
@@ -49,7 +49,7 @@ const generateAttr = <T extends ButtonAttr>(attr: T): BaseProp => {
 export const Button: m.Component<ButtonAttr> = {
 	view: ({ attrs, children }) => {
 		const baseProp = generateAttr(attrs);
-		return m("button", baseProp, children);
+		return m("button.button", baseProp, children);
 	}
 };
 
@@ -65,7 +65,7 @@ export const LinkButton: m.Component<LinkButtonAttr> = {
 			...baseProp,
 			href: attrs.href
 		}
-		return m("a", prop, children);
+		return m("a.button", prop, children);
 	}
 };
 
@@ -80,6 +80,6 @@ export const NaviButton: m.Component<LinkButtonAttr> = {
 			...baseProp,
 			href: `#!{attrs.to}`
 		};
-		return m("a", prop, children);
+		return m("a.button", prop, children);
 	}
 };
