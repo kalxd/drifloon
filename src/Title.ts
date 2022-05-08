@@ -33,22 +33,22 @@ export const SubTitle: m.Component<SubTitleAttr> = {
 	}
 };
 
-export const TitleWith = curry((attr: TitleAttr, content: string): m.Vnode<TitleAttr> => {
+export const TitleWith_ = curry((attr: TitleAttr, content: string): m.Vnode<TitleAttr> => {
 	return m(Title, attr, content);
 });
 
-export const Title1 = TitleWith({ level: TitleLevel.Level1 });
-export const Title2 = TitleWith({ level: TitleLevel.Level2 });
-export const Title3 = TitleWith({ level: TitleLevel.Level3 });
-export const Title4 = TitleWith({ level: TitleLevel.Level4 });
-export const Title5 = TitleWith({ level: TitleLevel.Level5 });
+export const Title1_ = TitleWith_({ level: TitleLevel.Level1 });
+export const Title2_ = TitleWith_({ level: TitleLevel.Level2 });
+export const Title3_ = TitleWith_({ level: TitleLevel.Level3 });
+export const Title4_ = TitleWith_({ level: TitleLevel.Level4 });
+export const Title5_ = TitleWith_({ level: TitleLevel.Level5 });
 
-export const SubTitleWith = curry((attr: SubTitleAttr, content: string): m.Vnode<SubTitleAttr> => {
+export const SubTitleWith_ = curry((attr: SubTitleAttr, content: string): m.Vnode<SubTitleAttr> => {
 	return m(SubTitle, attr, content);
 });
 
-export const SubTitle1 = SubTitleWith({ level: TitleLevel.Level1 });
-export const SubTitle2 = SubTitleWith({ level: TitleLevel.Level2 });
-export const SubTitle3 = SubTitleWith({ level: TitleLevel.Level3 });
-export const SubTitle4 = SubTitleWith({ level: TitleLevel.Level4 });
-export const SubTitle5 = SubTitleWith({ level: TitleLevel.Level5 });
+export const SubTitle1_ = SubTitleWith_({ level: TitleLevel.Level1 });
+export const SubTitle2_ = SubTitleWith_({ level: TitleLevel.Level2 });
+export const SubTitle3_ = SubTitleWith_({ level: TitleLevel.Level3 });
+export const SubTitle4_ = SubTitleWith_({ level: TitleLevel.Level4 });
+export const SubTitle5_ = SubTitleWith_({ level: TitleLevel.Level5 });
