@@ -29,3 +29,9 @@ export enum TitleLevel {
 	Level4 = "4",
 	Level5 = "5"
 }
+
+export enum Align {
+	Left = "left",
+	Center = "centered",
+	Right = "right"
+}

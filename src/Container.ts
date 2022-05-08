@@ -4,7 +4,12 @@ import { fmapIsKlass, pickKlass } from "./prelude/Attr";
 import { genWrapWidget } from "./prelude/Wrap";
 
 export const Block = genWrapWidget("div.block");
+export const Block_ = (children: m.Children): m.Vnode =>
+	m(Block, children)
+
 export const Box = genWrapWidget("div.box");
+export const Box_ = (children: m.Children): m.Vnode =>
+	m(Box, children)
 
 export enum ContainerSize {
 	Widescreen = "wildscreen",

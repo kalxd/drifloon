@@ -1,7 +1,7 @@
 import * as m from "mithril";
 import { fmapIsKlass, pickKlass, prependIs, selectKlassWhen } from "./prelude/Attr";
 import { Maybe } from "purify-ts";
-import { Color, Size } from "./Type";
+import { Align, Color, Size } from "./Type";
 
 /**
  * 最基本的按钮属性。
@@ -12,11 +12,11 @@ export interface ButtonAttr {
 	light?: boolean;
 	fullwidth?: boolean;
 	outline?: boolean;
-	inverted?: boolean;
-	rounded?: boolean;
-	hovered?: boolean;
-	focused?: boolean;
-	actived?: boolean;
+	invert?: boolean;
+	round?: boolean;
+	hover?: boolean;
+	focus?: boolean;
+	active?: boolean;
 	loading?: boolean;
 	disabled?: boolean;
 }
@@ -32,11 +32,12 @@ const generateAttr = <T extends ButtonAttr>(attr: T): BaseProp => {
 		fmapIsKlass(attr.size),
 		selectKlassWhen(attr.light, prependIs("light")),
 		selectKlassWhen(attr.fullwidth, prependIs("fullwidth")),
-		selectKlassWhen(attr.inverted, prependIs("inverted")),
-		selectKlassWhen(attr.rounded, prependIs("rounded")),
-		selectKlassWhen(attr.hovered, prependIs("hovered")),
-		selectKlassWhen(attr.focused, prependIs("focused")),
-		selectKlassWhen(attr.actived, prependIs("actived")),
+		selectKlassWhen(attr.outline, prependIs("outlined")),
+		selectKlassWhen(attr.invert, prependIs("inverted")),
+		selectKlassWhen(attr.round, prependIs("rounded")),
+		selectKlassWhen(attr.hover, prependIs("hovered")),
+		selectKlassWhen(attr.focus, prependIs("focused")),
+		selectKlassWhen(attr.active, prependIs("actived")),
 		selectKlassWhen(attr.loading, prependIs("loading"))
 	]);
 
@@ -81,5 +82,21 @@ export const NaviButton: m.Component<LinkButtonAttr> = {
 			href: `#!{attrs.to}`
 		};
 		return m("a.button", prop, children);
+	}
+};
+
+export interface ButtonGroupAttr {
+	addons?: boolean;
+	align?: Align;
+}
+
+export const ButtonGroup: m.Component<ButtonGroupAttr> = {
+	view: ({ attrs, children }) => {
+		const klass = pickKlass([
+			selectKlassWhen(attrs.addons, "has-addons"),
+			fmapIsKlass(attrs.align)
+		]);
+
+		return m("div.buttons", { class: klass }, children);
 	}
 };
