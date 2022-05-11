@@ -27,15 +27,15 @@ export enum ColumSize {
 }
 
 export interface ColumnsAttr {
-	isGapless?: boolean;
-	isMultiline?: boolean;
+	gapless?: boolean;
+	multiline?: boolean;
 }
 
 export const Columns: m.Component<ColumnsAttr> = {
 	view: vnode => {
 		const klass = pickKlass([
-			selectKlassWhen(vnode.attrs.isMultiline, prependIs("multiline")),
-			selectKlassWhen(vnode.attrs.isGapless, prependIs("gapless"))
+			selectKlassWhen(vnode.attrs.multiline, prependIs("multiline")),
+			selectKlassWhen(vnode.attrs.gapless, prependIs("gapless"))
 		]);
 
 		return m("div.columns", { class: klass }, vnode.children);
@@ -45,7 +45,7 @@ export const Columns: m.Component<ColumnsAttr> = {
 export interface ColumnAttr {
 	size?: ColumSize;
 	offset?: ColumSize;
-	isNarrow?: boolean;
+	narrow?: boolean;
 };
 
 export const Column: m.Component<ColumnAttr> = {
@@ -53,7 +53,7 @@ export const Column: m.Component<ColumnAttr> = {
 		const klass = pickKlass([
 			fmapIsKlass(vnode.attrs.size),
 			fmapIsKlass(vnode.attrs.offset),
-			selectKlassWhen(vnode.attrs.isNarrow, prependIs("narrow"))
+			selectKlassWhen(vnode.attrs.narrow, prependIs("narrow"))
 		]);
 
 		return m("div.column", { class: klass }, vnode.children);

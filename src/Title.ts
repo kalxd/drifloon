@@ -5,14 +5,14 @@ import { curry } from "purify-ts";
 
 export interface TitleAttr {
 	level?: TitleLevel;
-	spaced?: boolean;
+	space?: boolean;
 }
 
 export const Title: m.Component<TitleAttr> = {
 	view: ({ attrs, children }) => {
 		const klass = pickKlass([
 			fmapIsKlass(attrs.level),
-			selectKlassWhen(attrs.spaced, prependIs("spaced"))
+			selectKlassWhen(attrs.space, prependIs("spaced"))
 		]);
 
 		return m("div.title", { class: klass}, children);

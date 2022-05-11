@@ -18,7 +18,7 @@ export interface ButtonAttr {
 	focus?: boolean;
 	active?: boolean;
 	loading?: boolean;
-	disabled?: boolean;
+	disable?: boolean;
 }
 
 interface BaseProp {
@@ -41,7 +41,7 @@ const generateAttr = <T extends ButtonAttr>(attr: T): BaseProp => {
 		selectKlassWhen(attr.loading, prependIs("loading"))
 	]);
 
-	const disabled = Maybe.fromNullable(attr.disabled)
+	const disabled = Maybe.fromNullable(attr.disable)
 		.orDefault(false);
 
 	return { class: klass, disabled };
