@@ -8,18 +8,35 @@ export enum Size {
 	Large = "large"
 }
 
+export enum Wide {
+	One = "one",
+	Two = "two",
+	Three = "three",
+	Four = "four",
+	Five = "five",
+	Six = "six",
+	Seven = "seven",
+	Eight = "eight",
+	Nine = "nine",
+	Ten = "ten",
+	Eleven = "eleven",
+	Twelve = "twelve"
+}
+
 export enum Color {
-	White = "white",
-	Light = "light",
-	Dark = "dark",
-	Black = "black",
-	Text = "text",
-	Primary = "primary",
-	Link = "link",
-	Info = "info",
-	Success = "success",
-	Warning = "warning",
-	Danger = "danger"
+	Red = "red",
+	Orange = "orange",
+	Yellow = "yellow",
+	Olive = "olive",
+	Green = "green",
+	Teal = "teal",
+	Blue = "blue",
+	Violet = "violet",
+	Purple = "purple",
+	Pink = "pink",
+	Brown = "brown",
+	Grey = "grey",
+	Black = "black"
 }
 
 export enum TitleLevel {
@@ -35,4 +52,9 @@ export enum Align {
 	Center = "center aligned",
 	Right = "right aligned",
 	Justified = "justified"
+}
+
+export enum Float {
+	Left = "left floated",
+	Right = "right floated"
 }

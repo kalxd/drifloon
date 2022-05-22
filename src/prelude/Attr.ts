@@ -20,9 +20,9 @@ export const selectKlassWhen = curry((
 		.filter(identity)
 		.map(_ => klass));
 
-export const fmapKlass = curry((
-	f: (name: string) => string,
-	name: IsNil<string>,
+export const fmapKlass = curry(<T>(
+	f: (name: T) => string,
+	name: IsNil<T>,
 ): Maybe<string> => {
 	return Maybe.fromNullable(name)
 		.map(f);
