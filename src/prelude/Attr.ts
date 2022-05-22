@@ -35,3 +35,10 @@ export const pickKlass = (xs: Array<Maybe<string>>): string | undefined => {
 		.map(xs => xs.join(" "))
 		.extract();
 };
+
+export const pickEnumValue = curry(<K extends string | number | symbol>(
+	data: Record<K, string>,
+	key: K
+): string => {
+	return data[key];
+});
