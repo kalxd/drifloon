@@ -31,7 +31,8 @@ export enum TitleLevel {
 }
 
 export enum Align {
-	Left = "left",
-	Center = "centered",
-	Right = "right"
+	Left = "left aligned",
+	Center = "center aligned",
+	Right = "right aligned",
+	Justified = "justified"
 }

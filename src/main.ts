@@ -1,3 +1,4 @@
+/** 最为基础的组件。 */
 export * from "./Link";
 export * from "./Columns";
 export * from "./Menu";

@@ -1,47 +1,25 @@
 import * as m from "mithril";
-import { Size } from "./Type";
-import { fmapIsKlass, pickKlass } from "./prelude/Attr";
-import { genWrapWidget } from "./prelude/Wrap";
-
-export const Block = genWrapWidget("div.block");
-export const Block_ = (children: m.Children): m.Vnode =>
-	m(Block, children)
-
-export const Box = genWrapWidget("div.box");
-export const Box_ = (children: m.Children): m.Vnode =>
-	m(Box, children)
-
-export enum ContainerSize {
-	Widescreen = "wildscreen",
-	Fullhd = "fullhd",
-	MaxDesktop = "max-desktop",
-	MaxWildscreen = "max-wildscree"
-}
+import { Align } from "./Type";
+import { pickKlass, selectKlassWhen } from "./prelude/Attr";
+import { toPlainVnode } from "./prelude/Wrap";
+import { Maybe } from "purify-ts";
 
 export interface ContainerAttr {
-	size?: ContainerSize
+	align?: Align;
+	text?: boolean;
+	fluid?: boolean;
 }
 
 export const Container: m.Component<ContainerAttr> = ({
 	view: ({ attrs, children }) => {
 		const klass = pickKlass([
-			fmapIsKlass(attrs.size)
+			Maybe.fromNullable(attrs.align),
+			selectKlassWhen(attrs.fluid, "fuild"),
+			selectKlassWhen(attrs.text, "text")
 		]);
 
 		return m("div.container", { class: klass }, children);
 	}
 });
 
-export interface ContentAttr {
-	size?: Size
-}
-
-export const Content: m.Component<ContentAttr> = ({
-	view: ({ attrs, children }) => {
-		const klass = pickKlass([
-			fmapIsKlass(attrs.size)
-		]);
-
-		return m("div.content", { class: klass }, children)
-	}
-});
+export const Container_ = toPlainVnode(Container);
