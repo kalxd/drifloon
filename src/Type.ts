@@ -4,11 +4,22 @@ import { genMapping } from "./prelude/Fn";
  * 通用常量
  */
 export enum Size {
-	Small = "small",
-	Normal = "normal",
-	Medium = "medium",
-	Large = "large"
+	Mini,
+	Tiny,
+	Small,
+	Large,
+	Huge,
+	Massive
 }
+
+export const showSize = genMapping({
+	[Size.Mini]: "mini",
+	[Size.Tiny]: "tiny",
+	[Size.Small]: "small",
+	[Size.Large]: "large",
+	[Size.Huge]: "huge",
+	[Size.Massive]: "massive"
+});
 
 export enum Wide {
 	One,
@@ -79,14 +90,6 @@ export const showColor = genMapping({
 	[Color.Grey]: "grey",
 	[Color.Black]: "black"
 });
-
-export enum TitleLevel {
-	Level1 = "1",
-	Level2 = "2",
-	Level3 = "3",
-	Level4 = "4",
-	Level5 = "5"
-}
 
 export enum Align {
 	Left,

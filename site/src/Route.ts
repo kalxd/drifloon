@@ -3,7 +3,7 @@ import { Container } from "drifloon/Container";
 import { Column, Grid } from "drifloon/Grid";
 import { Wide } from "drifloon/Type";
 
-// import Sidebar from "./widget/Sidebar";
+import Sidebar from "./widget/Sidebar";
 
 import Home from "./page/Home";
 
@@ -12,7 +12,7 @@ import Home from "./page/Home";
 const Layout: m.Component = {
 	view: vnode => m(Container, { fluid: true }, [
 		m(Grid, [
-			m(Column, { wide: Wide.Five }, "你好啊"),
+			m(Column, { wide: Wide.Five }, m(Sidebar)),
 			m(Column, { wide: Wide.Eleven }, vnode.children)
 		])
 	])

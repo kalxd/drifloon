@@ -12,13 +12,13 @@ export const selectKlass = curry((
 		.filter(identity)
 		.map(_ => klass));
 
-export const fmapKlass = curry(<T>(
+export const fmapKlass = <T>(
 	f: (name: T) => string,
 	name: IsNil<T>,
 ): Maybe<string> => {
 	return Maybe.fromNullable(name)
 		.map(f);
-});
+};
 
 export const pickKlass = (xs: Array<Maybe<string>>): string | undefined => {
 	return NonEmptyList.fromArray(Maybe.catMaybes(xs))
