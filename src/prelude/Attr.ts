@@ -1,44 +1,50 @@
 /**
- * 组件属性处理
+ * 一些常用数据
  */
 
-import { curry, identity, Maybe, NonEmptyList } from "purify-ts";
-import { IsNil } from "./Type";
+import { isNil, IsNil, PickRequired } from "./Type";
 
-export const prependKlass = curry((
-	prefix: string,
-	value: string
-): string => `${prefix}-${value}`);
+export interface AttrBuilder<T> {
+	attr: () => T;
 
-export const prependIs = prependKlass("is");
+	field: <K extends keyof T>(key: K, value: T[K]) => AttrBuilder<T>;
+	fieldOnly: <K extends keyof T>(key: K, value: IsNil<T[K]>) => AttrBuilder<T>;
+	fieldWhen: <K extends keyof T>(cond: boolean, key: K, value: T[K]) => AttrBuilder<T>;
+}
 
-export const selectKlassWhen = curry((
-	cond: IsNil<boolean>,
-	klass: string
-): Maybe<string> =>
-	Maybe.fromNullable(cond)
-		.filter(identity)
-		.map(_ => klass));
+export const buildAttrWith = <T>(base: PickRequired<T>): AttrBuilder<T> => {
+	const attr = () => base as T;
 
-export const fmapKlass = curry(<T>(
-	f: (name: T) => string,
-	name: IsNil<T>,
-): Maybe<string> => {
-	return Maybe.fromNullable(name)
-		.map(f);
-});
+	const field = <K extends keyof T>(key: K, value: T[K]): AttrBuilder<T> =>
+		buildAttrWith({
+			...base,
+			[key]: value
+		});
 
-export const fmapIsKlass = fmapKlass(prependIs);
+	const fieldOnly = <K extends keyof T>(key: K, value: IsNil<T[K]>): AttrBuilder<T> => {
+		if (isNil(value)) {
+			return buildAttrWith(base);
+		}
+		else {
+			return field(key, value);
+		}
+	};
 
-export const pickKlass = (xs: Array<Maybe<string>>): string | undefined => {
-	return NonEmptyList.fromArray(Maybe.catMaybes(xs))
-		.map(xs => xs.join(" "))
-		.extract();
+	const fieldWhen = <K extends keyof T>(cond: boolean, key: K, value: T[K]): AttrBuilder<T> => {
+		if (cond) {
+			return buildAttrWith(base);
+		}
+		else {
+			return field(key, value);
+		}
+	};
+
+	return {
+		attr,
+		field,
+		fieldOnly,
+		fieldWhen
+	};
 };
 
-export const pickEnumValue = curry(<K extends string | number | symbol>(
-	data: Record<K, string>,
-	key: K
-): string => {
-	return data[key];
-});
+export const buildAttr = <T>(): AttrBuilder<T> => buildAttrWith({} as PickRequired<T>);

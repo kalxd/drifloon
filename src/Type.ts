@@ -1,4 +1,4 @@
-import { genMapping } from "prelude/Type";
+import { genMapping } from "./prelude/Fn";
 
 /**
  * 通用常量
@@ -23,6 +23,10 @@ export enum Wide {
 	Ten,
 	Eleven,
 	Twelve,
+	Thirteen,
+	Fourteen,
+	Fifteen,
+	Sixteen
 }
 
 export const showWide = genMapping({
@@ -37,7 +41,11 @@ export const showWide = genMapping({
 	[Wide.Nine]: "nine",
 	[Wide.Ten]: "ten",
 	[Wide.Eleven]: "eleven",
-	[Wide.Twelve]: "twelve"
+	[Wide.Twelve]: "twelve",
+	[Wide.Thirteen]: "thirteen",
+	[Wide.Fourteen]: "fourteen",
+	[Wide.Fifteen]: "fifteen",
+	[Wide.Sixteen]: "sixteen"
 });
 
 export enum Color {

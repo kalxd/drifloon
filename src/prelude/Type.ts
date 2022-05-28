@@ -29,21 +29,3 @@ export const isNil = <T>(value: IsNil<T>): value is null | undefined =>
 export type PickRequired<T> = {
 	[K in keyof T as T[K] extends Required<T>[K] ? K : never]: T[K];
 };
-
-/**
- * 主要用于生成enum映射函数，少写一些代码。
- * @example
- * ```
- * enum Action { Stop, Running, Finish }
- * const f: (action: Action) => string = genMapping({
- *   [Action.Stop]: "stop",
- *   [Action.Running]: "doing",
- *   [Action.Finish]: "over"
- * });
- *
- * f(Action.stop) // "stop"
- * ```
- */
-export const genMapping = <K extends string | number | symbol, V>(
-	obj: Record<K, V>
-): (key: K) => V => key => obj[key];

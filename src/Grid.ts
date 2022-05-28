@@ -1,17 +1,20 @@
 import * as m from "mithril";
+import { curry, Maybe } from "purify-ts";
 
-import { fmapKlass, pickEnumValue, pickKlass, selectKlassWhen } from "./prelude/Attr";
+import { fmapKlass, genMapping, pickKlass, selectKlass } from "./prelude/Fn";
 import { toPlainVnode } from "./prelude/Wrap";
-import { Align, Color, Float, showAlign, showColor, showFloat, Wide } from "./Type";
+import { Align, Color, Float, showAlign, showColor, showFloat, showWide, Wide } from "./Type";
 
-const wideColumn = (wide: Wide): string => `${wide} column`;
+const wideFor = curry((base: string, wide: Wide): string => {
+	return `${showWide(wide)} ${base}`;
+});
 
 export enum GridDividType {
 	Vertical,
 	Horizontal
 }
 
-const mapDividType = pickEnumValue({
+const mapDividType = genMapping({
 	[GridDividType.Horizontal]: "divided",
 	[GridDividType.Vertical]: "vertically divided"
 });
@@ -21,7 +24,7 @@ export enum GridCellType {
 	All
 }
 
-const mapCellType = pickEnumValue({
+const mapCellType = genMapping({
 	[GridCellType.Internal]: "internally celled",
 	[GridCellType.All]: "celled"
 });
@@ -31,7 +34,7 @@ export enum GridPadType {
 	Compact
 }
 
-const mapPadType = pickEnumValue({
+const mapPadType = genMapping({
 	[GridPadType.Pad]: "padded",
 	[GridPadType.Compact]: "compact"
 });
@@ -42,7 +45,7 @@ export enum GridMiddleAlignType {
 	Bottom
 }
 
-const mapMiddleAlignType = pickEnumValue({
+const mapMiddleAlignType = genMapping({
 	[GridMiddleAlignType.Top]: "top aligned",
 	[GridMiddleAlignType.Middle]: "middle aligned",
 	[GridMiddleAlignType.Bottom]: "bottom aligned"
@@ -59,18 +62,20 @@ export interface GridAttr {
 	cell?: GridCellType;
 }
 
+export const pickGridKlass = (attr: GridAttr): Array<Maybe<string>> => [
+	fmapKlass(wideFor('column'), attr.wide),
+	selectKlass("equal width", attr.equalWidth),
+	selectKlass("relaxed", attr.relax),
+	selectKlass("centered", attr.center),
+	fmapKlass(mapDividType, attr.divid),
+	fmapKlass(mapCellType, attr.cell),
+	fmapKlass(mapPadType, attr.pad),
+	fmapKlass(mapMiddleAlignType, attr.middleAlign)
+];
+
 export const Grid: m.Component<GridAttr> = ({
 	view: ({ attrs, children }) => {
-		const klass = pickKlass([
-			fmapKlass(wideColumn, attrs.wide),
-			selectKlassWhen(attrs.equalWidth, "equal width"),
-			selectKlassWhen(attrs.relax, "relaxed"),
-			selectKlassWhen(attrs.center, "centered"),
-			fmapKlass(mapDividType, attrs.divid),
-			fmapKlass(mapCellType, attrs.cell),
-			fmapKlass(mapPadType, attrs.pad),
-			fmapKlass(mapMiddleAlignType, attrs.middleAlign)
-		]);
+		const klass = pickKlass(pickGridKlass(attrs));
 
 		return m("div.ui.grid", { class: klass }, children);
 	}
@@ -84,8 +89,8 @@ export interface RowAttr {
 export const Row: m.Component<RowAttr> = ({
 	view: ({ attrs, children }) => {
 		const klass = pickKlass([
-			fmapKlass(wideColumn, attrs.wide),
-			selectKlassWhen(attrs.stretch, "stretched")
+			fmapKlass(wideFor('column'), attrs.wide),
+			selectKlass("stretched", attrs.stretch)
 		]);
 
 		return m("div.row", { class: klass }, children);
@@ -104,7 +109,7 @@ export interface ColumnAttr {
 export const Column: m.Component<ColumnAttr> = ({
 	view: ({ attrs, children }) => {
 		const klass = pickKlass([
-			fmapKlass(wideColumn, attrs.wide),
+			fmapKlass(wideFor('wide'), attrs.wide),
 			fmapKlass(showFloat, attrs.float),
 			fmapKlass(showColor, attrs.color),
 			fmapKlass(showAlign, attrs.align),
