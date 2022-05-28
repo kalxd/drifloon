@@ -1,31 +1,21 @@
 import * as m from "mithril";
-import { Columns, Column, ColumSize } from "drifloon/Columns";
-import Sidebar from "./widget/Sidebar";
+// import Sidebar from "./widget/Sidebar";
 
 import Home from "./page/Home";
-import { Box, Container } from "drifloon/Container";
-import Main from "./page/Button";
+import { Container } from "drifloon/Container";
+// import Main from "./page/Button";
 
 const Layout: m.Component = {
-	view: vnode => m(Box, [
-		m(Columns, [
-			m(Column, { size: ColumSize.Three }, m(Sidebar)),
-			m(Column, vnode.children)
-		])
-	])
+	view: vnode => m(Container, { fluid: true }, vnode.children)
 };
 
 const mkLayout = <A, S>(c: m.Component<A, S>): m.RouteResolver => ({
-	render: () => m(Layout, [
-		m(Container, [
-			m(c)
-		])
-	])
+	render: () => m(Layout, m(c))
 });
 
 const Route: m.RouteDefs = {
 	"/": mkLayout(Home),
-	"/element/button": mkLayout(Main)
+	// "/element/button": mkLayout(Main)
 };
 
 export default Route;

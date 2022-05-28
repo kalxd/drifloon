@@ -1,8 +1,7 @@
 import * as m from "mithril";
-import { Align } from "./Type";
-import { pickKlass, selectKlassWhen } from "./prelude/Attr";
+import { Align, showAlign } from "./Type";
+import { fmapKlass, pickKlass, selectKlassWhen } from "./prelude/Attr";
 import { toPlainVnode } from "./prelude/Wrap";
-import { Maybe } from "purify-ts";
 
 export interface ContainerAttr {
 	align?: Align;
@@ -13,12 +12,11 @@ export interface ContainerAttr {
 export const Container: m.Component<ContainerAttr> = ({
 	view: ({ attrs, children }) => {
 		const klass = pickKlass([
-			Maybe.fromNullable(attrs.align),
-			selectKlassWhen(attrs.fluid, "fuild"),
+			fmapKlass(showAlign, attrs.align),
+			selectKlassWhen(attrs.fluid, "fluid"),
 			selectKlassWhen(attrs.text, "text")
 		]);
-
-		return m("div.container", { class: klass }, children);
+		return m("div.ui.container", { class: klass }, children);
 	}
 });
 

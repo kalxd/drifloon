@@ -1,3 +1,5 @@
+import { genMapping } from "prelude/Type";
+
 /**
  * 通用常量
  */
@@ -9,35 +11,66 @@ export enum Size {
 }
 
 export enum Wide {
-	One = "one",
-	Two = "two",
-	Three = "three",
-	Four = "four",
-	Five = "five",
-	Six = "six",
-	Seven = "seven",
-	Eight = "eight",
-	Nine = "nine",
-	Ten = "ten",
-	Eleven = "eleven",
-	Twelve = "twelve"
+	One,
+	Two,
+	Three,
+	Four,
+	Five,
+	Six,
+	Seven,
+	Eight,
+	Nine,
+	Ten,
+	Eleven,
+	Twelve,
 }
 
+export const showWide = genMapping({
+	[Wide.One]: "one",
+	[Wide.Two]: "two",
+	[Wide.Three]: "three",
+	[Wide.Four]: "four",
+	[Wide.Five]: "five",
+	[Wide.Six]: "six",
+	[Wide.Seven]: "seven",
+	[Wide.Eight]: "eight",
+	[Wide.Nine]: "nine",
+	[Wide.Ten]: "ten",
+	[Wide.Eleven]: "eleven",
+	[Wide.Twelve]: "twelve"
+});
+
 export enum Color {
-	Red = "red",
-	Orange = "orange",
-	Yellow = "yellow",
-	Olive = "olive",
-	Green = "green",
-	Teal = "teal",
-	Blue = "blue",
-	Violet = "violet",
-	Purple = "purple",
-	Pink = "pink",
-	Brown = "brown",
-	Grey = "grey",
-	Black = "black"
+	Red,
+	Orange,
+	Yellow,
+	Olive,
+	Green,
+	Teal,
+	Blue,
+	Violet,
+	Purple,
+	Pink,
+	Brown,
+	Grey,
+	Black
 }
+
+export const showColor = genMapping({
+	[Color.Red]: "red",
+	[Color.Orange]: "orange",
+	[Color.Yellow]: "yellow",
+	[Color.Olive]: "olive",
+	[Color.Green]: "green",
+	[Color.Teal]: "teal",
+	[Color.Blue]: "blue",
+	[Color.Violet]: "violet",
+	[Color.Purple]: "purple",
+	[Color.Pink]: "pink",
+	[Color.Brown]: "brown",
+	[Color.Grey]: "grey",
+	[Color.Black]: "black"
+});
 
 export enum TitleLevel {
 	Level1 = "1",
@@ -48,13 +81,35 @@ export enum TitleLevel {
 }
 
 export enum Align {
-	Left = "left aligned",
-	Center = "center aligned",
-	Right = "right aligned",
-	Justified = "justified"
+	Left,
+	Center,
+	Right,
+	Justified
 }
 
+export const showAlign = genMapping({
+	[Align.Left]: "left aligned",
+	[Align.Center]: "center aligned",
+	[Align.Right]: "right aligned",
+	[Align.Justified]: "justified"
+});
+
 export enum Float {
-	Left = "left floated",
-	Right = "right floated"
+	Left,
+	Right
 }
+
+export const showFloat = genMapping({
+	[Float.Left]: "left floated",
+	[Float.Right]: "right floated"
+});
+
+export enum AttachPosition {
+	Top,
+	Bottom
+}
+
+export const showAttachPosition = genMapping({
+	[AttachPosition.Top]: "top attached",
+	[AttachPosition.Bottom]: "bottom attached"
+})

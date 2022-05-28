@@ -1,12 +1,20 @@
 import * as m from "mithril";
-import { genWrapWidget } from "./prelude/Wrap";
-import { NaviLinkAttr, NaviLink } from "./Link";
+import { fmapKlass, pickKlass, selectKlassWhen } from "prelude/Attr";
+import { AttachPosition, showWide, Wide } from "./Type";
 
-export const Menu = genWrapWidget("div.menu");
-export const MenuLabel = genWrapWidget("p.menu-label");
-export const MenuList = genWrapWidget("ul.menu-list");
-export const MenuItem = genWrapWidget("li");
+export interface MenuAttr {
+	text?: boolean;
+	wide?: Wide;
+	attach?: AttachPosition;
+}
 
-export const MenuLink: m.Component<NaviLinkAttr> = ({
-	view: ({ attrs, children }) => m(MenuItem, m(NaviLink, attrs, children))
-});
+export const Menu: m.Component<MenuAttr> = {
+	view: ({ attrs, children }) => {
+		const klass = pickKlass([
+			selectKlassWhen(attrs.text, "text"),
+			fmapKlass(showWide, attrs.wide),
+		]);
+
+		return m("div.ui.menu", { class: klass }, children);
+	}
+};

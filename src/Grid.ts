@@ -1,9 +1,8 @@
 import * as m from "mithril";
-import { Maybe } from "purify-ts";
 
 import { fmapKlass, pickEnumValue, pickKlass, selectKlassWhen } from "./prelude/Attr";
 import { toPlainVnode } from "./prelude/Wrap";
-import { Align, Color, Float, Wide } from "./Type";
+import { Align, Color, Float, showAlign, showColor, showFloat, Wide } from "./Type";
 
 const wideColumn = (wide: Wide): string => `${wide} column`;
 
@@ -106,9 +105,9 @@ export const Column: m.Component<ColumnAttr> = ({
 	view: ({ attrs, children }) => {
 		const klass = pickKlass([
 			fmapKlass(wideColumn, attrs.wide),
-			Maybe.fromNullable(attrs.float),
-			Maybe.fromNullable(attrs.color),
-			Maybe.fromNullable(attrs.align)
+			fmapKlass(showFloat, attrs.float),
+			fmapKlass(showColor, attrs.color),
+			fmapKlass(showAlign, attrs.align),
 		]);
 
 		return m("div.column", { class: klass }, children);
