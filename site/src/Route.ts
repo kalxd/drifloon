@@ -12,8 +12,8 @@ import Home from "./page/Home";
 const Layout: m.Component = {
 	view: vnode => m(Container, { fluid: true }, [
 		m(Grid, [
-			m(Column, { wide: Wide.Five }, m(Sidebar)),
-			m(Column, { wide: Wide.Eleven }, vnode.children)
+			m(Column, { wide: Wide.Four }, m(Sidebar)),
+			m(Column, { wide: Wide.Twelve }, vnode.children)
 		])
 	])
 };

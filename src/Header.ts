@@ -33,4 +33,4 @@ export const Header3_ = genPlainVnode("h3.ui.header");
 export const Header4_ = genPlainVnode("h4.ui.header");
 export const Header5_ = genPlainVnode("h5.ui.header");
 
-export const SubHeader = genPlainVnode("div.ui.sub.header");
+export const SubHeader_ = genPlainVnode("div.ui.sub.header");
