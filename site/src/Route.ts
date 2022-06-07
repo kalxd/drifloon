@@ -7,7 +7,7 @@ import Sidebar from "./widget/Sidebar";
 
 import Home from "./page/Home";
 
-// import Main from "./page/Button";
+import ButtonPage from "./page/Button";
 
 const Layout: m.Component = {
 	view: vnode => m(Container, { fluid: true }, [
@@ -24,7 +24,7 @@ const mkLayout = <A, S>(c: m.Component<A, S>): m.RouteResolver => ({
 
 const Route: m.RouteDefs = {
 	"/": mkLayout(Home),
-	// "/element/button": mkLayout(Main)
+	"/button": mkLayout(ButtonPage)
 };
 
 export default Route;

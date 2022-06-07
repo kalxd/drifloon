@@ -10,6 +10,7 @@ export interface HeaderAttr {
 	align?: Align;
 	color?: Color;
 	invert?: boolean;
+	divid?: boolean;
 }
 
 export const Header: m.Component<HeaderAttr> = {
@@ -20,7 +21,8 @@ export const Header: m.Component<HeaderAttr> = {
 			fmapKlass(showFloat, attrs.float),
 			fmapKlass(showAlign, attrs.align),
 			fmapKlass(showColor, attrs.color),
-			selectKlass("inverted", attrs.invert)
+			selectKlass("inverted", attrs.invert),
+			selectKlass("dividing", attrs.divid)
 		]);
 
 		return m("div.ui.header", { class: klass }, children);

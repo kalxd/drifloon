@@ -42,4 +42,5 @@ export const pickKlass = (xs: Array<Maybe<string>>): string | undefined => {
  */
 export const genMapping = <K extends string | number | symbol, V>(
 	obj: Record<K, V>
-): (key: K) => V => key => obj[key];
+): (key: K) => V =>
+	key => obj[key];

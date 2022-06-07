@@ -123,4 +123,24 @@ export enum AttachPosition {
 export const showAttachPosition = genMapping({
 	[AttachPosition.Top]: "top attached",
 	[AttachPosition.Bottom]: "bottom attached"
-})
+});
+
+export enum EmLevel {
+	Primary,
+	Secondary
+}
+
+export const showEmLevel = genMapping({
+	[EmLevel.Primary]: "primary",
+	[EmLevel.Secondary]: "secondary"
+});
+
+export enum StateLevel {
+	Positive,
+	Negative
+}
+
+export const showStateLevel = genMapping({
+	[StateLevel.Positive]: "positive",
+	[StateLevel.Negative]: "negative"
+});
