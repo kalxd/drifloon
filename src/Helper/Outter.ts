@@ -2,7 +2,7 @@ import * as m from "mithril";
 import { Just, Maybe, Nothing } from "purify-ts";
 import IORef from "../prelude/IORef";
 
-interface OutterAttr {
+export interface OutterAttr {
 	onOutterClick: (e: MouseEvent) => void;
 }
 
