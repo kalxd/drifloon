@@ -44,7 +44,3 @@ export const genMapping = <K extends string | number | symbol, V>(
 	obj: Record<K, V>
 ): (key: K) => V =>
 	key => obj[key];
-
-export const when = <T, R>(cond: (value: T) => Maybe<R>, value: T): IsNil<R> => {
-	return cond(value).extractNullable();
-};

@@ -48,7 +48,7 @@ export const Select = <T>(_: m.Vnode): m.Component<SelectAttr<T>> => {
 						return m("div.ui.multiple.selection.dropdown.active.visible", [
 							text,
 							m(
-								"div.menu.transition.visible",
+								"div.menu.transition.visible.animate__animated.animate__flipInX",
 								attrs.items.map(x => m("div.item", attrs.renderItem(x)))
 							)
 						])
