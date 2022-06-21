@@ -3,15 +3,43 @@ import { List, Maybe, Nothing } from "purify-ts";
 import IORef from "./prelude/IORef";
 import { Outter } from "./Helper/Outter";
 
-export interface SelectAttr<T> {
+interface DropdownTextAttr<T> {
+	text: Maybe<T>;
 	placeholder?: string;
-	items: Array<T>,
-	renderItem: (item: T) => m.Children
+	renderText: (value: T) => m.Component;
+	onclick: (event: MouseEvent) => void;
 }
 
-export const Select = <T>(_: m.Vnode): m.Component<SelectAttr<T>> => {
+const DropdownText = <T>(_: m.Vnode<T>): m.Component<DropdownTextAttr<T>> => ({
+	view: ({ attrs }) => {
+		return attrs.text.caseOf({
+			Just: value =>
+				m("div.text", { onclick: attrs.onclick }, m(attrs.renderText(value))),
+			Nothing: () =>
+				m("div.default.text", { onclick: attrs.onclick }, attrs.placeholder)
+		});
+	}
+});
+
+const DropdownCollapse = <T>(_: m.Vnode<T>): m.Component<DropdownTextAttr<T>> => ({
+	view: ({ attrs }) => {
+		m("div.ui.multiple.selection", [
+			m("i.dropdown.icon"),
+			m<DropdownTextAttr<T>, {}>(DropdownText, attrs)
+		]);
+	}
+});
+
+export interface DropdownAttr<T> {
+	value: Maybe<T>;
+	placeholder?: string;
+	items: Array<T>,
+	renderItem: (item: T) => m.Component;
+	renderText: (item: T) => m.Component;
+}
+
+export const Dropdown = <T>(_: m.Vnode): m.Component<DropdownAttr<T>> => {
 	interface State {
-		current: Maybe<number>;
 		visible: boolean;
 	};
 
@@ -22,13 +50,11 @@ export const Select = <T>(_: m.Vnode): m.Component<SelectAttr<T>> => {
 
 	const openE = (_: MouseEvent) => stateRef.modify(s => {
 		s.visible = true;
-		m.redraw();
 		return s;
 	});
 
 	const closeE = (_: MouseEvent) => stateRef.modify(s => {
 		s.visible = false;
-		m.redraw();
 		return s;
 	});
 
@@ -37,8 +63,8 @@ export const Select = <T>(_: m.Vnode): m.Component<SelectAttr<T>> => {
 			const menu = stateRef.asks(Maybe.of)
 				.filter(s => s.visible)
 				.caseOf({
-					Just: s => {
-						const text = s.current.chain(i => List.at(i, attrs.items))
+					Just: _ => {
+						const text = attrs.value.chain(i => List.at(i, attrs.items))
 							.map(attrs.renderItem)
 							.caseOf({
 								Just: text => m("div.text", text),
@@ -57,8 +83,19 @@ export const Select = <T>(_: m.Vnode): m.Component<SelectAttr<T>> => {
 						m("div.default.text", "sb")
 					])
 				});
+			const text = attrs.value.caseOf({
+				Just: value => m("div.text", attrs.renderText(value)),
+				Nothing: () => m("div.default.text", attrs.placeholder)
+			});
 
-			return m(Outter, { onOutterClick: closeE }, menu);
+			return m(
+				Outter,
+				{ onOutterClick: closeE },
+				m("div.ui.multiple.selection.dropdown", [
+					m("i.dropdown.icon"),
+					text
+				])
+			);
 		}
 	};
 };

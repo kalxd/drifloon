@@ -14,8 +14,9 @@ export const Outter: m.FactoryComponent<OutterAttr> = _ => {
 			const f = (e: MouseEvent) => {
 				const target = e.target as HTMLElement;
 
-				if (!target?.contains(vnode.dom)) {
+				if (!vnode.dom.contains(target)) {
 					vnode.attrs.onOutterClick(e);
+					m.redraw();
 				}
 			};
 
