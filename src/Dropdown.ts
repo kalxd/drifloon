@@ -11,16 +11,14 @@ interface DropdownTextAttr<T> {
 }
 
 const DropdownText = <T>(): m.Component<DropdownTextAttr<T>> => ({
-	view: ({ attrs }) => {
-		return Maybe.fromNullable(attrs.text)
-			.join()
-			.caseOf({
-				Just: value =>
-					m("div.text", attrs.renderText(value)),
-				Nothing: () =>
-					m("div.default.text", attrs.placeholder)
-		});
-	}
+	view: ({ attrs }) => Maybe.fromNullable(attrs.text)
+		.join()
+		.caseOf({
+			Just: value =>
+				m("div.text", attrs.renderText(value)),
+			Nothing: () =>
+				m("div.default.text", attrs.placeholder)
+		})
 });
 
 export interface DropdownAttr<T> {
@@ -59,19 +57,17 @@ export const Dropdown = <T>(_: m.Vnode): m.Component<DropdownAttr<T>> => {
 			const isVisible = stateRef.asks(s => s.visible);
 
 			const menu = Maybe.fromFalsy(isVisible)
-				.map(_ => {
-					return m(
-						"div.menu.transition.visible",
-						(attrs.items ?? []).map(x => {
-							const f = (e: MouseEvent) => {
-								onselect(x);
-								closeE(e);
-								e.stopPropagation();
-							};
-							return m("div.item", { onclick: f }, renderItem(x))
-						})
-					)
-				})
+				.map(_ => m(
+					"div.menu.transition.visible",
+					(attrs.items ?? []).map(x => {
+						const f = (e: MouseEvent) => {
+							onselect(x);
+							closeE(e);
+							e.stopPropagation();
+						};
+						return m("div.item", { onclick: f }, renderItem(x))
+					})
+				))
 				.extractNullable();
 
 			const klass = pickKlass([
@@ -81,14 +77,15 @@ export const Dropdown = <T>(_: m.Vnode): m.Component<DropdownAttr<T>> => {
 			return m(
 				Outter,
 				{ onOutterClick: closeE },
-				m("div.ui.multiple.selection.dropdown",
-				  { class: klass, onclick: toggleE },
-				  [
-					  m("i.dropdown.icon"),
-					  m<DropdownTextAttr<T>, any>(DropdownText, textAttr),
-					  menu
-				  ]
-				 )
+				m(
+					"div.ui.multiple.selection.dropdown",
+					{ class: klass, onclick: toggleE },
+					[
+						m("i.dropdown.icon"),
+						m<DropdownTextAttr<T>, any>(DropdownText, textAttr),
+						menu
+					]
+				)
 			);
 		}
 	};
