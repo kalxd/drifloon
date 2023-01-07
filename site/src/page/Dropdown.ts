@@ -1,6 +1,9 @@
-import { Header, Header2_, Select, SelectAttr } from "drifloon";
+import { Header, Header2_ } from "drifloon";
+import { Dropdown, DropdownAttr } from "drifloon/Dropdown";
+import IORef from "drifloon/prelude/IORef";
 import { Size } from "drifloon/Type";
 import * as m from "mithril";
+import { Just, Maybe, Nothing } from "purify-ts";
 
 interface RecordItem {
 	key: string;
@@ -18,15 +21,28 @@ const items: Array<RecordItem> = [
 	}
 ];
 
-const NormalS: m.Component = {
-	view: (_) => {
-		const attr: SelectAttr<RecordItem> = {
-			placeholder: "随便选择一个",
-			renderItem: x => x.name,
-			items: items
-		};
-		return m<SelectAttr<RecordItem>, {}>(Select, attr);
+const NormalS = (): m.Component => {
+	interface State {
+		value: Maybe<RecordItem>;
 	}
+
+	const ref = new IORef<State>({
+		value: Nothing
+	});
+
+	return {
+		view: (_) => {
+			const attr: DropdownAttr<RecordItem> = {
+				value: ref.asks(s => s.value),
+				placeholder: "随便选择一个",
+				renderItem: x => x.name,
+				renderText: x => `${x.key} - ${x.name}`,
+				onselect: x => ref.putAt("value", Just(x)),
+				items: items
+			};
+			return m<DropdownAttr<RecordItem>, any>(Dropdown, attr);
+		}
+	};
 };
 
 const Main: m.Component = {

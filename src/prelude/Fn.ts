@@ -1,8 +1,11 @@
 /**
  * 辅助类函数。
  */
+import * as m from "mithril";
 import { curry, identity, Maybe, NonEmptyList } from "purify-ts";
 import { IsNil } from "./Type";
+
+export type RenderFn<T> = (item: T) => m.Children;
 
 export const selectKlass = curry((
 	klass: string,

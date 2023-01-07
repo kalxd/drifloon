@@ -1,41 +1,36 @@
 import * as m from "mithril";
-import { List, Maybe, Nothing } from "purify-ts";
+import { identity, Maybe } from "purify-ts";
 import IORef from "./prelude/IORef";
+import { pickKlass, RenderFn, selectKlass } from "./prelude/Fn";
 import { Outter } from "./Helper/Outter";
 
 interface DropdownTextAttr<T> {
-	text: Maybe<T>;
+	text?: Maybe<T>;
 	placeholder?: string;
-	renderText: (value: T) => m.Component;
-	onclick: (event: MouseEvent) => void;
+	renderText: RenderFn<T>;
 }
 
-const DropdownText = <T>(_: m.Vnode<T>): m.Component<DropdownTextAttr<T>> => ({
+const DropdownText = <T>(): m.Component<DropdownTextAttr<T>> => ({
 	view: ({ attrs }) => {
-		return attrs.text.caseOf({
-			Just: value =>
-				m("div.text", { onclick: attrs.onclick }, m(attrs.renderText(value))),
-			Nothing: () =>
-				m("div.default.text", { onclick: attrs.onclick }, attrs.placeholder)
+		return Maybe.fromNullable(attrs.text)
+			.join()
+			.caseOf({
+				Just: value =>
+					m("div.text", attrs.renderText(value)),
+				Nothing: () =>
+					m("div.default.text", attrs.placeholder)
 		});
 	}
 });
 
-const DropdownCollapse = <T>(_: m.Vnode<T>): m.Component<DropdownTextAttr<T>> => ({
-	view: ({ attrs }) => {
-		m("div.ui.multiple.selection", [
-			m("i.dropdown.icon"),
-			m<any, any>(DropdownText, attrs)
-		]);
-	}
-});
-
 export interface DropdownAttr<T> {
-	value: Maybe<T>;
+	value?: Maybe<T>;
 	placeholder?: string;
-	items: Array<T>,
-	renderItem: (item: T) => m.Component;
-	renderText: (item: T) => m.Component;
+	items?: Array<T>,
+	onselect?: (item: T) => void;
+	cmp?: (lhs: T, rhs: T) => boolean;
+	renderItem?: (item: T) => m.Children
+	renderText?: (item: T) => m.Children
 }
 
 export const Dropdown = <T>(_: m.Vnode): m.Component<DropdownAttr<T>> => {
@@ -43,53 +38,58 @@ export const Dropdown = <T>(_: m.Vnode): m.Component<DropdownAttr<T>> => {
 		visible: boolean;
 	};
 
-	const stateRef: IORef<State> = new IORef({
-		current: Nothing,
+	const stateRef = new IORef<State>({
 		visible: false
 	});
 
-	const openE = (_: MouseEvent) => stateRef.putAt("visible", true);
-
 	const closeE = (_: MouseEvent) => stateRef.putAt("visible", false);
+	const toggleE = (_: MouseEvent) => stateRef.updateAt("visible", b => !b);
 
 	return {
 		view: ({ attrs }) => {
-			const menu = stateRef.asks(Maybe.of)
-				.filter(s => s.visible)
-				.caseOf({
-					Just: _ => {
-						const text = attrs.value.chain(i => List.at(i, attrs.items))
-							.map(attrs.renderItem)
-							.caseOf({
-								Just: text => m("div.text", text),
-								Nothing: () => m("div.default.text", attrs.placeholder)
-							});
+			const renderItem = attrs.renderItem ?? String;
+			const renderText = attrs.renderText ?? String;
+			const onselect = attrs.onselect ?? identity;
 
-						return m("div.ui.multiple.selection.dropdown.active.visible", [
-							text,
-							m(
-								"div.menu.transition.visible.animate__animated.animate__flipInX",
-								attrs.items.map(x => m("div.item", attrs.renderItem(x)))
-							)
-						])
-					},
-					Nothing: () => m("div.ui.selection.dropdown", { onclick: openE }, [
-						m("div.default.text", "sb")
-					])
-				});
-			const text = attrs.value.caseOf({
-				Just: value => m("div.text", attrs.renderText(value)),
-				Nothing: () => m("div.default.text", attrs.placeholder)
-			});
+			const textAttr: DropdownTextAttr<T> = {
+				text: attrs.value,
+				placeholder: attrs.placeholder,
+				renderText
+			};
+
+			const isVisible = stateRef.asks(s => s.visible);
+
+			const menu = Maybe.fromFalsy(isVisible)
+				.map(_ => {
+					return m(
+						"div.menu.transition.visible",
+						(attrs.items ?? []).map(x => {
+							const f = (e: MouseEvent) => {
+								onselect(x);
+								closeE(e);
+								e.stopPropagation();
+							};
+							return m("div.item", { onclick: f }, renderItem(x))
+						})
+					)
+				})
+				.extractNullable();
+
+			const klass = pickKlass([
+				selectKlass("active", isVisible)
+			]);
 
 			return m(
 				Outter,
 				{ onOutterClick: closeE },
-				m("div.ui.multiple.selection.dropdown", [
-					m("i.dropdown.icon"),
-					text,
-					menu
-				])
+				m("div.ui.multiple.selection.dropdown",
+				  { class: klass, onclick: toggleE },
+				  [
+					  m("i.dropdown.icon"),
+					  m<DropdownTextAttr<T>, any>(DropdownText, textAttr),
+					  menu
+				  ]
+				 )
 			);
 		}
 	};
