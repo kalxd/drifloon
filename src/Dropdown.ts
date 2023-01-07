@@ -28,7 +28,6 @@ export interface DropdownAttr<T> {
 	placeholder?: string;
 	items?: Array<T>,
 	onselect?: (item: T) => void;
-	cmp?: (lhs: T, rhs: T) => boolean;
 	renderItem?: (item: T) => m.Children
 	renderText?: (item: T) => m.Children
 }
