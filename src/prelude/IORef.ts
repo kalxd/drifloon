@@ -5,9 +5,12 @@ export default class IORef<T> {
 		this.ref = value;
 	}
 
-	modify(f: (ref: T) => T): this {
-		this.ref = f(this.ref);
-		return this;
+	ask(): T {
+		return this.ref;
+	}
+
+	asks<R>(f: (ref: T) => R): R {
+		return f(this.ref);
 	}
 
 	put(other: T): this {
@@ -15,11 +18,18 @@ export default class IORef<T> {
 		return this;
 	}
 
-	asks<R>(f: (ref: T) => R): R {
-		return f(this.ref);
+	putAt<K extends keyof T>(key: K, value: T[K]): this {
+		this.ref[key] = value;
+		return this;
 	}
 
-	ask(): T {
-		return this.ref;
+	update(f: (ref: T) => T): this {
+		this.ref = f(this.ref);
+		return this;
+	}
+
+	updateAt<K extends keyof T>(key: K, f: (value: T[K]) => T[K]): this {
+		this.ref[key] = f(this.ref[key]);
+		return this;
 	}
 }

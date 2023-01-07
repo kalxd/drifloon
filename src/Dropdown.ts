@@ -48,15 +48,9 @@ export const Dropdown = <T>(_: m.Vnode): m.Component<DropdownAttr<T>> => {
 		visible: false
 	});
 
-	const openE = (_: MouseEvent) => stateRef.modify(s => {
-		s.visible = true;
-		return s;
-	});
+	const openE = (_: MouseEvent) => stateRef.putAt("visible", true);
 
-	const closeE = (_: MouseEvent) => stateRef.modify(s => {
-		s.visible = false;
-		return s;
-	});
+	const closeE = (_: MouseEvent) => stateRef.putAt("visible", false);
 
 	return {
 		view: ({ attrs }) => {
