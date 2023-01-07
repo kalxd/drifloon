@@ -25,22 +25,3 @@ export const pickKlass = (xs: Array<Maybe<string>>): string | undefined => {
 		.map(xs => xs.join(" "))
 		.extract();
 };
-
-/**
- * 主要用于生成enum映射函数，少写一些代码。
- * @example
- * ```
- * enum Action { Stop, Running, Finish }
- * const f: (action: Action) => string = genMapping({
- *   [Action.Stop]: "stop",
- *   [Action.Running]: "doing",
- *   [Action.Finish]: "over"
- * });
- *
- * f(Action.stop) // "stop"
- * ```
- */
-export const genMapping = <K extends string | number | symbol, V>(
-	obj: Record<K, V>
-): (key: K) => V =>
-	key => obj[key];
