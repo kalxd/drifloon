@@ -1,7 +1,8 @@
 import * as m from "mithril";
 import { genPlainVnode } from "./prelude/Wrap";
-import { fmapKlass, pickKlass, selectKlass } from "./prelude/Fn";
-import { Align, AttachPosition, Color, Float, showAlign, showAttachPosition, showColor, showFloat, showSize, Size } from "./Type";
+import { pickKlass, selectKlass } from "./prelude/Fn";
+import { Align, AttachPosition, Color, Float, Size } from "./Type";
+import { Maybe } from "purify-ts";
 
 export interface HeaderAttr {
 	size?: Size;
@@ -16,11 +17,11 @@ export interface HeaderAttr {
 export const Header: m.Component<HeaderAttr> = {
 	view: ({ attrs, children }) => {
 		const klass = pickKlass([
-			fmapKlass(showSize, attrs.size),
-			fmapKlass(showAttachPosition, attrs.attach),
-			fmapKlass(showFloat, attrs.float),
-			fmapKlass(showAlign, attrs.align),
-			fmapKlass(showColor, attrs.color),
+			Maybe.fromNullable(attrs.size),
+			Maybe.fromNullable(attrs.attach),
+			Maybe.fromNullable(attrs.float),
+			Maybe.fromNullable(attrs.align),
+			Maybe.fromNullable(attrs.color),
 			selectKlass("inverted", attrs.invert),
 			selectKlass("dividing", attrs.divid)
 		]);

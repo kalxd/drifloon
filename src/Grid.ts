@@ -1,55 +1,34 @@
 import * as m from "mithril";
 import { curry, Maybe } from "purify-ts";
 
-import { fmapKlass, genMapping, pickKlass, selectKlass } from "./prelude/Fn";
+import { fmapKlass, pickKlass, selectKlass } from "./prelude/Fn";
 import { toPlainVnode } from "./prelude/Wrap";
-import { Align, Color, Float, showAlign, showColor, showFloat, showWide, Wide } from "./Type";
+import { Align, Color, Float, Wide } from "./Type";
 
 const wideFor = curry((base: string, wide: Wide): string => {
-	return `${showWide(wide)} ${base}`;
+	return `${wide} ${base}`;
 });
 
 export enum GridDividType {
-	Vertical,
-	Horizontal
+	Vertical = "divided",
+	Horizontal = "vertically divided"
 }
-
-const mapDividType = genMapping({
-	[GridDividType.Horizontal]: "divided",
-	[GridDividType.Vertical]: "vertically divided"
-});
 
 export enum GridCellType {
-	Internal,
-	All
+	Internal = "internally celled",
+	All = "celled"
 }
-
-const mapCellType = genMapping({
-	[GridCellType.Internal]: "internally celled",
-	[GridCellType.All]: "celled"
-});
 
 export enum GridPadType {
-	Pad,
-	Compact
+	Pad = "padded",
+	Compact = "compact"
 }
-
-const mapPadType = genMapping({
-	[GridPadType.Pad]: "padded",
-	[GridPadType.Compact]: "compact"
-});
 
 export enum GridMiddleAlignType {
-	Top,
-	Middle,
-	Bottom
+	Top = "top aligned",
+	Middle = "middle aligned",
+	Bottom = "bottom aligned"
 }
-
-const mapMiddleAlignType = genMapping({
-	[GridMiddleAlignType.Top]: "top aligned",
-	[GridMiddleAlignType.Middle]: "middle aligned",
-	[GridMiddleAlignType.Bottom]: "bottom aligned"
-});
 
 export interface GridAttr {
 	wide?: Wide;
@@ -67,10 +46,10 @@ export const pickGridKlass = (attr: GridAttr): Array<Maybe<string>> => [
 	selectKlass("equal width", attr.equalWidth),
 	selectKlass("relaxed", attr.relax),
 	selectKlass("centered", attr.center),
-	fmapKlass(mapDividType, attr.divid),
-	fmapKlass(mapCellType, attr.cell),
-	fmapKlass(mapPadType, attr.pad),
-	fmapKlass(mapMiddleAlignType, attr.middleAlign)
+	Maybe.fromNullable(attr.divid),
+	Maybe.fromNullable(attr.cell),
+	Maybe.fromNullable(attr.pad),
+	Maybe.fromNullable(attr.middleAlign)
 ];
 
 export const Grid: m.Component<GridAttr> = ({
@@ -110,9 +89,9 @@ export const Column: m.Component<ColumnAttr> = ({
 	view: ({ attrs, children }) => {
 		const klass = pickKlass([
 			fmapKlass(wideFor('wide'), attrs.wide),
-			fmapKlass(showFloat, attrs.float),
-			fmapKlass(showColor, attrs.color),
-			fmapKlass(showAlign, attrs.align),
+			Maybe.fromNullable(attrs.float),
+			Maybe.fromNullable(attrs.color),
+			Maybe.fromNullable(attrs.align)
 		]);
 
 		return m("div.column", { class: klass }, children);

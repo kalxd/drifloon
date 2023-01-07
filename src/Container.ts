@@ -1,6 +1,6 @@
 import * as m from "mithril";
-import { Align, showAlign } from "./Type";
-import { fmapKlass, pickKlass, selectKlass } from "./prelude/Fn";
+import { Align } from "./Type";
+import { pickKlass, selectKlass } from "./prelude/Fn";
 import { toPlainVnode } from "./prelude/Wrap";
 import { GridAttr, pickGridKlass } from "./Grid";
 import { Maybe } from "purify-ts";
@@ -12,7 +12,7 @@ export interface ContainerAttr {
 }
 
 const pickContainerKlass = (attr: ContainerAttr): Array<Maybe<string>> => [
-	fmapKlass(showAlign, attr.align),
+	Maybe.fromNullable(attr.align),
 	selectKlass("fluid", attr.fluid),
 	selectKlass("text", attr.text)
 ];

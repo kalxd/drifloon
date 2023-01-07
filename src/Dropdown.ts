@@ -25,7 +25,7 @@ const DropdownCollapse = <T>(_: m.Vnode<T>): m.Component<DropdownTextAttr<T>> =>
 	view: ({ attrs }) => {
 		m("div.ui.multiple.selection", [
 			m("i.dropdown.icon"),
-			m<DropdownTextAttr<T>, {}>(DropdownText, attrs)
+			m<any, any>(DropdownText, attrs)
 		]);
 	}
 });
@@ -93,7 +93,8 @@ export const Dropdown = <T>(_: m.Vnode): m.Component<DropdownAttr<T>> => {
 				{ onOutterClick: closeE },
 				m("div.ui.multiple.selection.dropdown", [
 					m("i.dropdown.icon"),
-					text
+					text,
+					menu
 				])
 			);
 		}

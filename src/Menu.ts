@@ -2,36 +2,23 @@ import * as m from "mithril";
 import { Maybe } from "purify-ts";
 
 import { genWrapWidget, toPlainVnode } from "./prelude/Wrap";
-import { fmapKlass, genMapping, pickKlass, selectKlass } from "./prelude/Fn";
-import { AttachPosition, Color, showAttachPosition, showColor, showWide, Wide } from "./Type";
+import { fmapKlass, pickKlass, selectKlass } from "./prelude/Fn";
+import { AttachPosition, Color, Wide } from "./Type";
 
-const wideColumn = (wide: Wide): string => `${showWide(wide)} item`;
+const wideColumn = (wide: Wide): string => `${wide} item`;
 
 export enum MenuShape {
-	Point,
-	Tab,
-	Text
+	Point = "pointing",
+	Tab = "tabular",
+	Text = "text"
 }
-
-const mapMenuType = genMapping({
-	[MenuShape.Point]: "pointing",
-	[MenuShape.Tab]: "tabular",
-	[MenuShape.Text]: "text"
-})
 
 export enum MenuFixPosition {
-	Top,
-	Bottom,
-	Left,
-	Right
+	Top = "top fixed",
+	Bottom = "bottom fixed",
+	Left = "left fixed",
+	Right = "right fixed"
 }
-
-const mapMenuFixPos = genMapping({
-	[MenuFixPosition.Top]: "top fixed",
-	[MenuFixPosition.Bottom]: "bottom fixed",
-	[MenuFixPosition.Left]: "left fixed",
-	[MenuFixPosition.Right]: "right fixed"
-});
 
 export interface MenuAttr {
 	text?: boolean;
@@ -53,14 +40,14 @@ export const Menu: m.Component<MenuAttr> = {
 		const klass = pickKlass([
 			selectKlass("text", attrs.text),
 			fmapKlass(wideColumn, attrs.wide),
-			fmapKlass(showAttachPosition, attrs.attach),
-			fmapKlass(mapMenuType, attrs.shape),
+			Maybe.fromNullable(attrs.attach),
+			Maybe.fromNullable(attrs.shape),
 			selectKlass("secondary", attrs.secondary),
 			selectKlass("vertical", attrs.vertical),
 			selectKlass("inverted", attrs.invert),
 			selectKlass("right", attrs.right),
-			fmapKlass(mapMenuFixPos, attrs.fixAt),
-			fmapKlass(showColor, attrs.color),
+			Maybe.fromNullable(attrs.fixAt),
+			Maybe.fromNullable(attrs.color),
 			selectKlass("fluid", attrs.fluid),
 			selectKlass("borderless", attrs.borderless)
 		]);
@@ -74,7 +61,7 @@ export interface MenuItemAttr {
 }
 
 const pickMenuItemAttr = <A extends MenuItemAttr>(attr: A): Array<Maybe<string>> => [
-	fmapKlass(showColor, attr.color)
+	Maybe.fromNullable(attr.color)
 ];
 
 export const MenuItem: m.Component<MenuItemAttr> = {

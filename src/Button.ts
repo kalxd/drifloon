@@ -1,8 +1,9 @@
 import * as m from "mithril";
-import { fmapKlass, pickKlass } from "./prelude/Fn";
-import { Color, EmLevel, showColor, showEmLevel, showSize, showStateLevel, Size, StateLevel } from "./Type";
+import { Maybe } from "purify-ts";
+import { pickKlass } from "./prelude/Fn";
+import { Color, EmLevel, Size, StateLevel } from "./Type";
 
-interface ButtonAttr {
+export interface ButtonAttr {
 	size?: Size;
 	color?: Color;
 	level?: StateLevel;
@@ -13,10 +14,10 @@ interface ButtonAttr {
 export const Button: m.Component<ButtonAttr> = {
 	view: ({ attrs, children }) => {
 		const klass = pickKlass([
-			fmapKlass(showSize, attrs.size),
-			fmapKlass(showColor, attrs.color),
-			fmapKlass(showStateLevel, attrs.level),
-			fmapKlass(showEmLevel, attrs.em)
+			Maybe.fromNullable(attrs.size),
+			Maybe.fromNullable(attrs.color),
+			Maybe.fromNullable(attrs.level),
+			Maybe.fromNullable(attrs.em)
 		]);
 
 		const prop = {
