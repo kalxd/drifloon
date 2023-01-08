@@ -66,7 +66,6 @@ export const modal = <T>(
 			w
 		]));
 
-		console.log(modalRef.ask());
 		m.redraw();
 	});
 };
