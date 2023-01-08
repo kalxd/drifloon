@@ -2,11 +2,13 @@ import * as m from "mithril";
 import { Container } from "drifloon/container";
 import { Column, Grid } from "drifloon/grid";
 import { Color, Wide } from "drifloon/data/var";
+import { Modal } from "drifloon/modal";
 
 import Home from "./page/Home";
 
 import ButtonPage from "./page/Button";
 import DropdownPage from "./page/Dropdown";
+import ModalPage from "./page/modal";
 import { Menu, MenuAttr, MenuNaviItem } from "drifloon/menu";
 
 interface RouterPage {
@@ -30,6 +32,11 @@ const routerMap: Array<RouterPage> = [
 		href: "/dropdown",
 		title: "下拉菜单",
 		page: DropdownPage
+	},
+	{
+		href: "/modal",
+		title: "对话框",
+		page: ModalPage
 	}
 ];
 
@@ -57,7 +64,10 @@ const Layout: m.Component = {
 };
 
 const mkLayout = <A, S>(c: m.Component<A, S>): m.RouteResolver => ({
-	render: () => m(Layout, m(c))
+	render: () => m.fragment({}, [
+		m(Layout, m(c)),
+		m(Modal)
+	])
 });
 
 const Route: m.RouteDefs = routerMap.reduce(

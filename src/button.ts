@@ -8,7 +8,7 @@ export interface ButtonAttr {
 	color?: Color;
 	level?: StateLevel;
 	em?: EmLevel;
-	onClick?: (event: MouseEvent) => void;
+	onclick?: (event: MouseEvent) => void;
 }
 
 export const Button: m.Component<ButtonAttr> = {
@@ -22,7 +22,7 @@ export const Button: m.Component<ButtonAttr> = {
 
 		const prop = {
 			class: klass,
-			onclick: attrs.onClick
+			onclick: attrs.onclick
 		};
 
 		return m("button.ui.button", prop, children);
