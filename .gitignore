@@ -1,6 +1,5 @@
 node_modules/
-/drifloon/*
-!/drifloon/package.json
+!/dist/package.json
 dist/
 
 *.un\~

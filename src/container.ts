@@ -1,8 +1,8 @@
 import * as m from "mithril";
-import { Align } from "./Type";
-import { pickKlass, selectKlass } from "./prelude/Fn";
-import { toPlainVnode } from "./prelude/Wrap";
-import { GridAttr, pickGridKlass } from "./Grid";
+import { Align } from "./data/var";
+import { pickKlass, selectKlass } from "./internal/attr";
+import { toPlainVnode } from "./internal/wrap";
+import { GridAttr, pickGridKlass } from "./grid";
 import { Maybe } from "purify-ts";
 
 export interface ContainerAttr {

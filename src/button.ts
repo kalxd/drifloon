@@ -1,7 +1,7 @@
 import * as m from "mithril";
 import { Maybe } from "purify-ts";
-import { pickKlass } from "./prelude/Fn";
-import { Color, EmLevel, Size, StateLevel } from "./Type";
+import { pickKlass } from "./internal/attr";
+import { Color, EmLevel, Size, StateLevel } from "./data/var";
 
 export interface ButtonAttr {
 	size?: Size;

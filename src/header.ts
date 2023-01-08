@@ -1,7 +1,7 @@
 import * as m from "mithril";
-import { genPlainVnode } from "./prelude/Wrap";
-import { pickKlass, selectKlass } from "./prelude/Fn";
-import { Align, AttachPosition, Color, Float, Size } from "./Type";
+import { genPlainVnode } from "./internal/wrap";
+import { pickKlass, selectKlass } from "./internal/attr";
+import { Align, AttachPosition, Color, Float, Size } from "./data/var";
 import { Maybe } from "purify-ts";
 
 export interface HeaderAttr {

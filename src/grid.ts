@@ -1,9 +1,9 @@
 import * as m from "mithril";
 import { curry, Maybe } from "purify-ts";
 
-import { fmapKlass, pickKlass, selectKlass } from "./prelude/Fn";
-import { toPlainVnode } from "./prelude/Wrap";
-import { Align, Color, Float, Wide } from "./Type";
+import { fmapKlass, pickKlass, selectKlass } from "./internal/attr";
+import { toPlainVnode } from "./internal/wrap";
+import { Align, Color, Float, Wide } from "./data/var";
 
 const wideFor = curry((base: string, wide: Wide): string => {
 	return `${wide} ${base}`;

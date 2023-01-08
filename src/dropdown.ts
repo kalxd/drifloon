@@ -1,8 +1,8 @@
 import * as m from "mithril";
 import { identity, Maybe } from "purify-ts";
-import IORef from "./prelude/IORef";
-import { pickKlass, RenderFn, selectKlass } from "./prelude/Fn";
-import { Outter } from "./Helper/Outter";
+import IORef from "./data/ioref";
+import { pickKlass, RenderFn, selectKlass } from "./internal/attr";
+import { Outter } from "./widget/outter";
 
 interface DropdownTextAttr<T> {
 	text?: Maybe<T>;

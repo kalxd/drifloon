@@ -1,9 +1,9 @@
 import * as m from "mithril";
 import { Maybe } from "purify-ts";
 
-import { genWrapWidget, toPlainVnode } from "./prelude/Wrap";
-import { fmapKlass, pickKlass, selectKlass } from "./prelude/Fn";
-import { AttachPosition, Color, Wide } from "./Type";
+import { genWrapWidget, toPlainVnode } from "./internal/wrap";
+import { fmapKlass, pickKlass, selectKlass } from "./internal/attr";
+import { AttachPosition, Color, Wide } from "./data/var";
 
 const wideColumn = (wide: Wide): string => `${wide} item`;
 

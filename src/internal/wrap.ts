@@ -5,7 +5,7 @@
 import * as m from "mithril";
 import { curry } from "purify-ts";
 
-export const genPlainVnode = curry((selector: string, children: m.Children) => {
+export const genPlainVnode = curry((selector: string, children: m.Children): m.Children => {
 	return m(selector, children);
 });
 

@@ -3,7 +3,7 @@
 		"strict": true,
 		"lib": ["es2020", "dom"],
 		"baseUrl": "./src/",
-		"outDir": "./drifloon",
+		"outDir": "./dist",
 		"declaration": true
 	},
 	"include": ["src/**/*.ts"],
