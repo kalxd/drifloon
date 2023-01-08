@@ -1,7 +1,7 @@
-import { Header, Header2_ } from "drifloon";
-import { Dropdown, DropdownAttr } from "drifloon/Dropdown";
-import IORef from "drifloon/prelude/IORef";
-import { Size } from "drifloon/Type";
+import { Header, Header2_ } from "drifloon/header";
+import { Dropdown, DropdownAttr } from "drifloon/dropdown";
+import IORef from "drifloon/data/ioref";
+import { Size } from "drifloon/data/var";
 import * as m from "mithril";
 import { Just, Maybe, Nothing } from "purify-ts";
 

@@ -1,5 +1,6 @@
-import { Button, Header, Header2_ } from "drifloon";
-import { EmLevel, Size, StateLevel } from "drifloon/Type";
+import { Button } from "drifloon/button";
+import { Header, Header2_ } from "drifloon/header";
+import { EmLevel, Size, StateLevel } from "drifloon/data/var";
 import * as m from "mithril";
 
 const S1 = m("div", [

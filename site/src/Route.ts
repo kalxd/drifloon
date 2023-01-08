@@ -1,13 +1,13 @@
 import * as m from "mithril";
-import { Container } from "drifloon/Container";
-import { Column, Grid } from "drifloon/Grid";
-import { Color, Wide } from "drifloon/Type";
+import { Container } from "drifloon/container";
+import { Column, Grid } from "drifloon/grid";
+import { Color, Wide } from "drifloon/data/var";
 
 import Home from "./page/Home";
 
 import ButtonPage from "./page/Button";
 import DropdownPage from "./page/Dropdown";
-import { Menu, MenuAttr, MenuNaviItem } from "drifloon";
+import { Menu, MenuAttr, MenuNaviItem } from "drifloon/menu";
 
 interface RouterPage {
 	href: string;
