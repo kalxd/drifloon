@@ -2,16 +2,17 @@ import * as m from "mithril";
 import { Button } from "drifloon/button";
 import { Header } from "drifloon/header";
 import { Size } from "drifloon/data/var";
-import { alertMsg } from "drifloon/modal";
+import { alertMsg, confirmMsg } from "drifloon/modal";
 
 const S: m.Component = {
 	view: () => {
 		const f = async () => {
 			await Promise.all([
 				alertMsg("sb"),
+				confirmMsg("回答我！"),
 				alertMsg("xxxx"),
 				alertMsg("sssss")
-			]);
+			]).then(console.log);
 		};
 
 		return m("div", [
