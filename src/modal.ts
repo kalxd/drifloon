@@ -1,6 +1,6 @@
 import * as m from "mithril";
 import { pickKlass, selectKlass } from "./internal/attr";
-import { Size } from "data/var";
+import { Size } from "./data/var";
 import IORef from "./data/ioref";
 import { Maybe, List, Tuple, Nothing, Just } from "purify-ts";
 
