@@ -2,20 +2,58 @@ import * as m from "mithril";
 import { pickKlass, selectKlass } from "./internal/attr";
 import { Size } from "./data/var";
 import IORef from "./data/ioref";
-import { Maybe, List, Nothing, Just } from "purify-ts";
+import { Maybe, List, Nothing, identity, Just } from "purify-ts";
 
 export enum ModalFullscreen {
 	Fullscreen = "fullscreen",
 	OverlayFullscreen = "overlay fullscreen"
 }
 
-export interface ModalWAttr {
+export interface ModalAttr {
 	size?: Size;
 	fullscreen?: ModalFullscreen;
 	invert?: boolean;
 }
 
-export const ModalW = <T>(): m.Component<ModalAttr<T>> => ({
+export interface ModalWAttr<T> extends ModalAttr {
+	onresolve: (result: T) => void;
+}
+
+export interface ModalActionWAttr {
+	positiveText?: string;
+	negativeText?: string;
+	isAlert?: boolean;
+	onpositive?: (e: MouseEvent) => void;
+	onnegative?: (e: MouseEvent) => void;
+}
+
+export const ModalActionW: m.Component<ModalActionWAttr> = {
+	view: ({ attrs }) => {
+		const negative = Just(attrs.isAlert ?? false)
+			.filter(b => !b)
+			.map(_ => Maybe.fromNullable(attrs.negativeText).orDefault("不好"))
+			.map(text => {
+				const f = attrs.onnegative ?? identity;
+				return m("button.ui.button", { onclick: f }, text);
+			})
+			.extract();
+
+
+		const onpositive = attrs.onpositive ?? identity;
+		const positive = m(
+			"button.ui.positive.button",
+			{ onclick: onpositive },
+			attrs.positiveText ?? "好"
+		);
+
+		return m("div.actions", [
+			negative,
+			positive
+		]);
+	}
+};
+
+export const ModalW = <T>(): m.Component<ModalWAttr<T>> => ({
 	view: ({ attrs, children }) => {
 		const klass = pickKlass([
 			Maybe.fromNullable(attrs.size),
@@ -27,30 +65,26 @@ export const ModalW = <T>(): m.Component<ModalAttr<T>> => ({
 	}
 });
 
-export interface ModalAttr<T> extends ModalWAttr {
-	onresolve: (result: T) => void;
-}
-
 interface ModalState<T> {
-	widget: m.Component<ModalAttr<T>>;
-	attr: ModalAttr<T>;
-	callback: (result: T) => void;
+	widget: m.Component<ModalWAttr<T>>;
+	attr: ModalWAttr<T>;
 }
 
 const modalRef = new IORef<Array<ModalState<any>>>([]);
 
 export const modal = <T>(
-	widget: m.Component<ModalAttr<T>>,
-	attr: ModalAttr<T>
+	widget: m.Component<ModalWAttr<T>>,
+	attr: ModalAttr
 ): Promise<T> => {
 	return new Promise(resolve => {
+		const attrw: ModalWAttr<T> = {
+			...attr,
+			onresolve: resolve
+		};
+
 		const w: ModalState<T> = {
 			widget,
-			attr,
-			callback: result => {
-				attr.onresolve(result);
-				resolve(result);
-			}
+			attr: attrw,
 		};
 
 		modalRef.update(xs => ([
@@ -62,13 +96,12 @@ export const modal = <T>(
 	});
 };
 
-export interface AlertAttr extends ModalWAttr {
+export interface AlertAttr extends ModalAttr {
 	title?: string;
 	content?: m.Children;
 	positiveText?: string;
 	negativeText?: string;
-	isExtentType?: boolean;
-
+	isAlert?: boolean;
 }
 
 interface AlertWAttr extends AlertAttr {
@@ -77,49 +110,36 @@ interface AlertWAttr extends AlertAttr {
 
 const AlertW: m.Component<AlertWAttr> = {
 	view: ({ attrs }) => {
-		const positiveText = attrs.positiveText ?? "好";
+		const modalActionAttr: ModalActionWAttr = {
+			positiveText: attrs.positiveText,
+			negativeText: attrs.negativeText,
+			isAlert: attrs.isAlert,
+			onpositive: () => attrs.onresolve(Just(undefined)),
+			onnegative: () => attrs.onresolve(Nothing)
+		};
 
-		const negativeButton = Maybe.fromFalsy(attrs.isExtentType)
-			.map(_ => {
-				return Maybe.fromNullable(attrs.negativeText)
-					.orDefault("不好");
-			})
-			.map(s => {
-				const f = () => attrs.onresolve(Nothing);
-				return m(
-					"button.ui.button",
-					{ onclick: f },
-					s
-				);
-			})
-			.extract();
-
-		return m<ModalAttr<Maybe<void>>, any>(ModalW, attrs, [
+		return m<ModalWAttr<Maybe<void>>, any>(ModalW, attrs, [
 			m("div.header", attrs.title),
 			m("div.content", attrs.content),
-			m("div.actions", [
-				negativeButton,
-				m(
-					"button.ui.positive.button",
-					{ onclick: () => attrs.onresolve(Just(void 0)) },
-					positiveText
-				)
-			])
+			m(ModalActionW, modalActionAttr)
 		])
 	}
 };
 
 interface AlertState {
-	attr: AlertAttr;
-	callback: (r: Maybe<void>) => void;
+	attr: AlertWAttr;
 }
 
 const alertRef = new IORef<Array<AlertState>>([]);
 
 export const alert = (attr: AlertAttr): Promise<Maybe<void>> => new Promise(resolve => {
+	const attrw: AlertWAttr = {
+		...attr,
+		onresolve: resolve
+	};
+
 	const w: AlertState = {
-		attr,
-		callback: resolve
+		attr: attrw,
 	};
 
 	alertRef.update(xs => ([w, ...xs]));
@@ -137,7 +157,7 @@ export const confirmMsg = (msg: string): Promise<Maybe<void>> => {
 	return alert({
 		title: "提示",
 		content: msg,
-		isExtentType: true
+		isAlert: true
 	});
 };
 
@@ -158,7 +178,7 @@ const renderModal = <T>(state: Array<ModalState<T>>): Maybe<m.Children> => {
 			const attr = {
 				...w.attr,
 				onresolve: (x: T) => {
-					w.callback(x);
+					w.attr.onresolve(x);
 					modalRef.put(ws);
 				}
 			};
@@ -176,7 +196,7 @@ const renderAlert = (state: Array<AlertState>): Maybe<m.Children> => {
 			const attr: AlertWAttr = {
 				...w.attr,
 				onresolve: r => {
-					w.callback(r);
+					w.attr.onresolve(r);
 					alertRef.put(ws);
 				}
 			};
@@ -185,7 +205,7 @@ const renderAlert = (state: Array<AlertState>): Maybe<m.Children> => {
 		});
 };
 
-export const Modal: m.Component = {
+export const ModalMask: m.Component = {
 	view: () => {
 		const modalWidget = modalRef.asks(renderModal);
 		const alertWidget = alertRef.asks(renderAlert);

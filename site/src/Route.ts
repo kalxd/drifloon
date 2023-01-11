@@ -2,7 +2,7 @@ import * as m from "mithril";
 import { Container } from "drifloon/container";
 import { Column, Grid } from "drifloon/grid";
 import { Color, Wide } from "drifloon/data/var";
-import { Modal } from "drifloon/modal";
+import { ModalMask } from "drifloon/modal";
 
 import Home from "./page/Home";
 
@@ -66,7 +66,7 @@ const Layout: m.Component = {
 const mkLayout = <A, S>(c: m.Component<A, S>): m.RouteResolver => ({
 	render: () => m.fragment({}, [
 		m(Layout, m(c)),
-		m(Modal)
+		m(ModalMask)
 	])
 });
 
