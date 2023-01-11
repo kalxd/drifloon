@@ -2,7 +2,7 @@ import * as m from "mithril";
 import { Button } from "drifloon/button";
 import { Header } from "drifloon/header";
 import { Size } from "drifloon/data/var";
-import { alertMsg, confirmMsg } from "drifloon/modal";
+import { alertMsg, confirmMsg, modal, ModalAttr, ModalW } from "drifloon/modal";
 
 const S: m.Component = {
 	view: () => {
@@ -12,12 +12,36 @@ const S: m.Component = {
 				confirmMsg("回答我！"),
 				alertMsg("xxxx"),
 				alertMsg("sssss")
-			]).then(console.log);
+			]);
 		};
 
 		return m("div", [
 			m("p", "点击显示对话框"),
-			m(Button, { onclick: f }, "打开sss")
+			m(Button, { onclick: f }, "打开")
+		]);
+	}
+};
+
+const AlertModalHere: m.Component<ModalAttr<void>> = {
+	view: ({ attrs }) => {
+		return m(ModalW, attrs, [
+			m("div.header", "点击下面几块按钮"),
+			m("div.content", [
+				m(Button, { onclick: () => alertMsg("你看见我了") }, "alert"),
+				m(Button, { onclick: () => confirmMsg("你看见我了") }, "confirm")
+			]),
+			m("div.actions", [
+				m(Button, { onclick: () => attrs.onresolve() }, "好")
+			])
+		]);
+	}
+};
+
+const SModal: m.Component = {
+	view: () => {
+		const openModal = () => modal(AlertModalHere, { onresolve: () => {} });
+		return m("div", [
+			m(Button, { onclick: openModal }, "打开对话框")
 		]);
 	}
 };
@@ -25,7 +49,9 @@ const S: m.Component = {
 const Main: m.Component = {
 	view: _ => m("div.ui.teal.segment", [
 		m(Header, { divid: true, size: Size.Huge }, "对话框"),
-		m(S)
+		m(S),
+		m(Header, { size: Size.Large }, "混合使用"),
+		m(SModal)
 	])
 };
 

@@ -2,7 +2,7 @@ import * as m from "mithril";
 import { pickKlass, selectKlass } from "./internal/attr";
 import { Size } from "./data/var";
 import IORef from "./data/ioref";
-import { Maybe, List, Tuple, Nothing, Just } from "purify-ts";
+import { Maybe, List, Nothing, Just } from "purify-ts";
 
 export enum ModalFullscreen {
 	Fullscreen = "fullscreen",
@@ -141,53 +141,60 @@ export const confirmMsg = (msg: string): Promise<Maybe<void>> => {
 	});
 };
 
-const renderModal = <T>(t: Tuple<ModalState<T>, Array<ModalState<T>>>): m.Children => {
-	const w = t.fst();
-	const ws = t.snd();
-
-	const attr = {
-		...w.attr,
-		onresolve: (x: T) => {
-			w.callback(x);
-			modalRef.put(ws);
-		}
-	};
-
-	return m(w.widget, attr);
+const ModalDimmer: m.Component = {
+	view: ({ children }) => m(
+		"div.ui.modals.dimmer.active.visible.transition",
+		{ style: "display: flex !important" },
+		children
+	)
 };
 
-const renderAlert = (t: Tuple<AlertState, Array<AlertState>>): m.Children => {
-	const w = t.fst();
-	const ws = t.snd();
+const renderModal = <T>(state: Array<ModalState<T>>): Maybe<m.Children> => {
+	return List.uncons(state)
+		.map(t => {
+			const w = t.fst();
+			const ws = t.snd();
 
-	const attr: AlertWAttr = {
-		...w.attr,
-		onresolve: r => {
-			w.callback(r);
-			alertRef.put(ws);
-		}
-	};
+			const attr = {
+				...w.attr,
+				onresolve: (x: T) => {
+					w.callback(x);
+					modalRef.put(ws);
+				}
+			};
 
-	return m(AlertW, attr);
+			return m(w.widget, attr);
+		});
+};
+
+const renderAlert = (state: Array<AlertState>): Maybe<m.Children> => {
+	return List.uncons(state)
+		.map(t => {
+			const w = t.fst();
+			const ws = t.snd();
+
+			const attr: AlertWAttr = {
+				...w.attr,
+				onresolve: r => {
+					w.callback(r);
+					alertRef.put(ws);
+				}
+			};
+
+			return m(AlertW, attr);
+		});
 };
 
 export const Modal: m.Component = {
 	view: () => {
-		const modalWidget = modalRef.asks(List.uncons);
-		const alertWidget = alertRef.asks(List.uncons);
+		const modalWidget = modalRef.asks(renderModal);
+		const alertWidget = alertRef.asks(renderAlert);
 
-		return modalWidget.alt(alertWidget as never as typeof modalWidget) // 这一行超级黑魔法，仅仅为了少写if-else。
-			.map(_ => {
-				const modalW = modalWidget.map(renderModal).extract();
-				const alertW = alertWidget.map(renderAlert).extract();
-
-				return m(
-					"div.ui.modals.dimmer.active.visible.transition",
-					{ style: "display: flex !important" },
-					modalW,
-					alertW
-				);
-			})
+		return alertWidget.alt(modalWidget)
+			.map(_ => m(ModalDimmer, [
+				modalWidget.extract(),
+				alertWidget.extract()
+			]))
 			.extract();
 	}
 };
