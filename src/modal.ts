@@ -149,15 +149,15 @@ export const alert = (attr: AlertAttr): Promise<Maybe<void>> => new Promise(reso
 export const alertMsg = async (msg: string): Promise<void> => {
 	await alert({
 		title: "提示",
-		content: msg
+		content: msg,
+		isAlert: true
 	});
 };
 
 export const confirmMsg = (msg: string): Promise<Maybe<void>> => {
 	return alert({
 		title: "提示",
-		content: msg,
-		isAlert: true
+		content: msg
 	});
 };
 
