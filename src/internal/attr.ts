@@ -6,7 +6,9 @@ import { curry, Maybe, NonEmptyList } from "purify-ts";
 
 export type RenderFn<T> = (item: T) => m.Children;
 
-export type IsNil<T> = T | null | undefined;
+export type MouseCallback = (e: MouseEvent) => void;
+
+type IsNil<T> = T | null | undefined;
 
 /**
  * 检测是否为空值。
