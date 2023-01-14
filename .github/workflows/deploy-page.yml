@@ -23,7 +23,6 @@ jobs:
         npm install
         npx webpack
         cp -r assert dist
-        - name: Deploy
     - name: deploy to page
       uses: peaceiris/actions-gh-pages@v3
       with:
