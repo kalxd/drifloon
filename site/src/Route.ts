@@ -1,7 +1,7 @@
 import * as m from "mithril";
 import { Container } from "drifloon/container";
 import { Column, Grid } from "drifloon/grid";
-import { Color, Wide } from "drifloon/data/var";
+import { Align, Color, Size, Wide } from "drifloon/data/var";
 import { ModalMask } from "drifloon/modal";
 
 import Home from "./page/home";
@@ -10,6 +10,7 @@ import ButtonPage from "./page/button";
 import DropdownPage from "./page/dropdown";
 import ModalPage from "./page/modal";
 import { Menu, MenuAttr, MenuNaviItem } from "drifloon/menu";
+import { Header } from "drifloon/header";
 
 interface RouterPage {
 	href: string;
@@ -55,7 +56,12 @@ const Sidebar: m.Component = {
 };
 
 const Layout: m.Component = {
-	view: vnode => m(Container, { fluid: true }, [
+	view: vnode => m(Container, [
+		m(
+			Header,
+			{ color: Color.Teal, align: Align.Center, size: Size.Huge },
+			"drifloon"
+		),
 		m(Grid, [
 			m(Column, { wide: Wide.Four }, m(Sidebar)),
 			m(Column, { wide: Wide.Twelve }, vnode.children)
