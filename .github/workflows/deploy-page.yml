@@ -4,6 +4,9 @@ on:
   push:
     branches: [master]
 
+permissions:
+  contents: write
+
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -23,5 +26,5 @@ jobs:
     - name: deploy to page
       uses: JamesIves/github-pages-deploy-action@v4
       with:
-        folder: dist
+        folder: site/dist
         target-folder: drifloon
