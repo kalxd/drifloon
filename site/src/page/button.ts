@@ -1,5 +1,5 @@
 import { Button } from "drifloon/button";
-import { Header, Header2_ } from "drifloon/header";
+import { Header } from "drifloon/header";
 import { EmLevel, Size, StateLevel } from "drifloon/data/var";
 import * as m from "mithril";
 
@@ -20,12 +20,12 @@ const StateS = m("div", [
 const Main: m.Component = {
 	view: () => {
 		return m("div.ui.teal.segment", [
-			m(Header, { divid: true, size: Size.Huge }, "按钮"),
-			Header2_("普通状态"),
+			m(Header, { isDivid: true, size: Size.Huge }, "按钮"),
+			m(Header, { size: Size.Large }, "普通状态"),
 			S1,
-			Header2_("主次"),
+			m(Header, { size: Size.Large }, "主次"),
 			EmS,
-			Header2_("正负"),
+			m(Header, { size: Size.Large }, "正负"),
 			StateS
 		]);
 	}

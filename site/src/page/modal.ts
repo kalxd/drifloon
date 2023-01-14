@@ -51,7 +51,7 @@ const SModal: m.Component = {
 
 const Main: m.Component = {
 	view: _ => m("div.ui.teal.segment", [
-		m(Header, { divid: true, size: Size.Huge }, "对话框"),
+		m(Header, { isDivid: true, size: Size.Huge }, "对话框"),
 		m(S),
 		m(Header, { size: Size.Large }, "混合使用"),
 		m(SModal)

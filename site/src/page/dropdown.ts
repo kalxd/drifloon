@@ -1,4 +1,4 @@
-import { Header, Header2_ } from "drifloon/header";
+import { Header } from "drifloon/header";
 import { Dropdown, DropdownAttr } from "drifloon/dropdown";
 import IORef from "drifloon/data/ioref";
 import { Size } from "drifloon/data/var";
@@ -48,8 +48,8 @@ const NormalS = (): m.Component => {
 const Main: m.Component = {
 	view: () => {
 		return m("div.ui.purple.segment", [
-			m(Header, { divid: true, size: Size.Huge }, "下拉菜单"),
-			Header2_("普通状态"),
+			m(Header, { isDivid: true, size: Size.Huge }, "下拉菜单"),
+			m(Header, { size: Size.Large }, "普通状态"),
 			m(NormalS)
 		])
 	}

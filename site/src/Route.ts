@@ -4,10 +4,10 @@ import { Column, Grid } from "drifloon/grid";
 import { Color, Wide } from "drifloon/data/var";
 import { ModalMask } from "drifloon/modal";
 
-import Home from "./page/Home";
+import Home from "./page/home";
 
-import ButtonPage from "./page/Button";
-import DropdownPage from "./page/Dropdown";
+import ButtonPage from "./page/button";
+import DropdownPage from "./page/dropdown";
 import ModalPage from "./page/modal";
 import { Menu, MenuAttr, MenuNaviItem } from "drifloon/menu";
 

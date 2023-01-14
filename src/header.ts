@@ -1,5 +1,4 @@
 import * as m from "mithril";
-import { genPlainVnode } from "./internal/wrap";
 import { pickKlass, selectKlass } from "./internal/attr";
 import { Align, AttachPosition, Color, Float, Size } from "./data/var";
 import { Maybe } from "purify-ts";
@@ -10,8 +9,8 @@ export interface HeaderAttr {
 	float?: Float;
 	align?: Align;
 	color?: Color;
-	invert?: boolean;
-	divid?: boolean;
+	isInvert?: boolean;
+	isDivid?: boolean;
 }
 
 export const Header: m.Component<HeaderAttr> = {
@@ -22,18 +21,10 @@ export const Header: m.Component<HeaderAttr> = {
 			Maybe.fromNullable(attrs.float),
 			Maybe.fromNullable(attrs.align),
 			Maybe.fromNullable(attrs.color),
-			selectKlass("inverted", attrs.invert),
-			selectKlass("dividing", attrs.divid)
+			selectKlass("inverted", attrs.isInvert),
+			selectKlass("dividing", attrs.isDivid)
 		]);
 
 		return m("div.ui.header", { class: klass }, children);
 	}
 };
-
-export const Header1_ = genPlainVnode("h1.ui.header");
-export const Header2_ = genPlainVnode("h2.ui.header");
-export const Header3_ = genPlainVnode("h3.ui.header");
-export const Header4_ = genPlainVnode("h4.ui.header");
-export const Header5_ = genPlainVnode("h5.ui.header");
-
-export const SubHeader_ = genPlainVnode("div.ui.sub.header");
