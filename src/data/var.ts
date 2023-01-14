@@ -59,7 +59,9 @@ export enum Float {
 
 export enum AttachPosition {
 	Top = "top attached",
-	Bottom = "bottom attached"
+	Bottom = "bottom attached",
+	Left = "left attached",
+	Right = "right attached"
 }
 
 export enum EmLevel {
@@ -70,4 +72,10 @@ export enum EmLevel {
 export enum StateLevel {
 	Positive = "positive",
 	Negative = "negative"
+}
+
+export enum LoadingShape {
+	Default = "loading",
+	Double = "double loading",
+	Elastic = "elastic loading"
 }
