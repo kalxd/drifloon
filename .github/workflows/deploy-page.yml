@@ -1,0 +1,22 @@
+name: deploy to github page
+
+on:
+  push:
+    branches: [master]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v3
+    - name: build the site
+      run: |
+        cd site/
+        npm install
+        npx webpack
+        cp -r assert dist
+    - name: deploy to page
+      uses: JamesIves/github-pages-deploy-action@v4
+      with:
+        folder: dist
+        target-folder: drifloon
