@@ -1,4 +1,4 @@
-import { cmpDefault } from "internal/attr";
+import { cmpDefault } from "./internal/attr";
 import * as m from "mithril";
 import { identity, Maybe } from "purify-ts";
 
@@ -43,7 +43,7 @@ const SingleRadiobox = <T>(): m.Component<SingleRadioboxAttr<T>> => ({
 		const f = () => attrs.onchange(attrs.value);
 
 		return m("div.ui.radio.checkbox", { class: klass, onclick: f }, [
-			m("input.hidden[type=radio]"),
+			m("input.hidden[type=radio]", { checked: klass }),
 			m("label", children)
 		]);
 	}
