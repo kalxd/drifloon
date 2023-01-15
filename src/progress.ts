@@ -43,18 +43,18 @@ export const Progress: m.Component<ProgressAttr> = {
 			Maybe.fromNullable(attrs.color)
 		]);
 
-		const percent = Math.min(100, attrs.value ?? 0) / 100;
+		const percent = Math.min(100, attrs.value ?? 0);
 
 		const text = Maybe.fromNullable(attrs.text)
 			.map(text => m("div.progress", text))
 			.extract();
 
-		return m("div.ui.progress", { class: klass }, [
+		return m("div.ui.progress", { class: klass, "data-percent": percent }, [
 			m(
 				"div.bar",
-				{ style: `width: ${percent}%; transition-duration: 300ms` }
+				{ style: `width: ${percent}%; transition-duration: 300ms` },
+				text
 			),
-			text,
 			children
 		]);
 	}

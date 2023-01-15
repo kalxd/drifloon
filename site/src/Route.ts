@@ -9,6 +9,7 @@ import Home from "./page/home";
 import ButtonPage from "./page/button";
 import DropdownPage from "./page/dropdown";
 import ModalPage from "./page/modal";
+import ProgressPage from "./page/progress";
 import { Menu, MenuAttr, MenuNaviItem } from "drifloon/menu";
 import { Header } from "drifloon/header";
 
@@ -38,6 +39,11 @@ const routerMap: Array<RouterPage> = [
 		href: "/modal",
 		title: "对话框",
 		page: ModalPage
+	},
+	{
+		href: "/progress",
+		title: "进度条",
+		page: ProgressPage
 	}
 ];
 
