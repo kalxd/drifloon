@@ -8,6 +8,8 @@ export type RenderFn<T> = (item: T) => m.Children;
 
 export type MouseCallback = (e: MouseEvent) => void;
 
+export const cmpDefault = <T>(x: T, y: T): boolean => x === y;
+
 type IsNil<T> = T | null | undefined;
 
 /**
