@@ -3,8 +3,8 @@
 	"version": "0.0.1",
 	"description": "自用前端库，前端真是太垃圾了",
 	"scripts": {
-		"build": "npx webpack",
-		"watch": "npx webpack -w",
+		"build": "npx tsc",
+		"dev": "npx tsc -w",
 		"test": "npx ava"
 	},
 	"main": "main.js",
