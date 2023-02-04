@@ -1,4 +1,4 @@
-import { cmpDefault, pickKlass, selectKlass } from "./internal/attr";
+import { cmpDefault, pickKlass } from "./internal/attr";
 import * as m from "mithril";
 import { identity, Maybe } from "purify-ts";
 
