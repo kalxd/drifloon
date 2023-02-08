@@ -1,36 +1,49 @@
-import { Either, Maybe, Nothing, Tuple, Just } from "purify-ts";
+import IORef from "./ioref";
+import { Either, Maybe, Nothing, } from "purify-ts";
 
-export class FormValue<T> {
-	private value: Tuple<Maybe<Either<string, T>>, string>;
+export class FormData<T> {
+	private initData: T;
+	private data: IORef<T>;
+	public err: Maybe<string> = Nothing;
 
-	constructor(value?: string) {
-		const v = value ?? "";
-		this.value = Tuple.fromArray([Nothing, v]);
+	constructor(data: T) {
+		this.initData = data;
+		this.data = new IORef(data);
 	}
 
-	map(f: (value: string) => string): this {
-		this.value = this.value.map(f);
+	put(data: T): this {
+		this.data.put(data);
 		return this;
 	}
 
-	put(value: string): this {
-		this.value = this.value.map(_ => value);
+	putAt<K extends keyof T>(key: K, value: T[K]): this {
+		this.data.putAt(key, value);
 		return this;
+	}
+
+	update(f: (data: T) => T): this {
+		this.data.update(f);
+		return this;
+	}
+
+	updateAt<K extends keyof T>(key: K, f: (value: T[K]) => T[K]): this {
+		this.data.updateAt(key, f);
+		return this;
+	}
+
+	validate<R>(f: (data: T) => Either<string, R>): Either<string, R> {
+		const v = this.data.asks(f);
+		this.err = v.swap().toMaybe();
+		return v;
 	}
 
 	reset(): this {
-		this.value = this.value.map(_ => "");
+		this.data = new IORef(this.initData);
 		return this;
 	}
 
 	resetErr(): this {
-		this.value = this.value.mapFirst(_ => Nothing);
-		return this;
-	}
-
-	validate(f: (value: string) => Either<string, T>): this {
-		this.value = this.value
-			.mapFirst(_ => Just(f(this.value.snd())));
+		this.err = Nothing;
 		return this;
 	}
 }
