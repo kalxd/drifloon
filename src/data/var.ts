@@ -71,7 +71,10 @@ export enum EmLevel {
 
 export enum StateLevel {
 	Positive = "positive",
-	Negative = "negative"
+	Negative = "negative",
+	Warn = "warning",
+	Info = "info",
+	Error = "error"
 }
 
 export enum LoadingShape {
