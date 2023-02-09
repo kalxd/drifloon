@@ -1,5 +1,6 @@
 import { BasicButton, Button, IconButton, LoadingButton } from "drifloon/button";
 import { Header } from "drifloon/header";
+import { Segment } from "drifloon/segment";
 import { Color, EmLevel, Size, StateLevel } from "drifloon/data/var";
 import * as m from "mithril";
 
@@ -34,7 +35,7 @@ const IconS = m("div", [
 
 const Main: m.Component = {
 	view: () => {
-		return m("div.ui.teal.segment", [
+		return m(Segment, { color: Color.Teal }, [
 			m(Header, { isDivid: true, size: Size.Huge }, "按钮"),
 			m(Header, { size: Size.Large }, "普通状态"),
 			S1,
