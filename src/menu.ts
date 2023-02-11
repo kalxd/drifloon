@@ -3,6 +3,7 @@ import { Maybe } from "purify-ts";
 
 import { fmapKlass, pickKlass, selectKlass } from "./internal/attr";
 import { AttachPosition, Color, Wide } from "./data/var";
+import { isMatchUrl, pathIntoSegments } from "./internal/route";
 
 const wideColumn = (wide: Wide): string => `${wide} item`;
 
@@ -88,23 +89,24 @@ export interface MenuNaviItemAttr extends MenuItemAttr {
 	param?: Record<string, string>;
 }
 
-export const MenuNaviItem: m.Component<MenuNaviItemAttr> = {
-	view: ({ attrs, children }) => {
-		const p = m.parsePathname(m.route.get());
-		console.log("****");
-		console.log(m.route.get());
-		console.log(p);
-		console.log(attrs.to);
+export const MenuNaviItem = (init: m.Vnode<MenuNaviItemAttr>): m.Component<MenuNaviItemAttr> => {
+	const pathSegments = pathIntoSegments(init.attrs.to);
+	return {
+		view: ({ attrs, children }) => {
+			const p = m.parsePathname(m.route.get());
+			const klass = pickKlass([
+				...pickMenuItemAttr(attrs),
+				selectKlass("active", isMatchUrl(pathSegments, p.path))
+			]);
 
-		const klass = pickKlass(pickMenuItemAttr(attrs));
+			const prop = {
+				class: klass,
+				selector: "a.item",
+				params: attrs.param,
+				href: attrs.to
+			};
 
-		const prop = {
-			class: klass,
-			selector: "a.item",
-			params: attrs.param,
-			href: attrs.to
-		};
-
-		return m(m.route.Link, prop, children);
-	}
+			return m(m.route.Link, prop, children);
+		}
+	};
 };

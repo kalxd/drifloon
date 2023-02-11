@@ -78,6 +78,10 @@ export const pathIntoSegments = (path: string): PathSegments => {
 export const isMatchUrl = (pathsegments: PathSegments, path: string): boolean => {
 	const paths = splitPath(path);
 
+	if (paths.length > pathsegments.segments.length) {
+		return false;
+	}
+
 	for (let i = 0; i < pathsegments.segments.length; ++i) {
 		const segment = pathsegments.segments[i];
 		if (segment._tag === "LitPath") {
