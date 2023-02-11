@@ -1,7 +1,6 @@
 import * as m from "mithril";
 import { Maybe } from "purify-ts";
 
-import { genWrapWidget, toPlainVnode } from "./internal/wrap";
 import { fmapKlass, pickKlass, selectKlass } from "./internal/attr";
 import { AttachPosition, Color, Wide } from "./data/var";
 
@@ -91,6 +90,12 @@ export interface MenuNaviItemAttr extends MenuItemAttr {
 
 export const MenuNaviItem: m.Component<MenuNaviItemAttr> = {
 	view: ({ attrs, children }) => {
+		const p = m.parsePathname(m.route.get());
+		console.log("****");
+		console.log(m.route.get());
+		console.log(p);
+		console.log(attrs.to);
+
 		const klass = pickKlass(pickMenuItemAttr(attrs));
 
 		const prop = {
@@ -103,6 +108,3 @@ export const MenuNaviItem: m.Component<MenuNaviItemAttr> = {
 		return m(m.route.Link, prop, children);
 	}
 };
-
-export const MenuHeaderItem = genWrapWidget("div.header.item");
-export const MenuHeaderItem_ = toPlainVnode(MenuHeaderItem);
