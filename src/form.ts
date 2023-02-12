@@ -64,20 +64,27 @@ export const Form = <T>(): m.Component<FormAttr<T>> => {
 	return {
 		view: ({ attrs, children }) => {
 			const err = Maybe.fromNullable(attrs.formdata)
-				.chain(data => data.err);
 
 			const klass = pickKlass([
 				Maybe.fromNullable(attrs.loading),
 				selectKlass("inverted", attrs.isInvert),
 				Maybe.fromNullable(attrs.size),
-				err.map(_ => "error")
+				err.chain(data => data.err).map(_ => "error")
 			]);
 
-			const errMsg = err.map(msg => m(
-				Message,
-				{ state: StateLevel.Error },
-				msg
-			));
+			const errMsg = err.chain(data => {
+				const onclick = () => data.resetErr();
+
+				return data.err.map(msg => m(
+					Message,
+					{ state: StateLevel.Error },
+					[
+						m("i.close.icon", { onclick }),
+						m("div.header", "验证出错"),
+						m("p", msg)
+					]
+				));
+			});
 
 			return m("div.ui.form", { class: klass }, [
 				(children as m.Children),

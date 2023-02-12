@@ -1,11 +1,14 @@
 import IORef from "drifloon/data/ioref";
-import { Size } from "drifloon/data/var";
+import { Color, Size } from "drifloon/data/var";
 import { Header } from "drifloon/header";
 import { Radiobox, RadioboxAttr } from "drifloon/input";
 import * as m from "mithril";
-import { Just, Maybe, Nothing } from "purify-ts";
+import { Either, Just, Left, Maybe, Nothing, Right } from "purify-ts";
 import { Button } from "drifloon/button";
 import { alertMsg } from "drifloon/modal";
+import { Form, FormAttr, TextField } from "drifloon/form";
+import { liftEitherA2 } from "drifloon/data/fn";
+import { FormData } from "drifloon/data/form";
 
 interface RadioItem {
 	key: number;
@@ -46,10 +49,72 @@ const RadioS = (): m.Component => {
 	};
 };
 
+const ValidationS = (): m.Component => {
+	interface User {
+		name: string;
+		address: string;
+	}
+
+	interface Output {
+		name: string;
+		address: Maybe<string>;
+	}
+
+	const mkOutput = (name: Output["name"], address: Output["address"]): Output => ({
+		name,
+		address
+	});
+
+	const notEmpty = (input: string): Either<string, string> => {
+		if (input.length === 0) {
+			return Left("不能为空");
+		}
+		return Right(input);
+	};
+
+	const validate = (user: User): Either<string, Output> => liftEitherA2(
+		mkOutput,
+		notEmpty(user.name),
+		Right(Maybe.fromFalsy(user.address))
+	);
+
+	const user = new FormData<User>({
+		name: "",
+		address: ""
+	});
+
+	return {
+		view: () => {
+			const attr: FormAttr<User> = {
+				formdata: user
+			};
+
+			const onsubmit = () => user.validate(validate)
+				.ifRight(s => alertMsg(JSON.stringify(s, null, 4)));
+
+			return m(Form, attr, [
+				m(TextField, {
+					label: "用户名",
+					isRequire: true,
+					onchange: s => user.putAt("name", s)
+				}),
+				m(TextField, {
+					label: "地址",
+					onchange: s => user.putAt("address", s)
+				}),
+				m(Button, { onclick: onsubmit, color: Color.Blue }, "提交")
+			]);
+		}
+	};
+};
+
 const Main: m.Component = {
 	view: () => {
 		return m("div.ui.pink.segment", [
 			m(Header, { size: Size.Huge, isDivid: true }, "表单"),
+			m(Header, { size: Size.Large }, "表单基本验证"),
+			m(ValidationS),
+			m(Header, { size: Size.Large }, "其他杂物"),
 			m(RadioS)
 		])
 	}
