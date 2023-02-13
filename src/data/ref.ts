@@ -16,6 +16,14 @@ export class IORef<T> {
 		return f(this.ref);
 	}
 
+	askAt<K extends keyof T>(key: K): T[K] {
+		return this.asks(ref => ref[key]);
+	}
+
+	asksAt<K extends keyof T, R>(key: K, f: (value: T[K]) => R): R {
+		return this.asks(ref => f(ref[key]));
+	}
+
 	put(other: T): this {
 		this.ref = other;
 		return this;
@@ -46,6 +54,22 @@ export class FormData<T> {
 	constructor(data: T) {
 		this.initData = data;
 		this.data = new IORef(data);
+	}
+
+	ask(): T {
+		return this.data.ask();
+	}
+
+	asks<R>(f: (data: T) => R): R {
+		return this.data.asks(f);
+	}
+
+	askAt<K extends keyof T>(key: K): T[K] {
+		return this.data.asks(ref => ref[key]);
+	}
+
+	asksAt<K extends keyof T, R>(key: K, f: (value: T[K]) => R): R {
+		return this.data.asks(ref => f(ref[key]));
 	}
 
 	put(data: T): this {

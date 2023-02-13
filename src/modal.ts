@@ -38,7 +38,6 @@ export const ModalActionW: m.Component<ModalActionWAttr> = {
 			})
 			.extract();
 
-
 		const onpositive = attrs.onpositive ?? identity;
 		const positive = m(
 			"button.ui.positive.button",

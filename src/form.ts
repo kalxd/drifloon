@@ -30,6 +30,7 @@ export const Field: m.Component<FieldAttr> = {
 
 export interface TextFieldAttr {
 	label?: string;
+	value?: string;
 	isRequire?: boolean;
 	onchange?: (output: string) => void;
 }
@@ -48,7 +49,7 @@ export const TextField: m.Component<TextFieldAttr> = {
 
 		return m("div.field", { class: klass }, [
 			m("label", attrs.label),
-			m("input", { onchange })
+			m("input", { onchange, value: attrs.value })
 		]);
 	}
 };

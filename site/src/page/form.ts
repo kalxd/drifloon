@@ -7,7 +7,7 @@ import { Either, Just, Left, Maybe, Nothing, Right } from "purify-ts";
 import { Button } from "drifloon/button";
 import { alertMsg } from "drifloon/modal";
 import { Form, FormAttr, TextField } from "drifloon/form";
-import { liftEitherA2 } from "drifloon/data/fn";
+import { liftEitherA2, isEmptyV } from "drifloon/data/fn";
 
 interface RadioItem {
 	key: number;
@@ -64,22 +64,18 @@ const ValidationS = (): m.Component => {
 		address
 	});
 
-	const notEmpty = (input: string): Either<string, string> => {
-		if (input.length === 0) {
-			return Left("不能为空");
-		}
-		return Right(input);
-	};
-
 	const validate = (user: User): Either<string, Output> => liftEitherA2(
 		mkOutput,
-		notEmpty(user.name),
+		isEmptyV(
+			_ => "用户名不能为空",
+			user.name
+		),
 		Right(Maybe.fromFalsy(user.address))
 	);
 
 	const user = new FormData<User>({
 		name: "",
-		address: ""
+		address: "一组默认地址！"
 	});
 
 	return {
@@ -95,10 +91,12 @@ const ValidationS = (): m.Component => {
 				m(TextField, {
 					label: "用户名",
 					isRequire: true,
+					value: user.askAt("name"),
 					onchange: s => user.putAt("name", s)
 				}),
 				m(TextField, {
 					label: "地址",
+					value: user.askAt("address"),
 					onchange: s => user.putAt("address", s)
 				}),
 				m(Button, { onclick: onsubmit, color: Color.Blue }, "提交")

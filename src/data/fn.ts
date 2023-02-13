@@ -1,4 +1,4 @@
-import { Either } from "purify-ts"
+import { curry, Either, Left, Right } from "purify-ts"
 
 export const liftEitherA2 = <E, T1, T2, R>(
 	f: (a1: T1, a2: T2) => R,
@@ -119,3 +119,15 @@ export const liftEitherA9 = <E, T1, T2, T3, T4, T5, T6, T7, T8, T9, R>(
 		.chain(xs => ma8.map(a8 => [...xs, a8] as [T1, T2, T3, T4, T5, T6, T7, T8]))
 		.chain(xs => ma9.map(a9 => [...xs, a9] as [T1, T2, T3, T4, T5, T6, T7, T8, T9]))
 		.map(xs => f(...xs));
+
+export const isEmptyV = curry((
+	f: (input: string) => string,
+	input: string
+): Either<string, string> => {
+	if (input.length === 0) {
+		return Left(f(input));
+	}
+	else {
+		return Right(input);
+	}
+});
