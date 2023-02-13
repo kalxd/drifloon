@@ -1,4 +1,4 @@
-import IORef from "drifloon/data/ioref";
+import { IORef, FormData } from "drifloon/data/ref";
 import { Color, Size } from "drifloon/data/var";
 import { Header } from "drifloon/header";
 import { Radiobox, RadioboxAttr } from "drifloon/input";
@@ -8,7 +8,6 @@ import { Button } from "drifloon/button";
 import { alertMsg } from "drifloon/modal";
 import { Form, FormAttr, TextField } from "drifloon/form";
 import { liftEitherA2 } from "drifloon/data/fn";
-import { FormData } from "drifloon/data/form";
 
 interface RadioItem {
 	key: number;

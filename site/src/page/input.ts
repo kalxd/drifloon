@@ -1,4 +1,4 @@
-import IORef from "drifloon/data/ioref";
+import { IORef } from "drifloon/data/ref";
 import { Size } from "drifloon/data/var";
 import { Header } from "drifloon/header";
 import { Toggle, ToggleAttr } from "drifloon/input";

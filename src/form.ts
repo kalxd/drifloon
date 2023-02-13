@@ -2,8 +2,8 @@ import { pickKlass, selectKlass } from "./internal/attr";
 import * as m from "mithril";
 import { identity, Maybe } from "purify-ts";
 import { LoadingShape, Size, StateLevel } from "./data/var";
-import { FormData } from "./data/form";
-import { Message, MessageAttr } from "./element/message";
+import { FormData } from "./data/ref";
+import { Message } from "./element/message";
 
 export interface FieldAttr {
 	error?: Maybe<string>;

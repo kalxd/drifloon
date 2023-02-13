@@ -1,6 +1,6 @@
 import * as m from "mithril";
 import { identity, Maybe } from "purify-ts";
-import IORef from "./data/ioref";
+import { IORef } from "./data/ref";
 import { pickKlass, RenderFn, selectKlass } from "./internal/attr";
 import { Outter } from "./widget/outter";
 

@@ -1,7 +1,7 @@
 import * as m from "mithril";
 import { pickKlass, selectKlass } from "./internal/attr";
 import { Size } from "./data/var";
-import IORef from "./data/ioref";
+import { IORef } from "./data/ref";
 import { Maybe, List, Nothing, identity, Just } from "purify-ts";
 
 export enum ModalFullscreen {

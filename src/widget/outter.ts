@@ -1,6 +1,6 @@
 import * as m from "mithril";
 import { Just, Maybe, Nothing } from "purify-ts";
-import IORef from "../data/ioref";
+import { IORef } from "../data/ref";
 
 export interface OutterAttr {
 	onOutterClick: (e: MouseEvent) => void;
