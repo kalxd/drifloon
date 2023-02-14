@@ -120,12 +120,14 @@ export const liftEitherA9 = <E, T1, T2, T3, T4, T5, T6, T7, T8, T9, R>(
 		.chain(xs => ma9.map(a9 => [...xs, a9] as [T1, T2, T3, T4, T5, T6, T7, T8, T9]))
 		.map(xs => f(...xs));
 
-export const isEmptyV = curry((
-	f: (input: string) => string,
+export const prefix = curry((
+	prefix: string,
 	input: string
-): Either<string, string> => {
+): string => `${prefix}${input}`);
+
+export const notEmpty = curry((input: string): Either<string, string> => {
 	if (input.length === 0) {
-		return Left(f(input));
+		return Left("不能为空");
 	}
 	else {
 		return Right(input);

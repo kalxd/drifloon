@@ -7,7 +7,7 @@ import { Either, Just, Left, Maybe, Nothing, Right } from "purify-ts";
 import { Button } from "drifloon/button";
 import { alertMsg } from "drifloon/modal";
 import { Form, FormAttr, TextField } from "drifloon/form";
-import { liftEitherA2, isEmptyV } from "drifloon/data/fn";
+import { liftEitherA2, prefix, notEmpty } from "drifloon/data/fn";
 
 interface RadioItem {
 	key: number;
@@ -66,10 +66,7 @@ const ValidationS = (): m.Component => {
 
 	const validate = (user: User): Either<string, Output> => liftEitherA2(
 		mkOutput,
-		isEmptyV(
-			_ => "用户名不能为空",
-			user.name
-		),
+		notEmpty(user.name).mapLeft(prefix("用户名")),
 		Right(Maybe.fromFalsy(user.address))
 	);
 
