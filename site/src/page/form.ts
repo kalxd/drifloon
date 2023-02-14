@@ -3,7 +3,7 @@ import { Color, Size } from "drifloon/data/var";
 import { Header } from "drifloon/header";
 import { Radiobox, RadioboxAttr } from "drifloon/input";
 import * as m from "mithril";
-import { Either, Just, Left, Maybe, Nothing, Right } from "purify-ts";
+import { Either, Just, Maybe, Nothing, Right } from "purify-ts";
 import { Button } from "drifloon/button";
 import { alertMsg } from "drifloon/modal";
 import { Form, FormAttr, TextField } from "drifloon/form";
