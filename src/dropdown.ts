@@ -82,7 +82,7 @@ export const Dropdown = <T>(_: m.Vnode): m.Component<DropdownAttr<T>> => {
 					{ class: klass, onclick: toggleE },
 					[
 						m("i.dropdown.icon"),
-						m<DropdownTextAttr<T>, any>(DropdownText, textAttr),
+						m<DropdownTextAttr<T>, {}>(DropdownText, textAttr),
 						menu
 					]
 				)
