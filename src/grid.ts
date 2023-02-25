@@ -31,10 +31,10 @@ export enum GridMiddleAlignType {
 
 export interface GridAttr {
 	wide?: Wide;
-	equalWidth?: boolean;
+	isEqualWidth?: boolean;
 	pad?: GridPadType;
-	relax?: boolean;
-	center?: boolean;
+	isRelax?: boolean;
+	isCenter?: boolean;
 	middleAlign?: GridMiddleAlignType;
 	divid?: GridDividType;
 	cell?: GridCellType;
@@ -42,9 +42,9 @@ export interface GridAttr {
 
 export const pickGridKlass = (attr: GridAttr): Array<Maybe<string>> => [
 	fmapKlass(wideFor('column'), attr.wide),
-	selectKlass("equal width", attr.equalWidth),
-	selectKlass("relaxed", attr.relax),
-	selectKlass("centered", attr.center),
+	selectKlass("equal width", attr.isEqualWidth),
+	selectKlass("relaxed", attr.isRelax),
+	selectKlass("centered", attr.isCenter),
 	Maybe.fromNullable(attr.divid),
 	Maybe.fromNullable(attr.cell),
 	Maybe.fromNullable(attr.pad),
@@ -61,14 +61,14 @@ export const Grid: m.Component<GridAttr> = ({
 
 export interface RowAttr {
 	wide?: Wide;
-	stretch?: boolean;
+	isStretch?: boolean;
 }
 
 export const Row: m.Component<RowAttr> = ({
 	view: ({ attrs, children }) => {
 		const klass = pickKlass([
 			fmapKlass(wideFor('column'), attrs.wide),
-			selectKlass("stretched", attrs.stretch)
+			selectKlass("stretched", attrs.isStretch)
 		]);
 
 		return m("div.row", { class: klass }, children);

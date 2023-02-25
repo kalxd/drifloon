@@ -6,14 +6,14 @@ import { Maybe } from "purify-ts";
 
 export interface ContainerAttr {
 	align?: Align;
-	text?: boolean;
-	fluid?: boolean;
+	isText?: boolean;
+	isFluid?: boolean;
 }
 
 const pickContainerKlass = (attr: ContainerAttr): Array<Maybe<string>> => [
 	Maybe.fromNullable(attr.align),
-	selectKlass("fluid", attr.fluid),
-	selectKlass("text", attr.text)
+	selectKlass("fluid", attr.isFluid),
+	selectKlass("text", attr.isText)
 ];
 
 export const Container: m.Component<ContainerAttr> = ({
