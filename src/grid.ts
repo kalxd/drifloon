@@ -2,7 +2,6 @@ import * as m from "mithril";
 import { curry, Maybe } from "purify-ts";
 
 import { fmapKlass, pickKlass, selectKlass } from "./internal/attr";
-import { toPlainVnode } from "./internal/wrap";
 import { Align, Color, Float, Wide } from "./data/var";
 
 const wideFor = curry((base: string, wide: Wide): string => {
@@ -75,8 +74,6 @@ export const Row: m.Component<RowAttr> = ({
 		return m("div.row", { class: klass }, children);
 	}
 });
-
-export const Row_ = toPlainVnode(Row);
 
 export interface ColumnAttr {
 	wide?: Wide;

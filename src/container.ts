@@ -1,7 +1,6 @@
 import * as m from "mithril";
 import { Align } from "./data/var";
 import { pickKlass, selectKlass } from "./internal/attr";
-import { toPlainVnode } from "./internal/wrap";
 import { GridAttr, pickGridKlass } from "./grid";
 import { Maybe } from "purify-ts";
 
@@ -24,8 +23,6 @@ export const Container: m.Component<ContainerAttr> = ({
 		return m("div.ui.container", { class: klass }, children);
 	}
 });
-
-export const Container_ = toPlainVnode(Container);
 
 export interface GridContainerAttr extends ContainerAttr, GridAttr {}
 
