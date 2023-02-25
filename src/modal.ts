@@ -132,8 +132,11 @@ interface AlertState {
 const alertRef = new IORef<Array<AlertState>>([]);
 
 export const alert = (attr: AlertAttr): Promise<Maybe<void>> => new Promise(resolve => {
+	const size = attr.size ?? Size.Small;
+
 	const attrw: AlertWAttr = {
 		...attr,
+		size,
 		onresolve: resolve
 	};
 
