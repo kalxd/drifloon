@@ -1,28 +1,41 @@
-import { Align, AttachPosition, Color, Float, Size, StateLevel } from "../data/var";
+import { pickKlass, selectKlass } from "../internal/attr";
 import * as m from "mithril";
-import { pickKlass } from "../internal/attr";
-import { Maybe } from "purify-ts";
+import { identity, Maybe } from "purify-ts";
+import { Align, AttachPosition, StateLevel, Color, Size } from "../data/var";
 
 export interface MessageAttr {
 	align?: Align;
+	isCompact?: boolean;
 	attach?: AttachPosition;
-	float?: Float;
+	state?: StateLevel;
 	color?: Color;
 	size?: Size;
-	state?: StateLevel;
+	isClosable?: boolean;
+	onclose?: () => void;
 }
 
 export const Message: m.Component<MessageAttr> = {
 	view: ({ attrs, children }) => {
 		const klass = pickKlass([
 			Maybe.fromNullable(attrs.align),
+			selectKlass("compact", attrs.isCompact),
 			Maybe.fromNullable(attrs.attach),
-			Maybe.fromNullable(attrs.float),
+			Maybe.fromNullable(attrs.state),
 			Maybe.fromNullable(attrs.color),
-			Maybe.fromNullable(attrs.size),
-			Maybe.fromNullable(attrs.state)
+			Maybe.fromNullable(attrs.size)
 		]);
 
-		return m("div.ui.message", { class: klass }, children);
+		const closeIcon = Maybe.fromFalsy(attrs.isClosable)
+			.filter(identity)
+			.map(_ => {
+				const f = attrs.onclose ?? identity;
+				return m("i.icon.close", { onclose: f });
+			})
+			.extract();
+
+		return m("div.ui.message", { class: klass }, [
+			closeIcon,
+			children
+		]);
 	}
 };
