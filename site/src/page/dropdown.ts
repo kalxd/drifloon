@@ -1,5 +1,5 @@
 import { Header } from "drifloon/header";
-import { Dropdown, DropdownAttr } from "drifloon/dropdown";
+import { Select, SelectAttr } from "drifloon/dropdown";
 import { IORef } from "drifloon/data/ref";
 import { Size } from "drifloon/data/var";
 import * as m from "mithril";
@@ -32,7 +32,7 @@ const NormalS = (): m.Component => {
 
 	return {
 		view: (_) => {
-			const attr: DropdownAttr<RecordItem> = {
+			const attr: SelectAttr<RecordItem> = {
 				value: ref.asks(s => s.value),
 				placeholder: "随便选择一个",
 				renderItem: x => x.name,
@@ -40,7 +40,7 @@ const NormalS = (): m.Component => {
 				onselect: x => ref.putAt("value", Just(x)),
 				items: items
 			};
-			return m<DropdownAttr<RecordItem>, any>(Dropdown, attr);
+			return m<SelectAttr<RecordItem>, any>(Select, attr);
 		}
 	};
 };

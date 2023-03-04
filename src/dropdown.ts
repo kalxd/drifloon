@@ -21,7 +21,7 @@ const DropdownText = <T>(): m.Component<DropdownTextAttr<T>> => ({
 		})
 });
 
-export interface DropdownAttr<T> {
+export interface SelectAttr<T> {
 	value?: Maybe<T>;
 	placeholder?: string;
 	items?: Array<T>,
@@ -30,7 +30,7 @@ export interface DropdownAttr<T> {
 	renderText?: (item: T) => m.Children
 }
 
-export const Dropdown = <T>(_: m.Vnode): m.Component<DropdownAttr<T>> => {
+export const Select = <T>(_: m.Vnode): m.Component<SelectAttr<T>> => {
 	interface State {
 		visible: boolean;
 	};
