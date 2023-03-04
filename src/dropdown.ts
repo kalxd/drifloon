@@ -3,6 +3,7 @@ import { identity, Maybe } from "purify-ts";
 import { IORef } from "./data/ref";
 import { RenderFn } from "./internal/attr";
 import { Dropdown } from "./widget/dropdown";
+import { AnimateFrame } from "./widget/animate";
 
 interface DropdownTextAttr<T> {
 	text?: Maybe<T>;
@@ -50,7 +51,8 @@ export const Select = <T>(_: m.Vnode): m.Component<SelectAttr<T>> => {
 
 			const menu = Maybe.fromFalsy(isVisible)
 				.map(_ => m(
-					"div.menu.transition.visible",
+					AnimateFrame,
+					{ class: "menu transition visible"},
 					(attrs.items ?? []).map(x => {
 						const f = (e: MouseEvent) => {
 							onselect(x);

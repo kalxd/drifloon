@@ -5,13 +5,15 @@ import { pickKlass, selectKlass } from "../internal/attr";
 
 export interface DropdownAttr {
 	value: IORef<boolean>;
+	isFluid?: boolean;
 }
 
 export const Dropdown: m.Component<DropdownAttr> = {
 	view: ({ attrs, children }) => {
 		const isVisible = attrs.value.ask();
 		const klass = pickKlass([
-			selectKlass("active", isVisible)
+			selectKlass("active", isVisible),
+			selectKlass("fluid", attrs.isFluid)
 		]);
 
 		const closeE = () => attrs.value.put(false);
@@ -21,7 +23,7 @@ export const Dropdown: m.Component<DropdownAttr> = {
 			Outter,
 			{ onOutterClick: closeE },
 			m(
-				"div.ui.multiple.selection.x.dropdown",
+				"div.ui.multiple.selection.search.dropdown",
 				{ class: klass, onclick: toggleE },
 				children
 			)
