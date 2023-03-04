@@ -1,8 +1,8 @@
 import * as m from "mithril";
 import { identity, Maybe } from "purify-ts";
 import { IORef } from "./data/ref";
-import { pickKlass, RenderFn, selectKlass } from "./internal/attr";
-import { Outter } from "./widget/outter";
+import { RenderFn } from "./internal/attr";
+import { Dropdown } from "./widget/dropdown";
 
 interface DropdownTextAttr<T> {
 	text?: Maybe<T>;
@@ -31,16 +31,8 @@ export interface SelectAttr<T> {
 }
 
 export const Select = <T>(_: m.Vnode): m.Component<SelectAttr<T>> => {
-	interface State {
-		visible: boolean;
-	};
-
-	const stateRef = new IORef<State>({
-		visible: false
-	});
-
-	const closeE = (_: MouseEvent) => stateRef.putAt("visible", false);
-	const toggleE = (_: MouseEvent) => stateRef.updateAt("visible", b => !b);
+	const stateRef = new IORef<boolean>(false);
+	const closeE = () => stateRef.put(false);
 
 	return {
 		view: ({ attrs }) => {
@@ -54,7 +46,7 @@ export const Select = <T>(_: m.Vnode): m.Component<SelectAttr<T>> => {
 				renderText
 			};
 
-			const isVisible = stateRef.asks(s => s.visible);
+			const isVisible = stateRef.ask();
 
 			const menu = Maybe.fromFalsy(isVisible)
 				.map(_ => m(
@@ -62,7 +54,7 @@ export const Select = <T>(_: m.Vnode): m.Component<SelectAttr<T>> => {
 					(attrs.items ?? []).map(x => {
 						const f = (e: MouseEvent) => {
 							onselect(x);
-							closeE(e);
+							closeE();
 							e.stopPropagation();
 						};
 						return m("div.item", { onclick: f }, renderItem(x))
@@ -70,23 +62,11 @@ export const Select = <T>(_: m.Vnode): m.Component<SelectAttr<T>> => {
 				))
 				.extractNullable();
 
-			const klass = pickKlass([
-				selectKlass("active", isVisible)
+			return m(Dropdown, { value: stateRef }, [
+				m("i.dropdown.icon"),
+				m<DropdownTextAttr<T>, {}>(DropdownText, textAttr),
+				menu
 			]);
-
-			return m(
-				Outter,
-				{ onOutterClick: closeE },
-				m(
-					"div.ui.multiple.selection.dropdown",
-					{ class: klass, onclick: toggleE },
-					[
-						m("i.dropdown.icon"),
-						m<DropdownTextAttr<T>, {}>(DropdownText, textAttr),
-						menu
-					]
-				)
-			);
 		}
 	};
 };
