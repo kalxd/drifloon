@@ -3,6 +3,7 @@ import { pickKlass, selectKlass } from "./internal/attr";
 import { Size } from "./data/var";
 import { IORef } from "./data/ref";
 import { Maybe, List, Nothing, identity, Just } from "purify-ts";
+import { AnimateFrame } from "./widget/animate";
 
 export enum ModalFullscreen {
 	Fullscreen = "fullscreen",
@@ -57,10 +58,15 @@ export const ModalW = <T>(): m.Component<ModalWAttr<T>> => ({
 		const klass = pickKlass([
 			Maybe.fromNullable(attrs.size),
 			Maybe.fromNullable(attrs.fullscreen),
-			selectKlass("inverted", attrs.invert)
+			selectKlass("inverted", attrs.invert),
+			Just("ui modal transition active")
 		]);
 
-		return m("div.ui.modal.transition.active", { class: klass }, children);
+		return m(
+			AnimateFrame,
+			{ class: klass, in: "animate__fadeInDown" },
+			children
+		);
 	}
 });
 

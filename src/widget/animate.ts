@@ -23,6 +23,7 @@ export const AnimateFrame = (
 		view: ({ children, attrs }) => m(
 			`div.animate__animated.animate__faster.${inName}`,
 			attrs,
-			children)
+			children
+		)
 	};
 };
