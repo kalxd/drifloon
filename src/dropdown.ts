@@ -96,7 +96,6 @@ export const MSelect = <T>(
 	return {
 		view: ({ attrs }) => {
 			const value = Maybe.fromNullable(attrs.value).join();
-			console.log(value);
 
 			const labelAttr: MSelectLabelsAttr<T> = {
 				value,
