@@ -3,7 +3,7 @@ import { Select, SelectAttr } from "drifloon/dropdown";
 import { IORef } from "drifloon/data/ref";
 import { Size } from "drifloon/data/var";
 import * as m from "mithril";
-import { Just, Maybe, Nothing } from "purify-ts";
+import { Maybe, Nothing } from "purify-ts";
 
 interface RecordItem {
 	key: string;
@@ -37,7 +37,7 @@ const NormalS = (): m.Component => {
 				placeholder: "随便选择一个",
 				renderItem: x => x.name,
 				renderText: x => `${x.key} - ${x.name}`,
-				onselect: x => ref.putAt("value", Just(x)),
+				onselect: x => ref.putAt("value", x),
 				items: items
 			};
 			return m<SelectAttr<RecordItem>, any>(Select, attr);

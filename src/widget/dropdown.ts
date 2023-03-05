@@ -23,7 +23,7 @@ export const Dropdown: m.Component<DropdownAttr> = {
 			Outter,
 			{ onOutterClick: closeE },
 			m(
-				"div.ui.multiple.selection.search.dropdown",
+				"div.ui.multiple.selection.dropdown",
 				{ class: klass, onclick: toggleE },
 				children
 			)

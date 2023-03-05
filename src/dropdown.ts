@@ -1,5 +1,5 @@
 import * as m from "mithril";
-import { identity, Maybe } from "purify-ts";
+import { identity, Just, Maybe, Nothing } from "purify-ts";
 import { IORef } from "./data/ref";
 import { RenderFn } from "./internal/attr";
 import { Dropdown } from "./widget/dropdown";
@@ -26,14 +26,20 @@ export interface SelectAttr<T> {
 	value?: Maybe<T>;
 	placeholder?: string;
 	items?: Array<T>,
-	onselect?: (item: T) => void;
+	onselect?: (item: Maybe<T>) => void;
 	renderItem?: (item: T) => m.Children
 	renderText?: (item: T) => m.Children
 }
 
-export const Select = <T>(_: m.Vnode): m.Component<SelectAttr<T>> => {
+export const Select = <T>(init: m.Vnode<SelectAttr<T>>): m.Component<SelectAttr<T>> => {
 	const stateRef = new IORef<boolean>(false);
 	const closeE = () => stateRef.put(false);
+	const clearValueE = (e: MouseEvent) => {
+		const f = init.attrs.onselect ?? identity;
+		f(Nothing);
+		closeE();
+		e.stopPropagation();
+	};
 
 	return {
 		view: ({ attrs }) => {
@@ -55,7 +61,7 @@ export const Select = <T>(_: m.Vnode): m.Component<SelectAttr<T>> => {
 					{ class: "menu transition visible"},
 					(attrs.items ?? []).map(x => {
 						const f = (e: MouseEvent) => {
-							onselect(x);
+							onselect(Just(x));
 							closeE();
 							e.stopPropagation();
 						};
@@ -66,6 +72,7 @@ export const Select = <T>(_: m.Vnode): m.Component<SelectAttr<T>> => {
 
 			return m(Dropdown, { value: stateRef }, [
 				m("i.dropdown.icon"),
+				m("i.remove.icon", { onclick: clearValueE }),
 				m<DropdownTextAttr<T>, {}>(DropdownText, textAttr),
 				menu
 			]);
