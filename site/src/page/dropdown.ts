@@ -1,9 +1,9 @@
 import { Header } from "drifloon/header";
-import { Select, SelectAttr } from "drifloon/dropdown";
+import { Select, SelectAttr, MSelect, MSelectAttr } from "drifloon/dropdown";
 import { IORef } from "drifloon/data/ref";
 import { Size } from "drifloon/data/var";
 import * as m from "mithril";
-import { Maybe, Nothing } from "purify-ts";
+import { Maybe, Nothing, Just } from "purify-ts";
 
 interface RecordItem {
 	key: string;
@@ -18,6 +18,14 @@ const items: Array<RecordItem> = [
 	{
 		key: "key2",
 		name: "菜单二"
+	},
+	{
+		key: "key3",
+		name: "菜单三"
+	},
+	{
+		key: "key4",
+		name: "菜单四"
 	}
 ];
 
@@ -40,9 +48,33 @@ const NormalS = (): m.Component => {
 				onselect: x => ref.putAt("value", x),
 				items: items
 			};
-			return m<SelectAttr<RecordItem>, any>(Select, attr);
+			return m<SelectAttr<RecordItem>, {}>(Select, attr);
 		}
 	};
+};
+
+const MS = (): m.Component => {
+	interface State {
+		value: Maybe<Array<RecordItem>>;
+	}
+
+	const ref = new IORef<State>({ value: Just(items) });
+
+	return {
+		view: () => {
+			const attr: MSelectAttr<RecordItem> = {
+				value: ref.askAt("value"),
+				items,
+				cmp: (a, b) => a.key === b.key,
+				renderLabel: item => item.name,
+				renderItem: item => item.name,
+				onChange: r => ref.putAt("value", r),
+				placeholder: "多选题"
+			};
+
+			return m(MSelect, attr);
+		}
+	}
 };
 
 const Main: m.Component = {
@@ -50,7 +82,10 @@ const Main: m.Component = {
 		return m("div.ui.purple.segment", [
 			m(Header, { isDivid: true, size: Size.Huge }, "下拉菜单"),
 			m(Header, { size: Size.Large }, "普通状态"),
-			m(NormalS)
+			m(NormalS),
+
+			m(Header, { size: Size.Large }, "多重选择"),
+			m(MS)
 		])
 	}
 };

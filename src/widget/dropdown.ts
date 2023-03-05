@@ -2,10 +2,11 @@ import { IORef } from "../data/ref";
 import * as m from "mithril";
 import { Outter } from "./outter";
 import { pickKlass, selectKlass } from "../internal/attr";
+import { Maybe } from "purify-ts";
 
 export interface DropdownAttr {
 	value: IORef<boolean>;
-	isFluid?: boolean;
+	class?: string;
 }
 
 export const Dropdown: m.Component<DropdownAttr> = {
@@ -13,7 +14,7 @@ export const Dropdown: m.Component<DropdownAttr> = {
 		const isVisible = attrs.value.ask();
 		const klass = pickKlass([
 			selectKlass("active", isVisible),
-			selectKlass("fluid", attrs.isFluid)
+			Maybe.fromNullable(attrs.class)
 		]);
 
 		const closeE = () => attrs.value.put(false);
@@ -23,7 +24,7 @@ export const Dropdown: m.Component<DropdownAttr> = {
 			Outter,
 			{ onOutterClick: closeE },
 			m(
-				"div.ui.multiple.selection.dropdown",
+				"div.ui.selection.dropdown",
 				{ class: klass, onclick: toggleE },
 				children
 			)

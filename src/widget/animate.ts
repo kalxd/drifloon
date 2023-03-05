@@ -1,6 +1,7 @@
 import * as m from "mithril";
 
 export interface AnimateFrameAttr {
+	el?: string;
 	in?: string;
 	out?: string;
 }
@@ -10,6 +11,7 @@ export const AnimateFrame = (
 ): m.Component<AnimateFrameAttr & m.Attributes> => {
 	const inName = init.attrs.in ?? "animate__flipInX";
 	const outName = init.attrs.out ?? "animate__flipOutX";
+	const el = init.attrs.el ?? "div";
 
 	return {
 		onbeforeremove: vnode => {
@@ -21,7 +23,7 @@ export const AnimateFrame = (
 			});
 		},
 		view: ({ children, attrs }) => m(
-			`div.animate__animated.animate__faster.${inName}`,
+			`${el}.animate__animated.animate__faster.${inName}`,
 			attrs,
 			children
 		)

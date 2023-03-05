@@ -1,14 +1,9 @@
 /**
  * 辅助类函数。
  */
-import * as m from "mithril";
 import { curry, Maybe, NonEmptyList } from "purify-ts";
 
-export type RenderFn<T> = (item: T) => m.Children;
-
-export type MouseCallback = (e: MouseEvent) => void;
-
-export const cmpDefault = <T>(x: T, y: T): boolean => x === y;
+export const cmpDef = <T>(x: T, y: T): boolean => x === y;
 
 type IsNil<T> = T | null | undefined;
 

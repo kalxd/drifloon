@@ -1,4 +1,4 @@
-import { cmpDefault } from "../internal/attr";
+import { cmpDef } from "../internal/attr";
 import * as m from "mithril";
 import { identity, Maybe } from "purify-ts";
 
@@ -91,7 +91,7 @@ export const Radiobox = <T>(): m.Component<RadioboxAttr<T>> => ({
 			.join();
 		const items = attrs.items ?? [];
 		const renderItem = attrs.renderItem ?? String;
-		const cmp = attrs.cmp ?? cmpDefault;
+		const cmp = attrs.cmp ?? cmpDef;
 		const onchange = attrs.onchange ?? identity;
 
 		const children = items.map(item => {
