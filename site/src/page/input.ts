@@ -1,7 +1,7 @@
 import { IORef } from "drifloon/data/ref";
 import { Size } from "drifloon/data/var";
 import { Header } from "drifloon/header";
-import { Toggle, ToggleAttr } from "drifloon/input";
+import { IntInput, Toggle, ToggleAttr } from "drifloon/input";
 import * as m from "mithril";
 
 const ToggleS = (): m.Component => {
@@ -38,12 +38,22 @@ const ToggleS = (): m.Component => {
 	};
 };
 
+const SomeInputS = (): m.Component => {
+	return {
+		view: () => {
+			return m(IntInput);
+		}
+	};
+};
+
 const Main: m.Component = {
 	view: () => {
 		return m("div.ui.black.segment", [
 			m(Header, { size: Size.Huge, isDivid: true }, "输入"),
 			m(Header, { size: Size.Large }, "开关"),
-			m(ToggleS)
+			m(ToggleS),
+			m(Header, { size: Size.Large }, "一些特定输入"),
+			m(SomeInputS)
 		]);
 	}
 };

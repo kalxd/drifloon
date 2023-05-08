@@ -1,4 +1,4 @@
-import { cmpDef } from "../internal/attr";
+import { cmpDef, withDefault } from "../internal/attr";
 import * as m from "mithril";
 import { identity, Maybe } from "purify-ts";
 
@@ -110,3 +110,25 @@ export const Radiobox = <T>(): m.Component<RadioboxAttr<T>> => ({
 		return children;
 	}
 });
+
+export interface IntInputAttr {
+	value?: number;
+	onChange: (value: number) => void;
+	step?: number;
+	max?: number;
+	min?: number;
+}
+
+export const IntInput: m.Component<IntInputAttr> = {
+	view: () => {
+		return m("div.ui.action.input", [
+			m("button.ui.icon.button", [
+				m("i.minus.icon")
+			]),
+			m("input"),
+			m("button.ui.icon.button", [
+				m("i.plus.icon")
+			])
+		]);
+	}
+};
