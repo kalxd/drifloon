@@ -1,7 +1,7 @@
 import { IORef } from "drifloon/data/ref";
 import { Size } from "drifloon/data/var";
 import { Header } from "drifloon/header";
-import { IntInput, Toggle, ToggleAttr } from "drifloon/input";
+import { IntInput, IntInputAttr, Toggle, ToggleAttr } from "drifloon/input";
 import * as m from "mithril";
 
 const ToggleS = (): m.Component => {
@@ -39,9 +39,13 @@ const ToggleS = (): m.Component => {
 };
 
 const SomeInputS = (): m.Component => {
+	const attr: IntInputAttr = {
+		placeholder: "sb"
+	};
+
 	return {
 		view: () => {
-			return m(IntInput);
+			return m<IntInputAttr, {}>(IntInput, attr);
 		}
 	};
 };
