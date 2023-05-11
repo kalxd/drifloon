@@ -2,7 +2,6 @@ import * as m from "mithril";
 import { Maybe } from "purify-ts";
 import { pickKlass, selectKlass } from "../internal/attr";
 import { AttachPosition, Color, EmLevel, LoadingShape, Size, StateLevel } from "../data/var";
-import { mkCallback } from "../data/fn";
 
 export enum ButtonStyle {
 	Circle = "circle",
@@ -19,10 +18,11 @@ export interface ButtonAttr {
 	isFluid?: boolean;
 	loading?: LoadingShape;
 	style?: ButtonStyle;
+	isDisable?: boolean;
 	connectClick?: (e: MouseEvent) => void;
 }
 
-const pickAttr = <T extends ButtonAttr>(attr: T): m.Attributes => {
+const pickAttr = (attr: ButtonAttr): m.Attributes => {
 	const klass = pickKlass([
 		Maybe.fromNullable(attr.size),
 		Maybe.fromNullable(attr.color),
@@ -31,10 +31,15 @@ const pickAttr = <T extends ButtonAttr>(attr: T): m.Attributes => {
 		Maybe.fromNullable(attr.attach),
 		selectKlass("fluid", attr.isFluid),
 		Maybe.fromNullable(attr.style),
-		Maybe.fromNullable(attr.loading)
+		Maybe.fromNullable(attr.loading),
+		selectKlass("disabled", attr.isDisable)
 	]);
 
-	const onclick = mkCallback(attr.connectClick);
+	const onclick = (e: MouseEvent): void => {
+		if (!attr.isDisable && attr.connectClick) {
+			attr.connectClick(e);
+		}
+	};
 
 	return {
 		class: klass,
