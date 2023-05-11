@@ -36,7 +36,7 @@ const Timer = () => {
 	return {
 		view: () => {
 			return m("div", [
-				m(Button, { onclick: startTimer }, "执行"),
+				m(Button, { connectClick: startTimer }, "执行"),
 				loading(render, list.ask())
 			]);
 		}

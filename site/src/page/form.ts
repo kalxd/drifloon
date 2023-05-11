@@ -42,7 +42,7 @@ const RadioS = (): m.Component => {
 
 			return [
 				m(Radiobox, attr),
-				m(Button, { onclick: alertRef }, "查看结果")
+				m(Button, { connectClick: alertRef }, "查看结果")
 			];
 		}
 	};
@@ -96,7 +96,7 @@ const ValidationS = (): m.Component => {
 					value: user.askAt("address"),
 					onchange: s => user.putAt("address", s)
 				}),
-				m(Button, { onclick: onsubmit, color: Color.Blue }, "提交")
+				m(Button, { connectClick: onsubmit, color: Color.Blue }, "提交")
 			]);
 		}
 	};

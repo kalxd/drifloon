@@ -17,7 +17,7 @@ const S: m.Component = {
 
 		return m("div", [
 			m("p", "点击显示对话框"),
-			m(Button, { onclick: f }, "打开")
+			m(Button, { connectClick: f }, "打开")
 		]);
 	}
 };
@@ -32,8 +32,8 @@ const AlertModalHere: m.Component<ModalWAttr<void>> = {
 		return m(ModalW, attrs, [
 			m("div.header", "点击下面几块按钮"),
 			m("div.content", [
-				m(Button, { onclick: () => alertMsg("你看见我了") }, "alert"),
-				m(Button, { onclick: () => confirmMsg("你看见我了") }, "confirm")
+				m(Button, { connectClick: () => alertMsg("你看见我了") }, "alert"),
+				m(Button, { connectClick: () => confirmMsg("你看见我了") }, "confirm")
 			]),
 			m(ModalActionW, actionAttr)
 		]);
@@ -44,7 +44,7 @@ const SModal: m.Component = {
 	view: () => {
 		const openModal = () => modal(AlertModalHere, {});
 		return m("div", [
-			m(Button, { onclick: openModal }, "打开对话框")
+			m(Button, { connectClick: openModal }, "打开对话框")
 		]);
 	}
 };

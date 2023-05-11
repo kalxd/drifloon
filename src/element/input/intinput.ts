@@ -3,6 +3,20 @@ import * as m from "mithril";
 import { tryParseInt } from "../../data/validate";
 import { callbackWhen } from "../../data/fn";
 
+interface BaseInputAttr {
+	value: number;
+	isOverflow: (value: number, nextValue: number) => boolean;
+	iconType: string;
+	connectClick: (value: number) => void;
+	color?: Color;
+}
+
+const BaseInput: m.Component<BaseInputAttr> = {
+	view: () => {
+		m("div.ui.button")
+	}
+};
+
 export interface IntInputAttr {
 	value?: number;
 	connectChange?: (value: number) => void;

@@ -1,7 +1,14 @@
 import * as m from "mithril";
-import { Just, Maybe } from "purify-ts";
+import { Maybe } from "purify-ts";
 import { pickKlass, selectKlass } from "../internal/attr";
 import { AttachPosition, Color, EmLevel, LoadingShape, Size, StateLevel } from "../data/var";
+import { mkCallback } from "../data/fn";
+
+export enum ButtonStyle {
+	Circle = "circle",
+	Basic = "Basic",
+	Tertiary = "tertiary"
+}
 
 export interface ButtonAttr {
 	size?: Size;
@@ -10,8 +17,9 @@ export interface ButtonAttr {
 	em?: EmLevel;
 	attach?: AttachPosition;
 	isFluid?: boolean;
-	isCircle?: boolean;
-	onclick?: (event: MouseEvent) => void;
+	loading?: LoadingShape;
+	style?: ButtonStyle;
+	connectClick?: (e: MouseEvent) => void;
 }
 
 const pickAttr = <T extends ButtonAttr>(attr: T): m.Attributes => {
@@ -22,12 +30,15 @@ const pickAttr = <T extends ButtonAttr>(attr: T): m.Attributes => {
 		Maybe.fromNullable(attr.em),
 		Maybe.fromNullable(attr.attach),
 		selectKlass("fluid", attr.isFluid),
-		selectKlass("circular", attr.isCircle)
+		Maybe.fromNullable(attr.style),
+		Maybe.fromNullable(attr.loading)
 	]);
+
+	const onclick = mkCallback(attr.connectClick);
 
 	return {
 		class: klass,
-		onclick: attr.onclick
+		onclick
 	};
 };
 
@@ -35,42 +46,5 @@ export const Button: m.Component<ButtonAttr> = {
 	view: ({ attrs, children }) => {
 		const prop = pickAttr(attrs);
 		return m("button.ui.button", prop, children);
-	}
-};
-
-export const BasicButton: m.Component<ButtonAttr> = {
-	view: ({ attrs, children }) => {
-		const prop = pickAttr(attrs);
-		return m("button.ui.basic.button", prop, children);
-	}
-};
-
-export const TertiaryButton: m.Component<ButtonAttr> = {
-	view: ({ attrs, children }) => {
-		const prop = pickAttr(attrs);
-		return m("button.ui.tertiary.button", prop, children);
-	}
-};
-
-export const IconButton: m.Component<ButtonAttr> = {
-	view: ({ attrs, children }) => {
-		const prop = pickAttr(attrs);
-		return m("button.ui.icon.button", prop, children);
-	}
-};
-
-export interface LoadingButtonAttr {
-	color?: Color;
-	shape?: LoadingShape;
-}
-
-export const LoadingButton: m.Component<LoadingButtonAttr> = {
-	view: ({ attrs, children }) => {
-		const klass = pickKlass([
-			Maybe.fromNullable(attrs.color),
-			Maybe.fromNullable(attrs.shape).alt(Just(LoadingShape.Default))
-		]);
-
-		return m("button.ui.button", { class: klass }, children);
 	}
 };

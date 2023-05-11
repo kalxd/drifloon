@@ -1,4 +1,4 @@
-import { BasicButton, Button, IconButton, LoadingButton } from "drifloon/button";
+import { Button } from "drifloon/button";
 import { Header } from "drifloon/header";
 import { Segment } from "drifloon/segment";
 import { Color, EmLevel, Size, StateLevel } from "drifloon/data/var";
@@ -18,21 +18,6 @@ const StateS = m("div", [
 	m(Button, { level: StateLevel.Negative }, "负")
 ]);
 
-const BasicS = m("div", [
-	m(BasicButton, "基本按钮"),
-	m(BasicButton, { color: Color.Red }, "红按钮")
-]);
-
-const LoadingS = m("div", [
-	m(LoadingButton, "_"),
-	m(LoadingButton, { color: Color.Black }, "_")
-]);
-
-const IconS = m("div", [
-	m(IconButton, m("i.icon.user")),
-	m(IconButton, { color: Color.Teal }, m("i.icon.plus"))
-]);
-
 const Main: m.Component = {
 	view: () => {
 		return m(Segment, { color: Color.Teal }, [
@@ -43,14 +28,6 @@ const Main: m.Component = {
 			EmS,
 			m(Header, { size: Size.Large }, "正负"),
 			StateS,
-			m(Header, { size: Size.Large }, "正负"),
-			BasicS,
-
-			m(Header, { size: Size.Large }, "加载中……"),
-			LoadingS,
-
-			m(Header, { size: Size.Large }, "图标"),
-			IconS
 		]);
 	}
 };

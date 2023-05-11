@@ -145,3 +145,13 @@ export const callbackWhen = <T>(
 		return f(value);
 	}
 }
+
+export const mkCallback = (
+	f: ((e: MouseEvent) => void) | undefined
+): (e: MouseEvent) => void => {
+	return e => {
+		if (f !== undefined) {
+			f(e);
+		}
+	};
+}
