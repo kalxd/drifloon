@@ -1,7 +1,7 @@
 import { IORef, FormData } from "drifloon/data/ref";
 import { Color, Size } from "drifloon/data/var";
 import { Header } from "drifloon/header";
-import { Radiobox, RadioboxAttr } from "drifloon/input";
+import { Radiobox, RadioboxAttr } from "drifloon/widget/input";
 import * as m from "mithril";
 import { Either, Just, Maybe, Nothing, Right } from "purify-ts";
 import { Button } from "drifloon/button";

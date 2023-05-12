@@ -5,8 +5,13 @@ import { AttachPosition, Color, EmLevel, LoadingShape, Size, StateLevel } from "
 
 export enum ButtonStyle {
 	Circle = "circle",
-	Basic = "Basic",
+	Basic = "basic",
 	Tertiary = "tertiary"
+}
+
+export enum IconStyle {
+	Icon = "icon",
+	IconLabel = "labeled icon"
 }
 
 export interface ButtonAttr {
@@ -18,6 +23,7 @@ export interface ButtonAttr {
 	isFluid?: boolean;
 	loading?: LoadingShape;
 	style?: ButtonStyle;
+	iconStyle?: IconStyle;
 	isDisable?: boolean;
 	connectClick?: (e: MouseEvent) => void;
 }
@@ -32,7 +38,8 @@ const pickAttr = (attr: ButtonAttr): m.Attributes => {
 		selectKlass("fluid", attr.isFluid),
 		Maybe.fromNullable(attr.style),
 		Maybe.fromNullable(attr.loading),
-		selectKlass("disabled", attr.isDisable)
+		selectKlass("disabled", attr.isDisable),
+		Maybe.fromNullable(attr.iconStyle)
 	]);
 
 	const onclick = (e: MouseEvent): void => {

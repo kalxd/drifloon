@@ -1,7 +1,7 @@
 import { IORef } from "drifloon/data/ref";
-import { Size } from "drifloon/data/var";
+import { Color, Size } from "drifloon/data/var";
 import { Header } from "drifloon/header";
-import { IntInput, IntInputAttr, Toggle, ToggleAttr } from "drifloon/input";
+import { IntInput, IntInputAttr, Toggle, ToggleAttr } from "drifloon/widget/input";
 import * as m from "mithril";
 
 const ToggleS = (): m.Component => {
@@ -39,12 +39,16 @@ const ToggleS = (): m.Component => {
 };
 
 const SomeInputS = (): m.Component => {
-	const attr: IntInputAttr = {
-		placeholder: "sb"
-	};
+	const state = new IORef<number>(10);
 
 	return {
 		view: () => {
+			const attr: IntInputAttr = {
+				placeholder: "sb",
+				value: state.ask(),
+				connectChange: n => state.put(n)
+			};
+
 			return m<IntInputAttr, {}>(IntInput, attr);
 		}
 	};
