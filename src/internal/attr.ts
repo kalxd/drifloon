@@ -5,7 +5,7 @@ import { curry, Maybe, NonEmptyList } from "purify-ts";
 
 export const cmpDef = <T>(x: T, y: T): boolean => x === y;
 
-type IsNil<T> = T | null | undefined;
+export type IsNil<T> = T | null | undefined;
 
 /**
  * 检测是否为空值。

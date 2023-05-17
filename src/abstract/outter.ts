@@ -3,7 +3,7 @@ import { Just, Maybe, Nothing } from "purify-ts";
 import { IORef } from "../data/ref";
 
 export interface OutterAttr {
-	onOutterClick: (e: MouseEvent) => void;
+	connectOutterClick: (e: MouseEvent) => void;
 }
 
 export const Outter: m.FactoryComponent<OutterAttr> = _ => {
@@ -15,7 +15,7 @@ export const Outter: m.FactoryComponent<OutterAttr> = _ => {
 				const target = e.target as HTMLElement;
 
 				if (!vnode.dom.contains(target)) {
-					vnode.attrs.onOutterClick(e);
+					vnode.attrs.connectOutterClick(e);
 					m.redraw();
 				}
 			};
