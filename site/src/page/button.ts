@@ -1,6 +1,6 @@
-import { Button } from "drifloon/button";
-import { Header } from "drifloon/header";
-import { Segment } from "drifloon/segment";
+import { Button } from "drifloon/element/button";
+import { Header } from "drifloon/element/header";
+import { Segment } from "drifloon/element/segment";
 import { Color, EmLevel, Size, StateLevel } from "drifloon/data/var";
 import * as m from "mithril";
 

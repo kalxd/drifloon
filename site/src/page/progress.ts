@@ -1,6 +1,6 @@
 import { Color, Size } from "drifloon/data/var";
-import { Header } from "drifloon/header";
-import { Progress, ProgressIndeterminate } from "drifloon/progress";
+import { Header } from "drifloon/element/header";
+import { Progress, ProgressIndeterminate } from "drifloon/element/progress";
 import * as m from "mithril";
 
 const NS = m("div", [

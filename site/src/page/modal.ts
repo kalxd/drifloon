@@ -1,8 +1,8 @@
 import * as m from "mithril";
-import { Button } from "drifloon/button";
-import { Header } from "drifloon/header";
+import { Button } from "drifloon/element/button";
+import { Header } from "drifloon/element/header";
 import { Size } from "drifloon/data/var";
-import { alertMsg, confirmMsg, modal, ModalActionW, ModalActionWAttr, ModalW, ModalWAttr } from "drifloon/modal";
+import { alertMsg, confirmMsg, modal, ModalActionW, ModalActionWAttr, ModalW, ModalWAttr } from "drifloon/module/modal";
 
 const S: m.Component = {
 	view: () => {

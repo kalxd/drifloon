@@ -1,8 +1,8 @@
 import * as m from "mithril";
-import { Container } from "drifloon/container";
-import { Column, Grid } from "drifloon/grid";
+import { Container } from "drifloon/element/container";
+import { Column, Grid } from "drifloon/element/grid";
 import { Align, Color, Size, Wide } from "drifloon/data/var";
-import { ModalMask } from "drifloon/modal";
+import { ModalMask } from "drifloon/module/modal";
 
 import Home from "./page/home";
 
@@ -13,8 +13,8 @@ import ProgressPage from "./page/progress";
 import InputPage from "./page/input";
 import FormPage from "./page/form";
 import Placeholder from "./page/placeholder";
-import { Menu, MenuAttr, MenuNaviItem } from "drifloon/menu";
-import { Header } from "drifloon/header";
+import { Menu, MenuAttr, MenuNaviItem } from "drifloon/element/menu";
+import { Header } from "drifloon/element/header";
 
 interface RouterPage {
 	href: string;

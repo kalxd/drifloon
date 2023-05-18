@@ -1,12 +1,12 @@
 import { Size } from "drifloon/data/var";
-import { Header } from "drifloon/header";
-import { Segment } from "drifloon/segment";
-import { FluidPlaceholder } from "drifloon/placeholder";
+import { Header } from "drifloon/element/header";
+import { Segment } from "drifloon/element/segment";
+import { FluidPlaceholder } from "drifloon/element/placeholder";
 import { loading } from "drifloon/widget/load";
 import * as m from "mithril";
 import { IORef } from "drifloon/data/ref";
 import { Just, Maybe, Nothing } from "purify-ts";
-import { Button } from "drifloon/button";
+import { Button } from "drifloon/element/button";
 
 const Timer = () => {
 	const list = new IORef<Maybe<Array<number>>>(Nothing);

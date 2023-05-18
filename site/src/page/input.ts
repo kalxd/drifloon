@@ -1,6 +1,6 @@
 import { IORef } from "drifloon/data/ref";
-import { Color, Size } from "drifloon/data/var";
-import { Header } from "drifloon/header";
+import { Size } from "drifloon/data/var";
+import { Header } from "drifloon/element/header";
 import { IntInput, IntInputAttr, Toggle, ToggleAttr } from "drifloon/widget/input";
 import * as m from "mithril";
 

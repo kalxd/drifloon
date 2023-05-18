@@ -1,80 +1,32 @@
-import { Header } from "drifloon/header";
-import { Select, SelectAttr, MSelect, MSelectAttr } from "drifloon/dropdown";
+import { Header } from "drifloon/element/header";
+import { FixSelect, FixSelectAttr } from "drifloon/module/dropdown";
 import { IORef } from "drifloon/data/ref";
 import { Size } from "drifloon/data/var";
 import * as m from "mithril";
-import { Maybe, Nothing, Just } from "purify-ts";
 
-interface RecordItem {
-	key: string;
-	name: string;
-}
-
-const items: Array<RecordItem> = [
-	{
-		key: "key1",
-		name: "菜单一"
-	},
-	{
-		key: "key2",
-		name: "菜单二"
-	},
-	{
-		key: "key3",
-		name: "菜单三"
-	},
-	{
-		key: "key4",
-		name: "菜单四"
-	}
-];
-
-const NormalS = (): m.Component => {
-	interface State {
-		value: Maybe<RecordItem>;
+const FixSelectS = (): m.Component => {
+	interface Item {
+		key: number;
+		value: string;
 	}
 
-	const ref = new IORef<State>({
-		value: Nothing
-	});
+	const items: Array<Item> = [
+		{ key: 1, value: "item 1" },
+		{ key: 2, value: "item 2" }
+	];
 
-	return {
-		view: (_) => {
-			const attr: SelectAttr<RecordItem> = {
-				value: ref.asks(s => s.value),
-				placeholder: "随便选择一个",
-				renderItem: x => x.name,
-				renderText: x => `${x.key} - ${x.name}`,
-				onselect: x => ref.putAt("value", x),
-				items: items
-			};
-			return m<SelectAttr<RecordItem>, {}>(Select, attr);
-		}
-	};
-};
+	const state = new IORef<Item>({ key: 1, value: "item 1"});
 
-const MS = (): m.Component => {
-	interface State {
-		value: Maybe<Array<RecordItem>>;
+	const prop: FixSelectAttr<Item> = {
+		value: state.ask(),
+		items
 	}
-
-	const ref = new IORef<State>({ value: Just(items) });
 
 	return {
 		view: () => {
-			const attr: MSelectAttr<RecordItem> = {
-				value: ref.askAt("value"),
-				items,
-				cmp: (a, b) => a.key === b.key,
-				renderLabel: item => item.name,
-				renderItem: item => item.name,
-				onChange: r => ref.putAt("value", r),
-				placeholder: "多选题"
-			};
-
-			return m(MSelect, attr);
+			return m<FixSelectAttr<Item>, {}>(FixSelect, prop);
 		}
-	}
+	};
 };
 
 const Main: m.Component = {
@@ -82,10 +34,7 @@ const Main: m.Component = {
 		return m("div.ui.purple.segment", [
 			m(Header, { isDivid: true, size: Size.Huge }, "下拉菜单"),
 			m(Header, { size: Size.Large }, "普通状态"),
-			m(NormalS),
-
-			m(Header, { size: Size.Large }, "多重选择"),
-			m(MS)
+			m(FixSelectS),
 		])
 	}
 };

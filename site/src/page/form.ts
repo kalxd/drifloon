@@ -1,12 +1,12 @@
 import { IORef, FormData } from "drifloon/data/ref";
 import { Color, Size } from "drifloon/data/var";
-import { Header } from "drifloon/header";
+import { Header } from "drifloon/element/header";
 import { Radiobox, RadioboxAttr } from "drifloon/widget/input";
 import * as m from "mithril";
 import { Either, Just, Maybe, Nothing, Right } from "purify-ts";
-import { Button } from "drifloon/button";
-import { alertMsg } from "drifloon/modal";
-import { Form, FormAttr, TextField } from "drifloon/form";
+import { Button } from "drifloon/element/button";
+import { alertMsg } from "drifloon/module/modal";
+import { Form, FormAttr, TextField } from "drifloon/module/form";
 import { liftEitherA2, prefix, notEmpty } from "drifloon/data/fn";
 
 interface RadioItem {
