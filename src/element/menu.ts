@@ -1,9 +1,9 @@
 import * as m from "mithril";
 import { Maybe } from "purify-ts";
 
-import { fmapKlass, pickKlass, selectKlass } from "./internal/attr";
-import { AttachPosition, Color, Wide } from "./data/var";
-import { isMatchUrl, pathIntoSegments } from "./internal/route";
+import { fmapKlass, pickKlass, selectKlass } from "../internal/attr";
+import { AttachPosition, Color, Wide } from "../data/var";
+import { isMatchUrl, pathIntoSegments } from "../internal/route";
 
 const wideColumn = (wide: Wide): string => `${wide} item`;
 

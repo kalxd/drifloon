@@ -1,8 +1,9 @@
+/*
 import * as m from "mithril";
 import { identity, Just, Maybe, Nothing } from "purify-ts";
-import { IORef } from "./data/ref";
-import { Dropdown } from "./widget/dropdown";
-import { AnimateFrame } from "./widget/animate";
+import { IORef } from "../../data/ref";
+import { Dropdown } from "../../widget/dropdown";
+import { AnimateFrame } from "../../widget/animate";
 import { SelectText, SelectTextAttr, MSelectLabels, MSelectLabelsAttr } from "./element/dropdown";
 import { cmpDef } from "./internal/attr";
 
@@ -15,9 +16,7 @@ export interface SelectAttr<T> {
 	renderText?: (item: T) => m.Children
 }
 
-/**
  * 单选项。
- */
 export const Select = <T>(init: m.Vnode<SelectAttr<T>>): m.Component<SelectAttr<T>> => {
 	const stateRef = new IORef<boolean>(false);
 	const closeE = () => stateRef.put(false);
@@ -78,9 +77,7 @@ export interface MSelectAttr<T> {
 	renderItem?: (item: T) => m.Children;
 }
 
-/**
  * 多选项。
- */
 export const MSelect = <T>(
 	{ attrs }: m.Vnode<MSelectAttr<T>>
 ): m.Component<MSelectAttr<T>> => {
@@ -137,3 +134,4 @@ export const MSelect = <T>(
 		}
 	};
 };
+*/

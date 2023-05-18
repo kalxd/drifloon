@@ -1,5 +1,5 @@
 import * as m from "mithril";
-import { ModalMask } from "./modal";
+import { ModalMask } from "./module/modal";
 
 export const run = (r: m.RouteDefs): void => {
 	m.route(document.body, "/", r);

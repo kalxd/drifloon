@@ -1,9 +1,9 @@
 import * as m from "mithril";
-import { pickKlass, selectKlass } from "./internal/attr";
-import { Size } from "./data/var";
-import { IORef } from "./data/ref";
+import { pickKlass, selectKlass } from "../internal/attr";
+import { Size } from "../data/var";
+import { IORef } from "../data/ref";
 import { Maybe, List, Nothing, identity, Just } from "purify-ts";
-import { AnimateFrame } from "./widget/animate";
+import { AnimateFrame } from "../abstract/animate";
 
 export enum ModalFullscreen {
 	Fullscreen = "fullscreen",
