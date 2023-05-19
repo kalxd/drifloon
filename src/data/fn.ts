@@ -133,25 +133,3 @@ export const notEmpty = curry((input: string): Either<string, string> => {
 		return Right(input);
 	}
 });
-
-export const callbackWhen = <T>(
-	value: T | null | undefined,
-	f: (v: T) => void
-): void => {
-	if (value === null || value === undefined) {
-		return ;
-	}
-	else {
-		return f(value);
-	}
-}
-
-export const mkCallback = (
-	f: ((e: MouseEvent) => void) | undefined
-): (e: MouseEvent) => void => {
-	return e => {
-		if (f !== undefined) {
-			f(e);
-		}
-	};
-}

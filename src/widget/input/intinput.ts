@@ -1,8 +1,8 @@
 import { Color, Size } from "../../data/var";
 import * as m from "mithril";
 import { tryParseInt } from "../../data/validate";
-import { callbackWhen } from "../../data/fn";
 import { Button, ButtonAttr, ButtonStyle, IconStyle } from "../../element/button";
+import { applyFn, fmap } from "../../internal/function";
 
 export interface IntInputAttr {
 	value?: number;
@@ -63,36 +63,14 @@ export const IntInput = ({ attrs }: m.Vnode<IntInputAttr>): m.Component<IntInput
 			const { value, min, max } = askValue(attrs);
 			const step = attrs.step ?? 1;
 
-			const onchange = (e: MouseEvent): void =>
-				callbackWhen(attrs.connectChange, callback => {
+			const onchange = (e: MouseEvent): void => {
+				fmap(f => {
 					const nextValue = tryParseInt((e.target as HTMLInputElement).value.trim())
 						.toMaybe()
 						.orDefault(value);
-					callback(nextValue);
-				});
+					f(nextValue);
 
-			const connectMinClick = () => {
-				if (attrs.connectChange) {
-					attrs.connectChange(min);
-				}
-			};
-
-			const connectMinusClick = () => {
-				if (attrs.connectChange) {
-					attrs.connectChange(Math.max(min, value - step));
-				}
-			};
-
-			const connectPlusClick = () => {
-				if (attrs.connectChange) {
-					attrs.connectChange(Math.min(max, value + step));
-				}
-			};
-
-			const connectMaxClick = () => {
-				if (attrs.connectChange) {
-					attrs.connectChange(max);
-				}
+				}, attrs.connectChange);
 			};
 
 			const inputProp = {
@@ -108,31 +86,33 @@ export const IntInput = ({ attrs }: m.Vnode<IntInputAttr>): m.Component<IntInput
 
 			const minAttr: ButtonAttr = {
 				...buttonAttr,
-				connectClick: connectMinClick
+				connectClick: () => applyFn(attrs.connectChange, min)
 			};
 
 			const resetAttr: ButtonAttr = {
 				...buttonAttr,
-				connectClick: () => {
-					if (attrs.connectChange) {
-						attrs.connectChange(initValue);
-					}
-				}
+				connectClick: () => applyFn(attrs.connectChange, initValue)
 			};
 
 			const minusAttr: ButtonAttr = {
 				...buttonAttr,
-				connectClick: connectMinusClick
+				connectClick: () => applyFn(
+					attrs.connectChange,
+					Math.max(min, value - step)
+				)
 			};
 
 			const plusAttr: ButtonAttr = {
 				...buttonAttr,
-				connectClick: connectPlusClick
+				connectClick: () => applyFn(
+					attrs.connectChange,
+					Math.min(max, value + step)
+				)
 			};
 
 			const maxAttr: ButtonAttr = {
 				...buttonAttr,
-				connectClick: connectMaxClick
+				connectClick: () => applyFn(attrs.connectChange, max)
 			};
 
 			return m("div.ui.action.input", [
