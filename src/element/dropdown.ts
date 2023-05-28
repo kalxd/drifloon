@@ -1,55 +1,51 @@
 import * as m from "mithril";
-import { identity, Maybe } from "purify-ts";
+import { Maybe } from "purify-ts";
+import { IORef } from "../data/ref";
+import { Outter, OutterAttr } from "../abstract/outter";
+import { pickKlass, selectKlass } from "../internal/attr";
 
 export interface SelectTextAttr<T> {
-	text?: Maybe<T>;
-	placeholder?: string;
+	text: Maybe<T>;
+	placeholder: Maybe<string>;
 	renderText: (item: T) => m.Children;
 }
 
+/**
+ * 下拉菜单选项提示。
+ */
 export const SelectText = <T>(): m.Component<SelectTextAttr<T>> => ({
-	view: ({ attrs }) => Maybe.fromNullable(attrs.text)
-		.join()
+	view: ({ attrs }) => attrs.text
 		.caseOf({
-			Just: value =>
-				m("div.text", attrs.renderText(value)),
+			Just: text =>
+				m("div.text", attrs.renderText(text)),
 			Nothing: () =>
-				m("div.default.text", attrs.placeholder)
+				m("div.default.text", attrs.placeholder.extract())
 		})
 });
 
-export interface MSelectLabelsAttr<T> {
-	value: Maybe<Array<T>>;
-	placeholder?: string;
-	renderLabel?: (item: T) => m.Children;
-	onRemove: (item: T, index: number) => void;
+export interface DropdownFrameAttr {
+	value: IORef<boolean>;
+	class: Maybe<string>;
 }
 
-export const MSelectLabels = <T>(
-	init: m.Vnode<MSelectLabelsAttr<T>>
-): m.Component<MSelectLabelsAttr<T>> => {
-	const renderLabel = init.attrs.renderLabel ?? String;
-	const stopE = (e: MouseEvent) => e.stopPropagation();
+export const DropdownFrame: m.Component<DropdownFrameAttr> = {
+	view: ({ attrs, children }) => {
+		const outterAttr: OutterAttr = {
+			connectOutterClick: () => attrs.value.put(false)
+		};
 
-	return {
-		view: ({ attrs }) => attrs.value
-			.caseOf({
-				Just: xs => {
-					const labels = xs.map((x, index) => {
-						const removeE = (e: MouseEvent) => {
-							const f = attrs.onRemove ?? identity;
-							e.stopPropagation();
-							f(x, index);
-						};
+		const prop = {
+			class: pickKlass([
+				selectKlass("active", attrs.value.ask()),
+				attrs.class
+			]),
+			onclick: () => attrs.value.update(b => !b)
+		};
 
-						return m("a.ui.label.transition.visible", { onclick: stopE }, [
-							renderLabel(x),
-							m("i.delete.icon", { onclick: removeE }),
-						]);
-					});
-					return m.fragment({}, labels);
-				},
-				Nothing: () => m("div.default.text", attrs.placeholder)
-			})
-	};
+		return m(
+			Outter,
+			outterAttr,
+			m("div.ui.selection.dropdown", prop, children)
+		);
+	}
 };

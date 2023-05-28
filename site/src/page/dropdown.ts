@@ -19,7 +19,9 @@ const FixSelectS = (): m.Component => {
 
 	const prop: FixSelectAttr<Item> = {
 		value: state.ask(),
-		items
+		itemList: items,
+		renderItem: item => item.value,
+		renderText: item => item.value
 	}
 
 	return {
