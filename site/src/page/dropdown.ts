@@ -17,15 +17,16 @@ const FixSelectS = (): m.Component => {
 
 	const state = new IORef<Item>({ key: 1, value: "item 1"});
 
-	const prop: FixSelectAttr<Item> = {
-		value: state.ask(),
-		itemList: items,
-		renderItem: item => item.value,
-		renderText: item => item.value
-	}
-
 	return {
 		view: () => {
+			const prop: FixSelectAttr<Item> = {
+				value: state.ask(),
+				itemList: items,
+				renderItem: item => item.value,
+				renderText: item => item.value,
+				connectChange: item => state.put(item)
+			};
+
 			return m<FixSelectAttr<Item>, {}>(FixSelect, prop);
 		}
 	};
