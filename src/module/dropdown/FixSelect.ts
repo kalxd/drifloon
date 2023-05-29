@@ -72,9 +72,10 @@ export const FixSelect = <T>(
 				});
 
 			return m(DropdownFrame, { value: stateRef, class: Nothing }, [
+				m("i.icon.dropdown"),
 				m<SelectTextAttr<T>, {}>(SelectText, textProp),
 				menu.extract()
-			])
+			]);
 		}
 	};
 };
