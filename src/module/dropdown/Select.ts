@@ -4,15 +4,6 @@ import { DropdownFrame, SelectText, SelectTextAttr } from "../../element/dropdow
 import { Just, Maybe, Nothing } from "purify-ts";
 import { AnimateFrame } from "../../abstract/animate";
 
-export interface SelectAttr<T> {
-	value?: Maybe<T>;
-	placeholder?: string;
-	itemList?: Array<T>;
-	renderItem?: (item: T) => m.Children;
-	renderText?: (item: T) => m.Children;
-	connectChange?: (item: Maybe<T>) => void;
-}
-
 interface MenuAttr<T> {
 	itemList: Array<T>;
 	renderItem: (item: T) => m.Children;
@@ -36,6 +27,15 @@ const Menu = <T>(): m.Component<MenuAttr<T>> => ({
 		);
 	}
 });
+
+export interface SelectAttr<T> {
+	value?: Maybe<T>;
+	placeholder?: string;
+	itemList?: Array<T>;
+	renderItem?: (item: T) => m.Children;
+	renderText?: (item: T) => m.Children;
+	connectChange?: (item: Maybe<T>) => void;
+}
 
 export const Select = <T>(): m.Component<SelectAttr<T>> => {
 	const stateRef = new IORef<boolean>(false);
