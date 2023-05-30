@@ -69,7 +69,7 @@ export const Select = <T>(): m.Component<SelectAttr<T>> => {
 					return m<MenuAttr<T>, {}>(Menu, attr);
 				});
 
-			return m(DropdownFrame, { value: stateRef, class: Nothing }, [
+			return m(DropdownFrame, { value: stateRef, klass: Nothing }, [
 				m("i.icon.dropdown"),
 				m("i.icon.remove", { onclick: connectRemove }),
 				m<SelectTextAttr<T>, {}>(SelectText, textAttr),

@@ -25,7 +25,7 @@ export const SelectText = <T>(): m.Component<SelectTextAttr<T>> => ({
 
 export interface DropdownFrameAttr {
 	value: IORef<boolean>;
-	class: Maybe<string>;
+	klass: Maybe<string>;
 }
 
 export const DropdownFrame: m.Component<DropdownFrameAttr> = {
@@ -37,10 +37,14 @@ export const DropdownFrame: m.Component<DropdownFrameAttr> = {
 		const prop = {
 			class: pickKlass([
 				selectKlass("active", attrs.value.ask()),
-				attrs.class
+				attrs.klass
 			]),
 			onclick: () => attrs.value.update(b => !b)
 		};
+
+		console.log("====");
+		attrs.klass.ifJust(console.log);
+		console.log(prop);
 
 		return m(
 			Outter,
