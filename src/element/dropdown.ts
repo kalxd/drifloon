@@ -1,5 +1,5 @@
 import * as m from "mithril";
-import { Maybe } from "purify-ts";
+import { Maybe, NonEmptyList } from "purify-ts";
 import { IORef } from "../data/ref";
 import { Outter, OutterAttr } from "../abstract/outter";
 import { pickKlass, selectKlass } from "../internal/attr";
@@ -37,7 +37,10 @@ export const DropdownFrame: m.Component<DropdownFrameAttr> = {
 				selectKlass("active", attrs.value.ask()),
 				attrs.klass
 			]),
-			onclick: () => attrs.value.update(b => !b)
+			onclick: (e: MouseEvent) => {
+				e.stopPropagation();
+				attrs.value.update(b => !b);
+			}
 		};
 
 		return m(
@@ -49,6 +52,7 @@ export const DropdownFrame: m.Component<DropdownFrameAttr> = {
 };
 
 export interface DropdownMenuFrameAttr<T> {
+	value: IORef<boolean>;
 	itemList: Array<T>;
 	renderItem: (item: T) => m.Children;
 	connectClick: (index: number, item: T) => void;
@@ -57,11 +61,20 @@ export interface DropdownMenuFrameAttr<T> {
 
 export const DropdownMenuFrame = <T>(): m.Component<DropdownMenuFrameAttr<T>> => ({
 	view: ({ attrs }) => {
-		const menuItemList = attrs.itemList.map((item, index) => {
-			const onclick = () => attrs.connectClick(index, item);
-			return m("div.item", { onclick }, attrs.renderItem(item));
-		});
+		if (!attrs.value.ask()) {
+			return null;
+		}
 
-		return m(AnimateFrame, { el: attrs.el }, menuItemList);
+		return NonEmptyList.fromArray(attrs.itemList)
+			.map(itemList => itemList.map((item, index) => {
+				const onclick = () => attrs.connectClick(index, item);
+				return m("div.item", { onclick }, attrs.renderItem(item));
+			}))
+			.caseOf({
+				Just: dom => m(AnimateFrame, { el: attrs.el }, dom),
+				Nothing: () => m(AnimateFrame, [
+					"无数据"
+				])
+			});
 	}
 });
