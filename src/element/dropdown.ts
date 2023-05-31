@@ -3,6 +3,7 @@ import { Maybe } from "purify-ts";
 import { IORef } from "../data/ref";
 import { Outter, OutterAttr } from "../abstract/outter";
 import { pickKlass, selectKlass } from "../internal/attr";
+import { AnimateFrame } from "../abstract/animate";
 
 export interface SelectTextAttr<T> {
 	text: Maybe<T>;
@@ -10,9 +11,6 @@ export interface SelectTextAttr<T> {
 	renderText: (item: T) => m.Children;
 }
 
-/**
- * 下拉菜单选项提示。
- */
 export const SelectText = <T>(): m.Component<SelectTextAttr<T>> => ({
 	view: ({ attrs }) => attrs.text
 		.caseOf({
@@ -42,10 +40,6 @@ export const DropdownFrame: m.Component<DropdownFrameAttr> = {
 			onclick: () => attrs.value.update(b => !b)
 		};
 
-		console.log("====");
-		attrs.klass.ifJust(console.log);
-		console.log(prop);
-
 		return m(
 			Outter,
 			outterAttr,
@@ -53,3 +47,21 @@ export const DropdownFrame: m.Component<DropdownFrameAttr> = {
 		);
 	}
 };
+
+export interface DropdownMenuFrameAttr<T> {
+	itemList: Array<T>;
+	renderItem: (item: T) => m.Children;
+	connectClick: (index: number, item: T) => void;
+	el: string;
+}
+
+export const DropdownMenuFrame = <T>(): m.Component<DropdownMenuFrameAttr<T>> => ({
+	view: ({ attrs }) => {
+		const menuItemList = attrs.itemList.map((item, index) => {
+			const onclick = () => attrs.connectClick(index, item);
+			return m("div.item", { onclick }, attrs.renderItem(item));
+		});
+
+		return m(AnimateFrame, { el: attrs.el }, menuItemList);
+	}
+});
