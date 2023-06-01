@@ -49,11 +49,16 @@ const FixSelectS = (): m.Component => {
 };
 
 const MultSelectS = (): m.Component => {
+	const state = new IORef<Array<Item>>([]);
 	return {
 		view: () => {
 			const attr: MultSelectAttr<Item> = {
-				value: [],
-				placeholder: "来选一个"
+				value: state.ask(),
+				itemList: items,
+				renderText: item => item.value,
+				renderItem: item => item.value,
+				placeholder: "来选一个",
+				connectChange: xs => state.put(xs)
 			};
 
 			return m(MultSelect, attr);
