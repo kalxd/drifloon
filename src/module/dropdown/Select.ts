@@ -1,32 +1,7 @@
 import * as m from "mithril";
 import { IORef } from "../../data/ref";
-import { DropdownFrame, SelectText, SelectTextAttr } from "../../element/dropdown";
+import { DropdownFrame, DropdownMenuFrame, DropdownMenuFrameAttr, SelectText, SelectTextAttr } from "../../element/dropdown";
 import { Just, Maybe, Nothing } from "purify-ts";
-import { AnimateFrame } from "../../abstract/animate";
-
-interface MenuAttr<T> {
-	itemList: Array<T>;
-	renderItem: (item: T) => m.Children;
-	connectChange: (item: T) => void;
-}
-
-const Menu = <T>(): m.Component<MenuAttr<T>> => ({
-	view: ({ attrs }) => {
-		const itemOfChildren = attrs.itemList.map(item => {
-			return m(
-				"div.item",
-				{ onclick: () => attrs.connectChange(item) },
-				attrs.renderItem(item)
-			);
-		});
-
-		return m(
-			AnimateFrame,
-			{ el: "div.ui.menu.selection.transition.visible" },
-			itemOfChildren
-		);
-	}
-});
 
 export interface SelectAttr<T> {
 	value?: Maybe<T>;
@@ -54,26 +29,22 @@ export const Select = <T>(): m.Component<SelectAttr<T>> => {
 				mchange.ifJust(f => f(Nothing));
 			};
 
-			const menu = Maybe.fromNullable(attrs.itemList ?? [])
-				.filter(_ => stateRef.ask())
-				.map(itemList => {
-					const connectChange = (item: T) => {
-						mchange.ifJust(f => f(Just(item)));
-					};
-
-					const attr: MenuAttr<T> = {
-						itemList,
-						renderItem: attrs.renderItem ?? String,
-						connectChange
-					};
-					return m<MenuAttr<T>, {}>(Menu, attr);
-				});
+			const menuAttr: DropdownMenuFrameAttr<T> = {
+				value: stateRef,
+				itemList: attrs.itemList ?? [],
+				renderItem: attrs.renderItem ?? String,
+				el: "div.ui.menu.selection.transition.visible",
+				connectClick: item => {
+					stateRef.put(false);
+					Just(Just(item)).ap(mchange)
+				}
+			};
 
 			return m(DropdownFrame, { value: stateRef, klass: Nothing }, [
 				m("i.icon.dropdown"),
 				m("i.icon.remove", { onclick: connectRemove }),
 				m<SelectTextAttr<T>, {}>(SelectText, textAttr),
-				menu.extract()
+				m<DropdownMenuFrameAttr<T>, {}>(DropdownMenuFrame, menuAttr)
 			]);
 		}
 	};
