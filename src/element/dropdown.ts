@@ -27,11 +27,22 @@ export interface DropdownFrameAttr {
 }
 
 export const DropdownFrame: m.FactoryComponent<DropdownFrameAttr> = _ => {
-	const node = new IORef<Maybe<Element>>(Nothing);
+	interface ToggleEl {
+		container: Element;
+		dropdownIcon: Element;
+	}
+
+	const node = new IORef<Maybe<ToggleEl>>(Nothing);
 
 	return {
 		oncreate: vnode => {
-			node.put(Just(vnode.dom));
+			// unsafe
+			const container = vnode.dom;
+			const dropdownIcon = container.querySelector(".icon.dropdown") as Element;
+			node.put(Just({
+				container,
+				dropdownIcon
+			}));
 		},
 
 		view: ({ attrs, children }) => {
@@ -48,7 +59,7 @@ export const DropdownFrame: m.FactoryComponent<DropdownFrameAttr> = _ => {
 					const clickEl = e.target as HTMLElement;
 					node.ask()
 						.filter(dom =>
-							dom === clickEl || clickEl.parentElement === dom)
+							dom.container === clickEl || dom.dropdownIcon === clickEl)
 						.ifJust(_ => {
 							e.stopPropagation();
 							attrs.value.update(b => !b);

@@ -74,9 +74,11 @@ export const MultSelect = <T>(): m.Component<MultSelectAttr<T>> => {
 				}
 			};
 
+			const onremove = () => mchange.ifJust(f => f([]));
+
 			return m(DropdownFrame, { value: stateRef, klass: Just("multiple") }, [
 				m("i.icon.dropdown"),
-				m("i.icon.remove"),
+				m("i.icon.remove", { onclick: onremove }),
 				m<TextAttr<T>, {}>(Text, textAttr),
 				m<DropdownMenuFrameAttr<T>, {}>(DropdownMenuFrame, menuAttr)
 			]);
