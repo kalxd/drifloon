@@ -1,6 +1,7 @@
 node_modules/
 !/dist/package.json
 dist/
+site/assert/main.js
 
 *.un\~
 *.swp
