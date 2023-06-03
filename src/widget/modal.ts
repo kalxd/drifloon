@@ -39,3 +39,37 @@ export const ModalDimmer: m.Component = {
 		children
 	)
 };
+
+export interface ModalActionAttr {
+	positiveText?: string;
+	negativeText?: string;
+	connectPositive?: () => void;
+	connectNegative?: () => void;
+}
+
+export const ModalAction: m.Component<ModalActionAttr> = {
+	view: ({ attrs }) => {
+		const mOnNegative = Maybe.fromNullable(attrs.connectNegative);
+		const mOnPositive = Maybe.fromNullable(attrs.connectPositive);
+
+		const negative = m(
+			"button.ui.negative.button",
+			{ onclick: () => mOnNegative.ifJust(f => f()) },
+			attrs.negativeText ?? "不好"
+		);
+
+		const positive = m(
+			"button.ui.positive right labeled icon button",
+			{ onclick: () => mOnPositive.ifJust(f => f()) },
+			[
+				attrs.positiveText ?? "好",
+				m("i.icon.checkmark")
+			]
+		);
+
+		return m("div.actions", [
+			negative,
+			positive
+		]);
+	}
+};

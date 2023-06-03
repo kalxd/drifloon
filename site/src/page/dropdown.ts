@@ -1,5 +1,5 @@
 import { Header } from "drifloon/element/header";
-import { FixSelect, FixSelectAttr, Select, SelectAttr, MultSelect, MultSelectAttr } from "drifloon/module/dropdown";
+import { FixSelect, FixSelectAttr, Select, SelectAttr, MultSelect, MultSelectAttr } from "drifloon/widget/dropdown";
 import { IORef } from "drifloon/data/ref";
 import { Size } from "drifloon/data/var";
 import * as m from "mithril";

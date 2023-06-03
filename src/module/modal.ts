@@ -44,9 +44,9 @@ const renderModal = <T>(state: Array<ModalState<T>>): Maybe<m.Children> => {
 			const w = t.fst();
 			const ws = t.snd();
 
-			const attr = {
+			const attr: ResolveModalAttr<T> = {
 				...w.attr,
-				onresolve: (x: T) => {
+				connectResolve: (x: T) => {
 					w.attr.connectResolve(x);
 					modalRef.put(ws as Array<ModalState<unknown>>);
 				}

@@ -5,9 +5,9 @@ import { Radiobox, RadioboxAttr } from "drifloon/widget/input";
 import * as m from "mithril";
 import { Either, Just, Maybe, Nothing, Right } from "purify-ts";
 import { Button } from "drifloon/element/button";
-import { alertMsg } from "drifloon/module/modal";
+// import { alertMsg } from "drifloon/module/modal";
 import { Form, FormAttr, TextField } from "drifloon/module/form";
-import { liftEitherA2, prefix, notEmpty } from "drifloon/data/fn";
+import { liftEitherA2, prefix, notEmpty } from "drifloon/data/validate";
 
 interface RadioItem {
 	key: number;
@@ -25,8 +25,8 @@ const RadioS = (): m.Component => {
 	const alertRef = () => {
 		ref.ask()
 			.caseOf({
-				Just: x => alertMsg(JSON.stringify(x)),
-				Nothing: () => alertMsg("你还未选择")
+				Just: x => console.log(JSON.stringify(x)),
+				Nothing: () => console.log("你还未选择")
 			})
 	};
 
@@ -82,7 +82,7 @@ const ValidationS = (): m.Component => {
 			};
 
 			const onsubmit = () => user.validate(validate)
-				.ifRight(s => alertMsg(JSON.stringify(s, null, 4)));
+				.ifRight(s => console.log(JSON.stringify(s, null, 4)));
 
 			return m(Form, attr, [
 				m(TextField, {
