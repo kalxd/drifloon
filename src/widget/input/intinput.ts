@@ -3,6 +3,9 @@ import * as m from "mithril";
 import { tryParseInt } from "../../data/validate";
 import { Button, ButtonAttr, ButtonStyle, IconStyle } from "../../element/button";
 import { applyFn, fmap } from "../../internal/function";
+import { ComponentPanic } from "../../internal/error";
+
+const E = new ComponentPanic("IntInput");
 
 export interface IntInputAttr {
 	value?: number;
@@ -39,13 +42,15 @@ const askValue = (attr: IntInputAttr): AskValue => {
 	const max = attr.max ?? Infinity;
 	const value = attr.value ?? attr.min ?? attr.max ?? 0;
 
-	if (value < min || value > max) {
-		throw new Error(`[IntInput] value(${value})不在[${min}, ${max}]！`);
-	}
+	E.panicWhen(
+		value < min || value > max,
+		`value(${value})不在[${min}, ${max}]！`
+	);
 
-	if (min > max) {
-		throw new Error(`[IntInput] min(${min}) > max(${max})`);
-	}
+	E.panicWhen(
+		min > max,
+		`min(${min}) > max(${max})`
+	);
 
 	return {
 		value,
