@@ -1,9 +1,22 @@
 import * as m from "mithril";
 import { Button } from "drifloon/element/button";
 import { Header } from "drifloon/element/header";
-import { Size } from "drifloon/data/var";
-import { modal, ResolveModalAttr } from "drifloon/module/modal";
+import { Color, Size } from "drifloon/data/var";
+import { confirm, modal, ResolveConfirmAttr, ResolveModalAttr } from "drifloon/module/modal";
 import { Modal, ModalAction, ModalActionAttr } from "drifloon/widget/modal";
+
+const ConfirmS: m.Component = {
+	view: () => {
+		const attr1: ResolveConfirmAttr = {
+		};
+
+		const onclick1 = async () => {
+			console.log(await confirm(attr1));
+		};
+
+		return m(Button, { color: Color.Green, connectClick: onclick1 }, "提示")
+	}
+};
 
 const AlertModalHere: m.Component<ResolveModalAttr<void>> = {
 	view: ({ attrs }) => {
@@ -35,6 +48,8 @@ const ModalS: m.Component = {
 const Main: m.Component = {
 	view: _ => m("div.ui.teal.segment", [
 		m(Header, { isDivid: true, size: Size.Huge }, "对话框"),
+		m(Header, { size: Size.Large }, "提示"),
+		m(ConfirmS),
 		m(Header, { size: Size.Large }, "混合使用"),
 		m(ModalS)
 	])

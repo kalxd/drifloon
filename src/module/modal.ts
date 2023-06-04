@@ -82,6 +82,9 @@ export const confirm = (attr: ResolveConfirmAttr): Promise<Either<void, void>> =
 	});
 };
 
+export const confirmText = (msg: string): Promise<Either<void, void>> =>
+	confirm({ content: msg });
+
 const renderConfirm = (state: Array<ConfirmState>): Maybe<m.Children> => {
 	return List.uncons(state)
 		.map(t => {
