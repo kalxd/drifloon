@@ -2,16 +2,22 @@ import * as m from "mithril";
 import { Button } from "drifloon/element/button";
 import { Header } from "drifloon/element/header";
 import { Color, Size } from "drifloon/data/var";
-import { confirm, modal, ResolveConfirmAttr, ResolveModalAttr } from "drifloon/module/modal";
+import { alertText, confirm, modal, ResolveConfirmAttr, ResolveModalAttr } from "drifloon/module/modal";
 import { Modal, ModalAction, ModalActionAttr } from "drifloon/widget/modal";
 
 const ConfirmS: m.Component = {
 	view: () => {
 		const attr1: ResolveConfirmAttr = {
+			title: "新式标题",
+			content: m("div.label.ui.orange", "理论上，这里写上任何文本。")
 		};
 
 		const onclick1 = async () => {
-			console.log(await confirm(attr1));
+			confirm(attr1)
+				.caseOf({
+					Right: () => alertText("你点了确定！"),
+					Left: () => alertText("你点了取消！"),
+				});
 		};
 
 		return m(Button, { color: Color.Green, connectClick: onclick1 }, "提示")

@@ -1,6 +1,6 @@
 import * as m from "mithril";
 import { IORef } from "../data/ref";
-import { Maybe, List, Either, Right, Left } from "purify-ts";
+import { Maybe, List, Either, EitherAsync, Right, Left } from "purify-ts";
 import * as Modal from "../widget/modal";
 
 export interface ResolveModalAttr<T> extends Modal.ModalAttr {
@@ -70,8 +70,8 @@ interface ConfirmState {
 
 const confirmRef = new IORef<Array<ConfirmState>>([]);
 
-export const confirm = (attr: ResolveConfirmAttr): Promise<Either<void, void>> => {
-	return new Promise(resolve => {
+export const confirm = (attr: ResolveConfirmAttr): EitherAsync<void, void> =>
+	EitherAsync.fromPromise(() => new Promise(resolve => {
 		const s: ConfirmState = {
 			attr,
 			resolve
@@ -79,30 +79,83 @@ export const confirm = (attr: ResolveConfirmAttr): Promise<Either<void, void>> =
 
 		confirmRef.update(xs => [s, ...xs]);
 		m.redraw();
-	});
-};
+	}));
 
-export const confirmText = (msg: string): Promise<Either<void, void>> =>
+export const confirmText = (msg: string): EitherAsync<void, void> =>
 	confirm({ content: msg });
 
 const renderConfirm = (state: Array<ConfirmState>): Maybe<m.Children> => {
 	return List.uncons(state)
 		.map(t => {
-			const s = t.fst();
-			const restAttrList = t.snd();
+			const w = t.fst();
+			const ws = t.snd();
 			const confirmAttr: Modal.ConfirmAttr = {
-				...s.attr,
+				size: w.attr.size,
+				fullscreen: w.attr.fullscreen,
+				isInvert: w.attr.isInvert,
+				title: w.attr.title,
+				positiveText: w.attr.positiveText,
+				negativeText: w.attr.negativeText,
 				connectPositive: () => {
-					confirmRef.put(restAttrList);
-					s.resolve(Right(undefined));
+					confirmRef.put(ws);
+					w.resolve(Right(undefined));
 				},
 				connectNegative: () => {
-					confirmRef.put(restAttrList);
-					s.resolve(Left(undefined));
+					confirmRef.put(ws);
+					w.resolve(Left(undefined));
 				}
 			};
 
-			return m(Modal.Confirm, confirmAttr);
+			return m(Modal.Confirm, confirmAttr, w.attr.content);
+		});
+};
+
+export interface ResolveAlertAttr extends Modal.ModalAttr {
+	title?: string;
+	content?: m.Children;
+	positiveText?: string;
+}
+
+interface AlertState {
+	attr: ResolveAlertAttr;
+	resolve: () => void;
+};
+
+const alertRef = new IORef<Array<AlertState>>([]);
+
+export const alert = (attr: ResolveAlertAttr): Promise<void> => {
+	return new Promise(resolve => {
+		const s: AlertState = {
+			attr,
+			resolve
+		};
+
+		alertRef.update(xs => [s, ...xs]);
+	});
+};
+
+export const alertText = (msg: string): Promise<void> =>
+	alert({ content: msg });
+
+const renderAlert = (state: Array<AlertState>): Maybe<m.Children> => {
+	return List.uncons(state)
+		.map(t => {
+			const w = t.fst();
+			const ws = t.snd();
+
+			const attr: Modal.AlertAttr = {
+				size: w.attr.size,
+				fullscreen: w.attr.fullscreen,
+				isInvert: w.attr.isInvert,
+				title: w.attr.title,
+				positiveText: w.attr.positiveText,
+				connectResolve: () => {
+					alertRef.put(ws);
+					w.resolve();
+				}
+			};
+
+			return m(Modal.Alert, attr, w.attr.content);
 		});
 };
 
@@ -110,9 +163,13 @@ export const ModalMask: m.Component = {
 	view: () => {
 		const modalWidget = modalRef.asks(renderModal);
 		const confirmWidget = confirmRef.asks(renderConfirm);
+		const alertWidget = alertRef.asks(renderAlert);
 
-		return confirmWidget.alt(modalWidget)
+		return alertWidget
+			.alt(confirmWidget)
+			.alt(modalWidget)
 			.map(_ => m(Modal.ModalDimmer, [
+				alertWidget.extract(),
 				confirmWidget.extract(),
 				modalWidget.extract(),
 			]))

@@ -78,13 +78,15 @@ export interface ConfirmAttr extends ModalAttr, ModalActionAttr {
 	title?: string;
 }
 
+const pickModalAttr = <T extends ModalAttr>(attr: T): ModalAttr => ({
+	size: attr.size,
+	fullscreen: attr.fullscreen,
+	isInvert: attr.isInvert
+});
+
 export const Confirm: m.Component<ConfirmAttr> = {
 	view: ({ attrs, children }) => {
-		const modalAttr: ModalAttr = {
-			size: attrs.size,
-			fullscreen: attrs.fullscreen,
-			isInvert: attrs.isInvert
-		};
+		const modalAttr = pickModalAttr(attrs);
 
 		const modalActionAttr: ModalActionAttr = {
 			positiveText: attrs.positiveText,
@@ -95,8 +97,33 @@ export const Confirm: m.Component<ConfirmAttr> = {
 
 		return m(Modal, modalAttr, [
 			m("div.header", attrs.title ?? "提示"),
-			m("div.content", children),
+			m("div.scrolling.content", children),
 			m(ModalAction, modalActionAttr)
+		]);
+	}
+};
+
+export interface AlertAttr extends ModalAttr {
+	title?: string;
+	positiveText?: string;
+	connectResolve: () => void;
+}
+
+export const Alert: m.Component<AlertAttr> = {
+	view: ({ attrs, children }) => {
+		const modalAttr = pickModalAttr(attrs);
+
+		return m(Modal, modalAttr, [
+			m("div.header", attrs.title ?? "提示"),
+			m("div.scrolling.content", children),
+			m("div.actions", m(
+				"button.ui.green.button",
+				{ onclick: attrs.connectResolve},
+				[
+					m("i.icon.checkmark"),
+					attrs.positiveText ?? "好",
+				]
+			))
 		]);
 	}
 };
