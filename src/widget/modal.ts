@@ -21,7 +21,7 @@ export const Modal: m.Component<ModalAttr> = {
 			Maybe.fromNullable(attrs.size),
 			Maybe.fromNullable(attrs.fullscreen),
 			selectKlass("inverted", attrs.isInvert),
-			Just("ui modal transition active")
+			Just("ui modal top aligned transition active")
 		]);
 
 		return m(
@@ -33,6 +33,12 @@ export const Modal: m.Component<ModalAttr> = {
 };
 
 export const ModalDimmer: m.Component = {
+	oncreate: () => {
+		document.body.classList.add("blurring", "dimmed", "dimmable");
+	},
+	onremove: () => {
+		document.body.classList.remove("blurring", "dimmed", "dimmable");
+	},
 	view: ({ children }) => m(
 		"div.ui.modals.dimmer.active.visible.transition",
 		{ style: "display: flex !important" },
