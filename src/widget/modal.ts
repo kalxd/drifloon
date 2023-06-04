@@ -73,3 +73,30 @@ export const ModalAction: m.Component<ModalActionAttr> = {
 		]);
 	}
 };
+
+export interface ConfirmAttr extends ModalAttr, ModalActionAttr {
+	title?: string;
+}
+
+export const Confirm: m.Component<ConfirmAttr> = {
+	view: ({ attrs, children }) => {
+		const modalAttr: ModalAttr = {
+			size: attrs.size,
+			fullscreen: attrs.fullscreen,
+			isInvert: attrs.isInvert
+		};
+
+		const modalActionAttr: ModalActionAttr = {
+			positiveText: attrs.positiveText,
+			negativeText: attrs.negativeText,
+			connectPositive: attrs.connectPositive,
+			connectNegative: attrs.connectNegative
+		};
+
+		return m(Modal, modalAttr, [
+			m("div.header", attrs.title ?? "提示"),
+			m("div.content", children),
+			m(ModalAction, modalActionAttr)
+		]);
+	}
+};
