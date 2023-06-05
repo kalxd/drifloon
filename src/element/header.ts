@@ -1,7 +1,7 @@
 import * as m from "mithril";
 import { pickKlass, selectKlass } from "../internal/attr";
 import { Align, AttachPosition, Color, Float, Size } from "../data/var";
-import { Maybe } from "purify-ts";
+import { Maybe, curry } from "purify-ts";
 
 export interface HeaderAttr {
 	size?: Size;
@@ -28,3 +28,11 @@ export const Header: m.Component<HeaderAttr> = {
 		return m("div.ui.header", { class: klass }, children);
 	}
 };
+
+const mkHeader = curry((level: string, children: m.Children): m.Vnode =>
+	m(`${level}.ui.header`, children))
+
+export const Header1 = mkHeader("h1");
+export const Header2 = mkHeader("h2");
+export const Header3 = mkHeader("h3");
+export const Header4 = mkHeader("h4");
