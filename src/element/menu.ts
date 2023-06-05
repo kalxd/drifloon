@@ -20,36 +20,42 @@ export enum MenuFixPosition {
 	Right = "right fixed"
 }
 
+export enum MenuStyle {
+	Secondary = "secondary",
+	Pointing = "pointing",
+	SecondaryPointing = "secondary pointing",
+	Tabular = "tabular",
+	Text = "text"
+}
+
 export interface MenuAttr {
-	text?: boolean;
+	style?: MenuStyle;
 	wide?: Wide;
 	attach?: AttachPosition;
 	shape?: MenuShape;
-	secondary?: boolean;
-	vertical?: boolean;
+	isVertical?: boolean;
 	invert?: boolean;
-	right?: boolean;
+	isRight?: boolean;
 	fixAt?: MenuFixPosition;
 	color?: Color;
-	fluid?: boolean;
-	borderless?: boolean;
+	isFluid?: boolean;
+	isBorderless?: boolean;
 }
 
 export const Menu: m.Component<MenuAttr> = {
 	view: ({ attrs, children }) => {
 		const klass = pickKlass([
-			selectKlass("text", attrs.text),
+			Maybe.fromNullable(attrs.style),
 			fmapKlass(wideColumn, attrs.wide),
 			Maybe.fromNullable(attrs.attach),
 			Maybe.fromNullable(attrs.shape),
-			selectKlass("secondary", attrs.secondary),
-			selectKlass("vertical", attrs.vertical),
+			selectKlass("vertical", attrs.isVertical),
 			selectKlass("inverted", attrs.invert),
-			selectKlass("right", attrs.right),
+			selectKlass("right", attrs.isRight),
 			Maybe.fromNullable(attrs.fixAt),
 			Maybe.fromNullable(attrs.color),
-			selectKlass("fluid", attrs.fluid),
-			selectKlass("borderless", attrs.borderless)
+			selectKlass("fluid", attrs.isFluid),
+			selectKlass("borderless", attrs.isBorderless)
 		]);
 
 		return m("div.ui.menu", { class: klass }, children);

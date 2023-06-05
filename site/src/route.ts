@@ -66,9 +66,9 @@ const routerMap: Array<RouterPage> = [
 ];
 
 const sidebarMenuAttr: MenuAttr = {
-	vertical: true,
+	isVertical: true,
 	color: Color.Teal,
-	fluid: true
+	isFluid: true
 };
 
 const Sidebar: m.Component = {
