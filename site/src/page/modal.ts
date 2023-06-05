@@ -27,8 +27,7 @@ const ConfirmS: m.Component = {
 const AlertModalHere: m.Component<ResolveModalAttr<void>> = {
 	view: ({ attrs }) => {
 		const actionAttr: ModalActionAttr = {
-			connectNegative: attrs.connectResolve,
-			connectPositive: attrs.connectResolve,
+			connectResolve: () => attrs.connectResolve(),
 		};
 
 		return m(Modal, attrs, [

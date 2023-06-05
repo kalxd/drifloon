@@ -1,6 +1,6 @@
 import * as m from "mithril";
 import { IORef } from "../data/ref";
-import { Maybe, List, Either, EitherAsync, Right, Left } from "purify-ts";
+import { Maybe, List, Either, EitherAsync } from "purify-ts";
 import * as Modal from "../widget/modal";
 
 export interface ResolveModalAttr<T> extends Modal.ModalAttr {
@@ -96,13 +96,9 @@ const renderConfirm = (state: Array<ConfirmState>): Maybe<m.Children> => {
 				title: w.attr.title,
 				positiveText: w.attr.positiveText,
 				negativeText: w.attr.negativeText,
-				connectPositive: () => {
+				connectResolve: result => {
 					confirmRef.put(ws);
-					w.resolve(Right(undefined));
-				},
-				connectNegative: () => {
-					confirmRef.put(ws);
-					w.resolve(Left(undefined));
+					w.resolve(result);
 				}
 			};
 
