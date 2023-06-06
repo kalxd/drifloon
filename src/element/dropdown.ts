@@ -1,5 +1,5 @@
 import * as m from "mithril";
-import { Just, Maybe, NonEmptyList, Nothing } from "purify-ts";
+import { Just, Maybe, NonEmptyList } from "purify-ts";
 import { IORef } from "../data/ref";
 import { Outter, OutterAttr } from "../abstract/outter";
 import { pickKlass, selectKlass } from "../internal/attr";
@@ -27,22 +27,16 @@ export interface DropdownFrameAttr {
 }
 
 export const DropdownFrame: m.FactoryComponent<DropdownFrameAttr> = _ => {
-	interface ToggleEl {
-		container: Element;
-		dropdownIcon: Element;
-	}
-
-	const node = new IORef<Maybe<ToggleEl>>(Nothing);
+	const toggleNodeList = new IORef<Array<Maybe<Element>>>([]);
 
 	return {
 		oncreate: vnode => {
-			// unsafe
 			const container = vnode.dom;
-			const dropdownIcon = container.querySelector(".icon.dropdown") as Element;
-			node.put(Just({
-				container,
-				dropdownIcon
-			}));
+			toggleNodeList.put([
+				Just(container),
+				Maybe.fromNullable(container.querySelector(".icon.dropdown")),
+				Maybe.fromNullable(container.querySelector("input"))
+			]);
 		},
 
 		view: ({ attrs, children }) => {
@@ -57,13 +51,13 @@ export const DropdownFrame: m.FactoryComponent<DropdownFrameAttr> = _ => {
 				]),
 				onclick: (e: MouseEvent) => {
 					const clickEl = e.target as HTMLElement;
-					node.ask()
-						.filter(dom =>
-							dom.container === clickEl || dom.dropdownIcon === clickEl)
-						.ifJust(_ => {
-							e.stopPropagation();
-							attrs.value.update(b => !b);
-						});
+					const isContains = toggleNodeList.asks(Maybe.catMaybes)
+						.some(el => el === clickEl);
+
+					if (isContains) {
+						e.stopPropagation();
+						attrs.value.update(b => !b);
+					}
 				}
 			};
 
