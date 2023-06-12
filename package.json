@@ -12,8 +12,7 @@
 	"types": "main.d.ts",
 	"dependencies": {
 		"mithril": "2.2.2",
-		"purify-ts": "1.3.0",
-		"rxjs": "^7.8.1"
+		"purify-ts": "2.0.1"
 	},
 	"devDependencies": {
 		"@types/mithril": "2.0.12",
