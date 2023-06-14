@@ -1,5 +1,7 @@
 import { eq } from "../internal/function";
 
+export * from "./internal/zip";
+
 export const propOf = <T, K extends keyof T>(
 	k: K
 ): (obj: T) => T[K] =>
