@@ -11,7 +11,7 @@ export const maybeZip3 = <T1, T2, T3>(
 	ma2: Maybe<T2>,
 	ma3: Maybe<T3>
 ): Maybe<[T1, T2, T3]> =>
-	ma1.chain(a1 => ma2.map(a2 => [a1, a2] as [T1, T2]))
+	maybeZip(ma1, ma2)
 		.chain(xs => ma3.map(a3 => [...xs, a3]));
 
 export const maybeZip4 = <T1, T2, T3, T4>(
@@ -20,8 +20,7 @@ export const maybeZip4 = <T1, T2, T3, T4>(
 	ma3: Maybe<T3>,
 	ma4: Maybe<T4>
 ): Maybe<[T1, T2, T3, T4]> =>
-	ma1.chain(a1 => ma2.map(a2 => [a1, a2] as [T1, T2]))
-		.chain(xs => ma3.map(a3 => [...xs, a3] as [T1, T2, T3]))
+	maybeZip3(ma1, ma2, ma3)
 		.chain(xs => ma4.map(a4 => [...xs, a4]));
 
 export const maybeZip5 = <T1, T2, T3, T4, T5>(
@@ -31,9 +30,7 @@ export const maybeZip5 = <T1, T2, T3, T4, T5>(
 	ma4: Maybe<T4>,
 	ma5: Maybe<T5>
 ): Maybe<[T1, T2, T3, T4, T5]> =>
-	ma1.chain(a1 => ma2.map(a2 => [a1, a2] as [T1, T2]))
-		.chain(xs => ma3.map(a3 => [...xs, a3] as [T1, T2, T3]))
-		.chain(xs => ma4.map(a4 => [...xs, a4] as [T1, T2, T3, T4]))
+	maybeZip4(ma1, ma2, ma3, ma4)
 		.chain(xs => ma5.map(a5 => [...xs, a5]));
 
 export const maybeZip6 = <T1, T2, T3, T4, T5, T6>(
@@ -44,10 +41,7 @@ export const maybeZip6 = <T1, T2, T3, T4, T5, T6>(
 	ma5: Maybe<T5>,
 	ma6: Maybe<T6>
 ): Maybe<[T1, T2, T3, T4, T5, T6]> =>
-	ma1.chain(a1 => ma2.map(a2 => [a1, a2] as [T1, T2]))
-		.chain(xs => ma3.map(a3 => [...xs, a3] as [T1, T2, T3]))
-		.chain(xs => ma4.map(a4 => [...xs, a4] as [T1, T2, T3, T4]))
-		.chain(xs => ma5.map(a5 => [...xs, a5] as [T1, T2, T3, T4, T5]))
+	maybeZip5(ma1, ma2, ma3, ma4, ma5)
 		.chain(xs => ma6.map(a6 => [...xs, a6]));
 
 export const maybeZip7 = <T1, T2, T3, T4, T5, T6, T7>(
@@ -59,11 +53,7 @@ export const maybeZip7 = <T1, T2, T3, T4, T5, T6, T7>(
 	ma6: Maybe<T6>,
 	ma7: Maybe<T7>,
 ): Maybe<[T1, T2, T3, T4, T5, T6, T7]> =>
-	ma1.chain(a1 => ma2.map(a2 => [a1, a2] as [T1, T2]))
-		.chain(xs => ma3.map(a3 => [...xs, a3] as [T1, T2, T3]))
-		.chain(xs => ma4.map(a4 => [...xs, a4] as [T1, T2, T3, T4]))
-		.chain(xs => ma5.map(a5 => [...xs, a5] as [T1, T2, T3, T4, T5]))
-		.chain(xs => ma6.map(a6 => [...xs, a6] as [T1, T2, T3, T4, T5, T6]))
+	maybeZip6(ma1, ma2, ma3, ma4, ma5, ma6)
 		.chain(xs => ma7.map(a7 => [...xs, a7]));
 
 export const maybeZip8 = <T1, T2, T3, T4, T5, T6, T7, T8>(
@@ -76,12 +66,7 @@ export const maybeZip8 = <T1, T2, T3, T4, T5, T6, T7, T8>(
 	ma7: Maybe<T7>,
 	ma8: Maybe<T8>
 ): Maybe<[T1, T2, T3, T4, T5, T6, T7, T8]> =>
-	ma1.chain(a1 => ma2.map(a2 => [a1, a2] as [T1, T2]))
-		.chain(xs => ma3.map(a3 => [...xs, a3] as [T1, T2, T3]))
-		.chain(xs => ma4.map(a4 => [...xs, a4] as [T1, T2, T3, T4]))
-		.chain(xs => ma5.map(a5 => [...xs, a5] as [T1, T2, T3, T4, T5]))
-		.chain(xs => ma6.map(a6 => [...xs, a6] as [T1, T2, T3, T4, T5, T6]))
-		.chain(xs => ma7.map(a7 => [...xs, a7] as [T1, T2, T3, T4, T5, T6, T7]))
+	maybeZip7(ma1, ma2, ma3, ma4, ma5, ma6, ma7)
 		.chain(xs => ma8.map(a8 => [...xs, a8]));
 
 export const maybeZip9 = <T1, T2, T3, T4, T5, T6, T7, T8, T9>(
@@ -95,13 +80,7 @@ export const maybeZip9 = <T1, T2, T3, T4, T5, T6, T7, T8, T9>(
 	ma8: Maybe<T8>,
 	ma9: Maybe<T9>
 ): Maybe<[T1, T2, T3, T4, T5, T6, T7, T8, T9]> =>
-	ma1.chain(a1 => ma2.map(a2 => [a1, a2] as [T1, T2]))
-		.chain(xs => ma3.map(a3 => [...xs, a3] as [T1, T2, T3]))
-		.chain(xs => ma4.map(a4 => [...xs, a4] as [T1, T2, T3, T4]))
-		.chain(xs => ma5.map(a5 => [...xs, a5] as [T1, T2, T3, T4, T5]))
-		.chain(xs => ma6.map(a6 => [...xs, a6] as [T1, T2, T3, T4, T5, T6]))
-		.chain(xs => ma7.map(a7 => [...xs, a7] as [T1, T2, T3, T4, T5, T6, T7]))
-		.chain(xs => ma8.map(a8 => [...xs, a8] as [T1, T2, T3, T4, T5, T6, T7, T8]))
+	maybeZip8(ma1, ma2, ma3, ma4, ma5, ma6, ma7, ma8)
 		.chain(xs => ma9.map(a9 => [...xs, a9]));
 
 export const maybeZipWith = <T1, T2, R>(
