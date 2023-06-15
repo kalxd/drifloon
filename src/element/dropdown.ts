@@ -93,7 +93,7 @@ export const DropdownMenuFrame = <T>(): m.Component<DropdownMenuFrameAttr<T>> =>
 				Just: dom => m(AnimateFrame, { el: attrs.el }, dom),
 				Nothing: () => m(
 					AnimateFrame,
-					m("div.ui.basic.center.aligned.segment", "无数据")
+					m("div.message", "无数据")
 				)
 			});
 	}
