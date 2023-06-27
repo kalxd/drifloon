@@ -3,6 +3,7 @@ import * as m from "mithril";
 import { identity, Maybe } from "purify-ts";
 
 export * from "./intinput";
+export * from "./completeinput";
 
 export interface ToggleAttr {
 	value?: boolean;

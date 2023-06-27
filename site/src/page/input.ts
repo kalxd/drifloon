@@ -1,7 +1,8 @@
+import { propOf } from "drifloon/data/fn";
 import { IORef } from "drifloon/data/ref";
 import { Size } from "drifloon/data/var";
-import { Header } from "drifloon/element/header";
-import { IntInput, IntInputAttr, Toggle, ToggleAttr } from "drifloon/widget/input";
+import { Header, Header2 } from "drifloon/element/header";
+import { IntInput, IntInputAttr, Toggle, ToggleAttr, CompleteInput, CompleteInputAttr } from "drifloon/widget/input";
 import * as m from "mithril";
 
 const ToggleS = (): m.Component => {
@@ -54,6 +55,34 @@ const SomeInputS = (): m.Component => {
 	};
 };
 
+const CompleteInputS = (): m.Component => {
+	interface Item {
+		id: number;
+		text: string;
+	}
+
+	const state = new IORef<string>("");
+	const itemList: Array<Item> = [
+		{ id: 0, text: "中图" },
+		{ id: 1, text: "豆瓣" },
+		{ id: 2, text: "京东" }
+	];
+
+	return {
+		view: () => {
+			const attr: CompleteInputAttr<Item> = {
+				value: state.ask(),
+				placeholder: "大爷快来玩儿呀！",
+				completeList: itemList,
+				eq: (value, item) => item.text.includes(value),
+				renderItem: propOf("text"),
+				connectChange: s => state.put(s)
+			};
+			return m(CompleteInput, attr);
+		}
+	};
+};
+
 const Main: m.Component = {
 	view: () => {
 		return m("div.ui.black.segment", [
@@ -61,7 +90,9 @@ const Main: m.Component = {
 			m(Header, { size: Size.Large }, "开关"),
 			m(ToggleS),
 			m(Header, { size: Size.Large }, "一些特定输入"),
-			m(SomeInputS)
+			m(SomeInputS),
+			Header2("带补全的输入"),
+			m(CompleteInputS)
 		]);
 	}
 };

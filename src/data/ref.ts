@@ -43,6 +43,11 @@ export class IORef<T> {
 		this.ref[key] = f(this.ref[key]);
 		return this;
 	}
+
+	map<R>(f: (ref: T) => R): IORef<R> {
+		const s = this.asks(f);
+		return new IORef(s);
+	}
 }
 
 // 专用于表单设计的可变结构。
