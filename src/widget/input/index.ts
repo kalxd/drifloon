@@ -3,36 +3,9 @@ import * as m from "mithril";
 import { identity, Maybe } from "purify-ts";
 
 export * from "./toggle";
+export * from "./checkbox";
 export * from "./intinput";
 export * from "./completeinput";
-
-export interface CheckboxAttr {
-	value?: Maybe<boolean>;
-	onchange?: (result: boolean) => void;
-}
-
-export const Checkbox: m.Component<CheckboxAttr> = {
-	view: ({ attrs, children }) => {
-		const value = Maybe.fromFalsy(attrs.value)
-			.join();
-
-		const klass = value
-			.filter(identity)
-			.map(_ => "checked")
-			.extract();
-
-		const f = () => {
-			const b = value.orDefault(false);
-			const onchange = attrs.onchange ?? identity;
-			onchange(!b);
-		};
-
-		return m("div.ui.checkbox", { class: klass, onclick: f }, [
-			m("input.hidden[type=checkbox]"),
-			m("label", children)
-		]);
-	}
-};
 
 interface SingleRadioboxAttr<T> {
 	value: T;

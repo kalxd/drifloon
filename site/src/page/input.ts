@@ -3,6 +3,7 @@ import { IORef } from "drifloon/data/ref";
 import { Size } from "drifloon/data/var";
 import { Header, Header2 } from "drifloon/element/header";
 import { IntInput, IntInputAttr, Toggle, ToggleAttr, CompleteInput, CompleteInputAttr } from "drifloon/widget/input";
+import * as Input from "drifloon/widget/input";
 import * as m from "mithril";
 
 const ToggleS = (): m.Component => {
@@ -33,6 +34,36 @@ const ToggleS = (): m.Component => {
 				]),
 				m("div", [
 					m(Toggle, attr2, "被迫下班")
+				])
+			]);
+		}
+	};
+};
+
+const CheckBoxS = (): m.Component => {
+	interface State {
+		isGo: boolean;
+		isDisable: boolean;
+	}
+
+	const state = new IORef<State>({ isGo: false, isDisable: true });
+
+	return {
+		view: () => {
+			const a1: Input.ToggleAttr = {
+				value: state.askAt("isGo"),
+				connectChange: b => state.putAt("isGo", b)
+			};
+
+			const a2: Input.ToggleAttr = {
+				value: state.askAt("isDisable"),
+				connectChange: b => state.putAt("isDisable", b)
+			};
+
+			return m("div", [
+				m("div", [
+					m(Input.Toggle, a1, "不同意"),
+					m(Input.Toggle, a2, "禁止访问")
 				])
 			]);
 		}
@@ -89,6 +120,8 @@ const Main: m.Component = {
 			m(Header, { size: Size.Huge, isDivid: true }, "输入"),
 			m(Header, { size: Size.Large }, "开关"),
 			m(ToggleS),
+			Header2("勾选框"),
+			m(CheckBoxS),
 			m(Header, { size: Size.Large }, "一些特定输入"),
 			m(SomeInputS),
 			Header2("带补全的输入"),
