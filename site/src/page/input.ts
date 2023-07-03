@@ -19,12 +19,12 @@ const ToggleS = (): m.Component => {
 		view: () => {
 			const attr1: ToggleAttr = value.asks(s => ({
 				value: s.s1,
-				onchange: b => value.putAt("s1", b)
+				connectChange: b => value.putAt("s1", b)
 			}));
 
 			const attr2: ToggleAttr = value.asks(s => ({
 				value: s.s2,
-				onchange: b => value.putAt("s2", b)
+				connectChange: b => value.putAt("s2", b)
 			}));
 
 			return m("div", [

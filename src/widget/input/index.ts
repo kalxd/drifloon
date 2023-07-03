@@ -2,36 +2,9 @@ import { cmpDef } from "../../internal/attr";
 import * as m from "mithril";
 import { identity, Maybe } from "purify-ts";
 
+export * from "./toggle";
 export * from "./intinput";
 export * from "./completeinput";
-
-export interface ToggleAttr {
-	value?: boolean;
-	onchange?: (value: boolean) => void;
-}
-
-export const Toggle: m.Component<ToggleAttr> = {
-	view: ({ attrs, children }) => {
-		const value = attrs.value ?? false;
-
-		const isCheck = value ? "checked" : "";
-
-		const onclick = () => {
-			const f = attrs.onchange ?? identity;
-			f(!value);
-		};
-
-		const attr = {
-			class: isCheck,
-			onclick
-		};
-
-		return m("div.ui.toggle.checkbox", attr, [
-			m("input.hidden", { type: "checkbox", checked: isCheck }),
-			m("label", children)
-		]);
-	}
-};
 
 export interface CheckboxAttr {
 	value?: Maybe<boolean>;
