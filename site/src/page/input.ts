@@ -50,20 +50,20 @@ const CheckBoxS = (): m.Component => {
 
 	return {
 		view: () => {
-			const a1: Input.ToggleAttr = {
+			const a1: Input.CheckboxAttr = {
 				value: state.askAt("isGo"),
 				connectChange: b => state.putAt("isGo", b)
 			};
 
-			const a2: Input.ToggleAttr = {
+			const a2: Input.CheckboxAttr = {
 				value: state.askAt("isDisable"),
 				connectChange: b => state.putAt("isDisable", b)
 			};
 
 			return m("div", [
 				m("div", [
-					m(Input.Toggle, a1, "不同意"),
-					m(Input.Toggle, a2, "禁止访问")
+					m(Input.Checkbox, a1, "不同意"),
+					m(Input.Checkbox, a2, "禁止访问")
 				])
 			]);
 		}

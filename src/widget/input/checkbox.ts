@@ -21,8 +21,12 @@ export const Checkbox: m.Component<CheckboxAttr> = {
 				.ap(monChange);
 		};
 
+		const inputAttr = {
+			checked: mvalue.orDefault(false)
+		};
+
 		return m("div.ui.checkbox", { class: klass, onclick: clickE }, [
-			m("input.hidden[type=checkbox]"),
+			m("input.hidden[type=checkbox]", inputAttr),
 			m("label", children)
 		]);
 	}
