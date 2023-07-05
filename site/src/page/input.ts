@@ -89,7 +89,7 @@ const RadioboxS = (): m.Component => {
 		view: () => {
 			const attr: Input.RadioboxAttr<Item> = {
 				value: state.ask().extract(),
-				items: itemList,
+				itemList,
 				compare: cmpOf("key"),
 				renderItem: propOf("value"),
 				connectChange: item => state.put(Just(item))

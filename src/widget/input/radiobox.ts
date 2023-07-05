@@ -23,7 +23,7 @@ const SingleRadiobox = <T>(): m.Component<SingleRadioboxAttr<T>> => ({
 
 export interface RadioboxAttr<T> {
 	value?: T;
-	items?: Array<T>;
+	itemList?: Array<T>;
 	compare?: (value: T, item: T) => boolean;
 	renderItem?: (item: T) => string;
 	connectChange?: (result: T) => void;
@@ -33,7 +33,7 @@ export const Radiobox = <T>(): m.Component<RadioboxAttr<T>> => ({
 	view: ({ attrs }) => {
 		const valuemvalue = Maybe.fromNullable(attrs.value);
 		const mchangeE = Maybe.fromNullable(attrs.connectChange);
-		const items = attrs.items ?? [];
+		const items = attrs.itemList ?? [];
 		const renderItem = attrs.renderItem ?? String;
 		const compare = attrs.compare ?? cmpDef;
 

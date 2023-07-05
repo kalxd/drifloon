@@ -1,53 +1,15 @@
-import { IORef, FormData } from "drifloon/data/ref";
+import { FormData } from "drifloon/data/ref";
 import { Color, Size } from "drifloon/data/var";
 import { Header } from "drifloon/element/header";
-import { Radiobox, RadioboxAttr } from "drifloon/widget/input";
 import * as m from "mithril";
-import { Either, Just, Maybe, Nothing, Right } from "purify-ts";
+import { Either, Maybe, Right } from "purify-ts";
 import { Button } from "drifloon/element/button";
 // import { alertMsg } from "drifloon/module/modal";
 import { Form, FormAttr, TextField } from "drifloon/module/form";
 import { prefix, notEmpty } from "drifloon/data/validate";
 import { eitherZipWith } from "drifloon/data/fn";
 
-interface RadioItem {
-	key: number;
-	text: string;
-}
 
-const radioItems: Array<RadioItem> = [
-	{ key: 1, text: "第一个" },
-	{ key: 2, text: "第二个"}
-];
-
-const RadioS = (): m.Component => {
-	const ref = new IORef<Maybe<RadioItem>>(Nothing);
-
-	const alertRef = () => {
-		ref.ask()
-			.caseOf({
-				Just: x => console.log(JSON.stringify(x)),
-				Nothing: () => console.log("你还未选择")
-			})
-	};
-
-	return {
-		view: () => {
-			const attr: RadioboxAttr<RadioItem> = {
-				value: ref.ask().extract(),
-				items: radioItems,
-				compare: (value, item) => value.key === item.key,
-				renderItem: item => item.text,
-				connectChange: x => ref.put(Just(x))
-			};
-
-			return [
-				m(Radiobox, attr),
-				m(Button, { connectClick: alertRef }, "查看结果")
-			];
-		}
-	};
-};
 
 const ValidationS = (): m.Component => {
 	interface User {
@@ -108,9 +70,7 @@ const Main: m.Component = {
 		return m("div.ui.pink.segment", [
 			m(Header, { size: Size.Huge, isDivid: true }, "表单"),
 			m(Header, { size: Size.Large }, "表单基本验证"),
-			m(ValidationS),
-			m(Header, { size: Size.Large }, "其他杂物"),
-			m(RadioS)
+			m(ValidationS)
 		])
 	}
 };
