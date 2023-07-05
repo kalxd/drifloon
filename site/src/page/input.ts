@@ -1,10 +1,11 @@
-import { propOf } from "drifloon/data/fn";
+import { cmpOf, propOf } from "drifloon/data/fn";
 import { IORef } from "drifloon/data/ref";
 import { Size } from "drifloon/data/var";
 import { Header, Header2 } from "drifloon/element/header";
 import { IntInput, IntInputAttr, Toggle, ToggleAttr, CompleteInput, CompleteInputAttr } from "drifloon/widget/input";
 import * as Input from "drifloon/widget/input";
 import * as m from "mithril";
+import { Just, Maybe, Nothing } from "purify-ts";
 
 const ToggleS = (): m.Component => {
 	interface State {
@@ -70,6 +71,37 @@ const CheckBoxS = (): m.Component => {
 	};
 };
 
+const RadioboxS = (): m.Component => {
+	interface Item {
+		key: number;
+		value: string;
+	}
+
+	const state = new IORef<Maybe<Item>>(Nothing);
+
+	const itemList: Array<Item> = [
+		{ key: 1, value: "hello 1" },
+		{ key: 2, value: "hello 2" },
+		{ key: 3, value: "hello 3" }
+	];
+
+	return {
+		view: () => {
+			const attr: Input.RadioboxAttr<Item> = {
+				value: state.ask().extract(),
+				items: itemList,
+				compare: cmpOf("key"),
+				renderItem: propOf("value"),
+				connectChange: item => state.put(Just(item))
+			};
+
+			return m("div", [
+				m(Input.Radiobox, attr)
+			])
+		}
+	};
+};
+
 const SomeInputS = (): m.Component => {
 	const state = new IORef<number>(10);
 
@@ -122,6 +154,8 @@ const Main: m.Component = {
 			m(ToggleS),
 			Header2("勾选框"),
 			m(CheckBoxS),
+			Header2("单选框"),
+			m(RadioboxS),
 			m(Header, { size: Size.Large }, "一些特定输入"),
 			m(SomeInputS),
 			Header2("带补全的输入"),

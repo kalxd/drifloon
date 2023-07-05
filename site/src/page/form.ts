@@ -34,11 +34,11 @@ const RadioS = (): m.Component => {
 	return {
 		view: () => {
 			const attr: RadioboxAttr<RadioItem> = {
-				value: ref.ask(),
+				value: ref.ask().extract(),
 				items: radioItems,
-				cmp: (value, item) => value.key === item.key,
+				compare: (value, item) => value.key === item.key,
 				renderItem: item => item.text,
-				onchange: x => ref.put(Just(x))
+				connectChange: x => ref.put(Just(x))
 			};
 
 			return [
