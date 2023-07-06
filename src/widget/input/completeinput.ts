@@ -2,7 +2,7 @@ import * as m from "mithril";
 import { DropdownFrame, DropdownMenuFrame, DropdownMenuFrameAttr } from "../../element/dropdown";
 import { IORef } from "../../data/ref";
 import { Just, Maybe } from "purify-ts";
-import { eq } from "../../internal/function";
+import { compareEq } from "../../internal/function";
 
 export interface CompleteInputAttr<T> {
 	value?: string;
@@ -43,7 +43,7 @@ export const CompleteInput = <T>(): m.Component<CompleteInputAttr<T>> => {
 
 			const itemList = attrs.completeList ?? [];
 			const renderItem = attrs.renderItem ?? String;
-			const cmpEq = attrs.eq ?? eq;
+			const cmpEq = attrs.eq ?? compareEq;
 
 			const filterList = mvalue
 				.map(value => itemList.filter(item => cmpEq(value, item)))

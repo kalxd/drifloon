@@ -2,7 +2,7 @@ import * as m from "mithril";
 import { IORef } from "../../data/ref";
 import { DropdownFrame, DropdownMenuFrame, DropdownMenuFrameAttr } from "../../element/dropdown";
 import { Just, Maybe, NonEmptyList } from "purify-ts";
-import { eq } from "../../internal/function";
+import { compareEq } from "../../internal/function";
 
 interface TextAttr<T> {
 	value: Array<T>;
@@ -55,7 +55,7 @@ export const MultSelect = <T>(): m.Component<MultSelectAttr<T>> => {
 				}
 			};
 
-			const compareItem = attrs.eq ?? eq;
+			const compareItem = attrs.eq ?? compareEq;
 			const submenuItemList = (attrs.itemList ?? []).filter(item => {
 				return mvalue.map(value => !value.some(x => compareItem(x, item)))
 					.orDefault(true);
