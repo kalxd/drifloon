@@ -1,6 +1,12 @@
 import * as m from "mithril";
 import { IORef } from "../../data/ref";
-import { DropdownFrame, DropdownMenuFrame, DropdownMenuFrameAttr, SelectText, SelectTextAttr } from "../../element/dropdown";
+import {
+	DropdownFrame,
+	DropdownMenuFrame,
+	DropdownMenuFrameAttr,
+	SelectText,
+	SelectTextAttr
+} from "../../element/dropdown";
 import { Just, Maybe, Nothing } from "purify-ts";
 
 export interface SelectAttr<T> {
@@ -18,9 +24,9 @@ export const Select = <T>(): m.Component<SelectAttr<T>> => {
 	return {
 		view: ({ attrs }) => {
 			const textAttr: SelectTextAttr<T> = {
-				text: Maybe.fromNullable(attrs.value).join(),
-				placeholder: Maybe.fromNullable(attrs.placeholder),
-				renderText: attrs.renderText ?? String
+				text: Maybe.fromNullable(attrs.value).join().extract(),
+				placeholder: attrs.placeholder,
+				renderText: attrs.renderText
 			};
 
 			const mchange = Maybe.fromNullable(attrs.connectChange);

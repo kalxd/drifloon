@@ -1,6 +1,12 @@
 import * as m from "mithril";
 import { ComponentPanic } from "../../internal/error";
-import { DropdownFrame, DropdownMenuFrame, DropdownMenuFrameAttr, SelectText, SelectTextAttr } from "../../element/dropdown";
+import {
+	DropdownFrame,
+	DropdownMenuFrame,
+	DropdownMenuFrameAttr,
+	SelectText,
+	SelectTextAttr
+} from "../../element/dropdown";
 import { IORef } from "../../data/ref";
 import { Just, Maybe, Nothing } from "purify-ts";
 
@@ -32,9 +38,8 @@ export const FixSelect = <T>(
 	return {
 		view: ({ attrs }) => {
 			const textProp: SelectTextAttr<T> = {
-				text: Maybe.fromNullable(attrs.value),
-				placeholder: Nothing,
-				renderText: attrs.renderText ?? String
+				text: attrs.value,
+				renderText: attrs.renderText
 			};
 
 			const menuAttr: DropdownMenuFrameAttr<T> = {

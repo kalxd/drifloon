@@ -6,18 +6,20 @@ import { pickKlass, selectKlass } from "../internal/attr";
 import { AnimateFrame } from "../abstract/animate";
 
 export interface SelectTextAttr<T> {
-	text: Maybe<T>;
-	placeholder: Maybe<string>;
-	renderText: (item: T) => m.Children;
+	text?: T;
+	placeholder?: string;
+	renderText?: (item: T) => m.Children;
 }
 
 export const SelectText = <T>(): m.Component<SelectTextAttr<T>> => ({
-	view: ({ attrs }) => attrs.text
+	view: ({ attrs }) => Maybe.fromNullable(attrs.text)
 		.caseOf({
-			Just: text =>
-				m("div.text", attrs.renderText(text)),
+			Just: text => {
+				const render = attrs.renderText ?? String;
+				return m("div.text", render(text));
+			},
 			Nothing: () =>
-				m("div.default.text", attrs.placeholder.extract())
+				m("div.default.text", attrs.placeholder)
 		})
 });
 
@@ -71,23 +73,27 @@ export const DropdownFrame: m.FactoryComponent<DropdownFrameAttr> = _ => {
 };
 
 export interface DropdownMenuFrameAttr<T> {
-	value: IORef<boolean>;
-	itemList: Array<T>;
-	renderItem: (item: T) => m.Children;
-	connectClick: (item: T) => void;
-	el: string;
+	value?: IORef<boolean>;
+	itemList?: Array<T>;
+	renderItem?: (item: T) => m.Children;
+	connectClick?: (item: T) => void;
+	el?: string;
 }
 
 export const DropdownMenuFrame = <T>(): m.Component<DropdownMenuFrameAttr<T>> => ({
 	view: ({ attrs }) => {
-		if (!attrs.value.ask()) {
+		if (!attrs.value?.ask()) {
 			return null;
 		}
 
-		return NonEmptyList.fromArray(attrs.itemList)
+		const render = attrs.renderItem ?? String;
+		const mclick = Maybe.fromNullable(attrs.connectClick);
+
+		return NonEmptyList.fromArray(attrs.itemList ?? [])
 			.map(itemList => itemList.map(item => {
-				const onclick = () => attrs.connectClick(item);
-				return m("div.item", { onclick }, attrs.renderItem(item));
+				const onclick = () => Just(item).ap(mclick);
+
+				return m("div.item", { onclick }, render(item));
 			}))
 			.caseOf({
 				Just: dom => m(AnimateFrame, { el: attrs.el }, dom),
