@@ -63,7 +63,7 @@ export const ModalAction: m.Component<ModalActionAttr> = {
 		);
 
 		const positive = m(
-			"button.ui.positive right labeled icon button",
+			"button.ui.positive.right.labeled.icon.button",
 			{ onclick: () => mConnectResolve.ifJust(f => f(Right(undefined))) },
 			[
 				attrs.positiveText ?? "好",
@@ -120,11 +120,11 @@ export const Alert: m.Component<AlertAttr> = {
 			m("div.header", attrs.title ?? "提示"),
 			m("div.scrolling.content", children),
 			m("div.actions", m(
-				"button.ui.green.button",
+				"button.ui.positive.right.labeled.icon.button",
 				{ onclick: attrs.connectResolve},
 				[
-					m("i.icon.checkmark"),
 					attrs.positiveText ?? "好",
+					m("i.icon.checkmark"),
 				]
 			))
 		]);
