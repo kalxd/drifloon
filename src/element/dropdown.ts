@@ -37,7 +37,8 @@ export const DropdownFrame: m.FactoryComponent<DropdownFrameAttr> = _ => {
 			toggleNodeList.put([
 				Just(container),
 				Maybe.fromNullable(container.querySelector(".icon.dropdown")),
-				Maybe.fromNullable(container.querySelector("input"))
+				Maybe.fromNullable(container.querySelector("input")),
+				Maybe.fromNullable(container.querySelector("div.text"))
 			]);
 		},
 
