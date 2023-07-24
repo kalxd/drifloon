@@ -1,17 +1,18 @@
 import { Size } from "drifloon/data/var";
-import { Header } from "drifloon/element/header";
+import { Header, Header2 } from "drifloon/element/header";
 import { Segment } from "drifloon/element/segment";
 import { FluidPlaceholder } from "drifloon/element/placeholder";
 import { loading } from "drifloon/widget/load";
 import * as m from "mithril";
 import { IORef } from "drifloon/data/ref";
-import { Just, Maybe, Nothing } from "purify-ts";
+import { EitherAsync, Just, Left, Maybe, Nothing, Right } from "purify-ts";
 import { Button } from "drifloon/element/button";
+import { WaittingFn, waitting } from "drifloon/module/loading";
+
+const delay = () => new Promise(resolve => setTimeout(resolve, 1000));
 
 const Timer = () => {
 	const list = new IORef<Maybe<Array<number>>>(Nothing);
-
-	const delay = () => new Promise(resolve => setTimeout(resolve, 1000));
 
 	const fetchData = async () => {
 		await delay();
@@ -43,6 +44,36 @@ const Timer = () => {
 	};
 };
 
+const WaitS = (): m.Component => {
+	const [update, Wait] = waitting();
+	const state = new IORef<number>(0);
+	const f: WaittingFn = () =>
+		EitherAsync.fromPromise(async () => {
+			await delay();
+			const n = state.update(s => s + 1).ask();
+			if ( n % 2 === 0) {
+				return Left("偶数次必然出错!");
+			}
+			else {
+				return Right(m("ui.message", [
+					m("div.header", `你一共请求了${n}次`),
+					m("div", [
+						m(Button, { connectClick: () => update(f) }, "再请求一次！")
+					])
+				]));
+			}
+		});
+
+	update(f);
+
+	return {
+		view: () => m("div", [
+			m("div", "偶数次会出现错误！"),
+			m(Wait)
+		])
+	};
+};
+
 const Main: m.Component = {
 	view: () => {
 		return m(Segment, [
@@ -50,7 +81,10 @@ const Main: m.Component = {
 			m(FluidPlaceholder),
 
 			m(Header, "演示"),
-			m(Timer)
+			m(Timer),
+
+			Header2("延时性"),
+			m(WaitS)
 		]);
 	}
 };
