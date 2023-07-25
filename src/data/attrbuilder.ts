@@ -11,24 +11,22 @@ export default class AttrBuilder<T> {
 		return this.attr;
 	}
 
-	update<K extends keyof T>(key: K, value: T[K]): this {
+	put<K extends keyof T>(key: K, value: T[K]): this {
 		this.attr[key] = value;
 		return this;
 	}
 
-	updateWhen<K extends keyof T>(cond: boolean, key: K, value: T[K]): this {
+	putWhen<K extends keyof T>(cond: boolean, key: K, value: T[K]): this {
 		if (cond) {
-			return this.update(key, value);
+			return this.put(key, value);
 		}
 		else {
 			return this;
 		}
 	}
 
-	updateMaybe<K extends keyof T>(key: K, value: Maybe<T[K]>): this {
-		return value.caseOf({
-			Just: a => this.update(key, a),
-			Nothing: () => { return this; }
-		});
+	putMaybe<K extends keyof T>(key: K, value: Maybe<T[K]>): this {
+		value.ifJust(a => this.put(key, a));
+		return this;
 	}
 }
