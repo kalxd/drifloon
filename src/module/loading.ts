@@ -3,21 +3,21 @@ import { EitherAsync, Maybe, Either, Nothing, Just, Right, Left } from "purify-t
 import { IORef } from "../data/ref";
 import { FluidPlaceholder } from "../element/placeholder";
 
-export type WaittingFn = () => EitherAsync<string, m.Vnode>;
+export type WaittingFn<T = {}> = () => EitherAsync<string, m.Vnode<T>>;
 
-interface State {
-	dom: Maybe<Either<string, m.Vnode>>;
-	lastFn: Maybe<WaittingFn>;
+interface State<T> {
+	dom: Maybe<Either<string, m.Vnode<T>>>;
+	lastFn: Maybe<WaittingFn<T>>;
 }
 
-export const waitting = (
-): [(f: WaittingFn) => void, m.Component] => {
-	const state = new IORef<State>({
+export const waitting = <T = {}>(
+): [(f: WaittingFn<T>) => void, m.Component] => {
+	const state = new IORef<State<T>>({
 		dom: Nothing,
 		lastFn: Nothing
 	});
 
-	const update = (f: () => EitherAsync<string, m.Vnode>) => {
+	const update = (f: () => EitherAsync<string, m.Vnode<T>>) => {
 		state.put({
 			dom: Nothing,
 			lastFn: Just(f)
