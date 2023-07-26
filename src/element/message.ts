@@ -11,7 +11,7 @@ export interface MessageAttr {
 	color?: Color;
 	size?: Size;
 	isClosable?: boolean;
-	onclose?: () => void;
+	connectClose?: () => void;
 }
 
 export const Message: m.Component<MessageAttr> = {
@@ -28,7 +28,7 @@ export const Message: m.Component<MessageAttr> = {
 		const closeIcon = Maybe.fromFalsy(attrs.isClosable)
 			.filter(identity)
 			.map(_ => {
-				const f = attrs.onclose ?? identity;
+				const f = attrs.connectClose ?? identity;
 				return m("i.icon.close", { onclose: f });
 			})
 			.extract();
