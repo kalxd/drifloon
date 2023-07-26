@@ -1,14 +1,44 @@
 import { FormData } from "drifloon/data/ref";
-import { Color, Size } from "drifloon/data/var";
-import { Header } from "drifloon/element/header";
+import { Color, EmLevel, Size, Wide } from "drifloon/data/var";
+import { Header, Header2 } from "drifloon/element/header";
 import * as m from "mithril";
 import { Either, Maybe, Right } from "purify-ts";
 import { Button } from "drifloon/element/button";
+import { Field, FieldGrid, RequireField } from "drifloon/element/form";
 // import { alertMsg } from "drifloon/module/modal";
-import { Form, FormAttr, TextField } from "drifloon/module/form";
+import { Form, FormAttr } from "drifloon/module/form";
 import { prefix, notEmpty } from "drifloon/data/validate";
 import { eitherZipWith } from "drifloon/data/fn";
 
+const FormS: m.Component = {
+	view: () => {
+		return m(Form, [
+			m(FieldGrid, { wide: Wide.Two }, [
+				m(Field, [
+					m("label", "用户名"),
+					m("input")
+				]),
+				m(RequireField, [
+					m("label", "密码"),
+					m("input", { type: "password" })
+				]),
+			]),
+			m(FieldGrid, [
+				m(Field, { wide: Wide.Twelve }, [
+					m("label", "用户名"),
+					m("input")
+				]),
+				m(RequireField, { wide: Wide.Four }, [
+					m("label", "密码"),
+					m("input", { type: "password" })
+				])
+			]),
+			m(Field, [
+				m(Button, { em: EmLevel.Primary }, "提交")
+			])
+		]);
+	}
+};
 
 
 const ValidationS = (): m.Component => {
@@ -48,17 +78,14 @@ const ValidationS = (): m.Component => {
 				.ifRight(s => console.log(JSON.stringify(s, null, 4)));
 
 			return m(Form, attr, [
-				m(TextField, {
-					label: "用户名",
-					isRequire: true,
-					value: user.askAt("name"),
-					onchange: s => user.putAt("name", s)
-				}),
-				m(TextField, {
-					label: "地址",
-					value: user.askAt("address"),
-					onchange: s => user.putAt("address", s)
-				}),
+				m(RequireField, [
+					m("label", "用户名"),
+					m("input", { onchange: e => user.putAt("name", e.target.value) })
+				]),
+				m(Field, [
+					m("label", "地址"),
+					m("input", { onchange: e => user.putAt("address", e.target.value) })
+				]),
 				m(Button, { connectClick: onsubmit, color: Color.Blue }, "提交")
 			]);
 		}
@@ -69,6 +96,9 @@ const Main: m.Component = {
 	view: () => {
 		return m("div.ui.pink.segment", [
 			m(Header, { size: Size.Huge, isDivid: true }, "表单"),
+			Header2("表单外观"),
+			m(FormS),
+
 			m(Header, { size: Size.Large }, "表单基本验证"),
 			m(ValidationS)
 		])

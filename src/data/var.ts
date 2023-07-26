@@ -1,3 +1,5 @@
+import { curry } from "purify-ts";
+
 /**
  * 通用常量
  */
@@ -28,6 +30,9 @@ export enum Wide {
 	Fifteen = "fifteen",
 	Sixteen = "sixteen"
 }
+
+export const wideBase = curry((base: string, wide: Wide): string =>
+	`${wide} ${base}`);
 
 export enum Color {
 	Red = "red",

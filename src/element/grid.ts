@@ -1,12 +1,8 @@
 import * as m from "mithril";
-import { curry, Maybe } from "purify-ts";
+import { Maybe } from "purify-ts";
 
 import { fmapKlass, pickKlass, selectKlass } from "../internal/attr";
-import { Align, Color, Float, Wide } from "../data/var";
-
-const wideFor = curry((base: string, wide: Wide): string => {
-	return `${wide} ${base}`;
-});
+import { Align, Color, Float, Wide, wideBase } from "../data/var";
 
 export enum GridDividType {
 	Vertical = "divided",
@@ -41,7 +37,7 @@ export interface GridAttr {
 }
 
 export const pickGridKlass = (attr: GridAttr): Array<Maybe<string>> => [
-	fmapKlass(wideFor('column'), attr.wide),
+	fmapKlass(wideBase('column'), attr.wide),
 	selectKlass("equal width", attr.isEqualWidth),
 	selectKlass("relaxed", attr.isRelax),
 	selectKlass("centered", attr.isCenter),
@@ -67,7 +63,7 @@ export interface RowAttr {
 export const Row: m.Component<RowAttr> = ({
 	view: ({ attrs, children }) => {
 		const klass = pickKlass([
-			fmapKlass(wideFor('column'), attrs.wide),
+			fmapKlass(wideBase('column'), attrs.wide),
 			selectKlass("stretched", attrs.isStretch)
 		]);
 
@@ -85,7 +81,7 @@ export interface ColumnAttr {
 export const Column: m.Component<ColumnAttr> = ({
 	view: ({ attrs, children }) => {
 		const klass = pickKlass([
-			fmapKlass(wideFor('wide'), attrs.wide),
+			fmapKlass(wideBase('wide'), attrs.wide),
 			Maybe.fromNullable(attrs.float),
 			Maybe.fromNullable(attrs.color),
 			Maybe.fromNullable(attrs.align)
