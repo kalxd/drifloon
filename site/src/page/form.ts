@@ -58,7 +58,7 @@ const ValidationS = (): m.Component => {
 
 	const validateForm = (user: User): Either<Array<string>, Output> =>
 		validate("用户名", isNotEmpty(user.name))
-			.param("", Right(Just(user.address)))
+			.option(Just(user.address))
 			.collect(mkOutput);
 
 	const user = new FormData<User>({

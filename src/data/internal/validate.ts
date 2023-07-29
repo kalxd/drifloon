@@ -1,4 +1,4 @@
-import { Either, Left } from "purify-ts";
+import { Either, Left, Right } from "purify-ts";
 
 const concatError = (name: string, e: string): Array<string> =>
 	[`${name}：${e}`];
@@ -250,7 +250,8 @@ const validate16 = <T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14,
 
 interface Validate15<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15> {
 	collect: <R>(f: (a1: T1, a2: T2, a3: T3, a4: T4, a5: T5, a6: T6, a7: T7, a8: T8, a9: T9, a10: T10, a11: T11, a12: T12, a13: T13, a14: T14, a15: T15) => R) => ES<R>;
-	param: <U>(name: string, rhs: Either<string, U>) => Validate16<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, U>;
+	must: <U>(name: string, rhs: Either<string, U>) => Validate16<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, U>;
+	option: <U>(val: U) => Validate16<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, U>;
 }
 
 const validate15 = <T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15>(
@@ -274,20 +275,26 @@ const validate15 = <T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14,
 		selectEither15(v1, v2, v3, v4, v5, v6, v7, v8, v9, v10, v11, v12, v13, v14, v15)
 			.map(xs => f(...xs));
 
-	const param: Validate15<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15>["param"] = (name, rhs) => {
+	const must: Validate15<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15>["must"] = (name, rhs) => {
 		const next = rhs.mapLeft(e => concatError(name, e));
 		return validate16(v1, v2, v3, v4, v5, v6, v7, v8, v9, v10, v11, v12, v13, v14, v15, next);
 	};
 
+	const option: Validate15<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15>["option"] = val =>
+		validate16(v1, v2, v3, v4, v5, v6, v7, v8, v9, v10, v11, v12, v13, v14, v15, Right(val));
+
+
 	return {
 		collect,
-		param
+		must,
+		option
 	};
 }
 
 interface Validate14<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14> {
 	collect: <R>(f: (a1: T1, a2: T2, a3: T3, a4: T4, a5: T5, a6: T6, a7: T7, a8: T8, a9: T9, a10: T10, a11: T11, a12: T12, a13: T13, a14: T14) => R) => ES<R>;
-	param: <U>(name: string, rhs: Either<string, U>) => Validate15<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, U>;
+	must: <U>(name: string, rhs: Either<string, U>) => Validate15<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, U>;
+	option: <U>(val: U) => Validate15<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, U>;
 }
 
 const validate14 = <T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14>(
@@ -310,20 +317,25 @@ const validate14 = <T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14>
 		selectEither14(v1, v2, v3, v4, v5, v6, v7, v8, v9, v10, v11, v12, v13, v14)
 			.map(xs => f(...xs));
 
-	const param: Validate14<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14>["param"] = (name, rhs) => {
+	const must: Validate14<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14>["must"] = (name, rhs) => {
 		const next = rhs.mapLeft(e => concatError(name, e));
 		return validate15(v1, v2, v3, v4, v5, v6, v7, v8, v9, v10, v11, v12, v13, v14, next);
 	};
 
+	const option: Validate14<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14>["option"] = val =>
+		validate15(v1, v2, v3, v4, v5, v6, v7, v8, v9, v10, v11, v12, v13, v14, Right(val));
+
 	return {
 		collect,
-		param
+		must,
+		option
 	};
 }
 
 interface Validate13<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13> {
 	collect: <R>(f: (a1: T1, a2: T2, a3: T3, a4: T4, a5: T5, a6: T6, a7: T7, a8: T8, a9: T9, a10: T10, a11: T11, a12: T12, a13: T13) => R) => ES<R>;
-	param: <U>(name: string, rhs: Either<string, U>) => Validate14<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, U>;
+	must: <U>(name: string, rhs: Either<string, U>) => Validate14<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, U>;
+	option: <U>(val: U) => Validate14<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, U>;
 }
 
 const validate13 = <T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13>(
@@ -345,20 +357,25 @@ const validate13 = <T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13>(
 		selectEither13(v1, v2, v3, v4, v5, v6, v7, v8, v9, v10, v11, v12, v13)
 			.map(xs => f(...xs));
 
-	const param: Validate13<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13>["param"] = (name, rhs) => {
+	const must: Validate13<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13>["must"] = (name, rhs) => {
 		const next = rhs.mapLeft(e => concatError(name, e));
 		return validate14(v1, v2, v3, v4, v5, v6, v7, v8, v9, v10, v11, v12, v13, next);
 	};
 
+	const option: Validate13<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13>["option"] = val =>
+		validate14(v1, v2, v3, v4, v5, v6, v7, v8, v9, v10, v11, v12, v13, Right(val));
+
 	return {
 		collect,
-		param
+		must,
+		option
 	};
 }
 
 interface Validate12<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12> {
 	collect: <R>(f: (a1: T1, a2: T2, a3: T3, a4: T4, a5: T5, a6: T6, a7: T7, a8: T8, a9: T9, a10: T10, a11: T11, a12: T12) => R) => ES<R>;
-	param: <U>(name: string, rhs: Either<string, U>) => Validate13<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, U>;
+	must: <U>(name: string, rhs: Either<string, U>) => Validate13<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, U>;
+	option: <U>(val: U) => Validate13<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, U>;
 }
 
 const validate12 = <T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12>(
@@ -379,20 +396,25 @@ const validate12 = <T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12>(
 		selectEither12(v1, v2, v3, v4, v5, v6, v7, v8, v9, v10, v11, v12)
 			.map(xs => f(...xs));
 
-	const param: Validate12<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12>["param"] = (name, rhs) => {
+	const must: Validate12<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12>["must"] = (name, rhs) => {
 		const next = rhs.mapLeft(e => concatError(name, e));
 		return validate13(v1, v2, v3, v4, v5, v6, v7, v8, v9, v10, v11, v12, next);
 	};
 
+	const option: Validate12<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12>["option"] = val =>
+		validate13(v1, v2, v3, v4, v5, v6, v7, v8, v9, v10, v11, v12, Right(val));
+
 	return {
 		collect,
-		param
+		must,
+		option
 	};
 }
 
 interface Validate11<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11> {
 	collect: <R>(f: (a1: T1, a2: T2, a3: T3, a4: T4, a5: T5, a6: T6, a7: T7, a8: T8, a9: T9, a10: T10, a11: T11) => R) => ES<R>;
-	param: <U>(name: string, rhs: Either<string, U>) => Validate12<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, U>;
+	must: <U>(name: string, rhs: Either<string, U>) => Validate12<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, U>;
+	option: <U>(val: U) => Validate12<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, U>;
 }
 
 const validate11 = <T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11>(
@@ -412,20 +434,25 @@ const validate11 = <T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11>(
 		selectEither11(v1, v2, v3, v4, v5, v6, v7, v8, v9, v10, v11)
 			.map(xs => f(...xs));
 
-	const param: Validate11<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11>["param"] = (name, rhs) => {
+	const must: Validate11<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11>["must"] = (name, rhs) => {
 		const next = rhs.mapLeft(e => concatError(name, e));
 		return validate12(v1, v2, v3, v4, v5, v6, v7, v8, v9, v10, v11, next);
 	};
 
+	const option: Validate11<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11>["option"] = val =>
+		validate12(v1, v2, v3, v4, v5, v6, v7, v8, v9, v10, v11, Right(val));
+
 	return {
 		collect,
-		param
+		must,
+		option
 	};
 }
 
 interface Validate10<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10> {
 	collect: <R>(f: (a1: T1, a2: T2, a3: T3, a4: T4, a5: T5, a6: T6, a7: T7, a8: T8, a9: T9, a10: T10) => R) => ES<R>;
-	param: <U>(name: string, rhs: Either<string, U>) => Validate11<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, U>;
+	must: <U>(name: string, rhs: Either<string, U>) => Validate11<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, U>;
+	option: <U>(val: U) => Validate11<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, U>;
 }
 
 const validate10 = <T1, T2, T3, T4, T5, T6, T7, T8, T9, T10>(
@@ -444,20 +471,25 @@ const validate10 = <T1, T2, T3, T4, T5, T6, T7, T8, T9, T10>(
 		selectEither10(v1, v2, v3, v4, v5, v6, v7, v8, v9, v10)
 			.map(xs => f(...xs));
 
-	const param: Validate10<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10>["param"] = (name, rhs) => {
+	const must: Validate10<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10>["must"] = (name, rhs) => {
 		const next = rhs.mapLeft(e => concatError(name, e));
 		return validate11(v1, v2, v3, v4, v5, v6, v7, v8, v9, v10, next);
 	};
 
+	const option: Validate10<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10>["option"] = val =>
+		validate11(v1, v2, v3, v4, v5, v6, v7, v8, v9, v10, Right(val));
+
 	return {
 		collect,
-		param
+		must,
+		option
 	};
 }
 
 interface Validate9<T1, T2, T3, T4, T5, T6, T7, T8, T9> {
 	collect: <R>(f: (a1: T1, a2: T2, a3: T3, a4: T4, a5: T5, a6: T6, a7: T7, a8: T8, a9: T9) => R) => ES<R>;
-	param: <U>(name: string, rhs: Either<string, U>) => Validate10<T1, T2, T3, T4, T5, T6, T7, T8, T9, U>;
+	must: <U>(name: string, rhs: Either<string, U>) => Validate10<T1, T2, T3, T4, T5, T6, T7, T8, T9, U>;
+	option: <U>(val: U) => Validate10<T1, T2, T3, T4, T5, T6, T7, T8, T9, U>;
 }
 
 const validate9 = <T1, T2, T3, T4, T5, T6, T7, T8, T9>(
@@ -475,20 +507,25 @@ const validate9 = <T1, T2, T3, T4, T5, T6, T7, T8, T9>(
 		selectEither9(v1, v2, v3, v4, v5, v6, v7, v8, v9)
 			.map(xs => f(...xs));
 
-	const param: Validate9<T1, T2, T3, T4, T5, T6, T7, T8, T9>["param"] = (name, rhs) => {
+	const must: Validate9<T1, T2, T3, T4, T5, T6, T7, T8, T9>["must"] = (name, rhs) => {
 		const next = rhs.mapLeft(e => concatError(name, e));
 		return validate10(v1, v2, v3, v4, v5, v6, v7, v8, v9, next);
 	};
 
+	const option: Validate9<T1, T2, T3, T4, T5, T6, T7, T8, T9>["option"] = val =>
+		validate10(v1, v2, v3, v4, v5, v6, v7, v8, v9, Right(val));
+
 	return {
 		collect,
-		param
+		must,
+		option
 	};
 }
 
 interface Validate8<T1, T2, T3, T4, T5, T6, T7, T8> {
 	collect: <R>(f: (a1: T1, a2: T2, a3: T3, a4: T4, a5: T5, a6: T6, a7: T7, a8: T8) => R) => ES<R>;
-	param: <U>(name: string, rhs: Either<string, U>) => Validate9<T1, T2, T3, T4, T5, T6, T7, T8, U>;
+	must: <U>(name: string, rhs: Either<string, U>) => Validate9<T1, T2, T3, T4, T5, T6, T7, T8, U>;
+	option: <U>(val: U) => Validate9<T1, T2, T3, T4, T5, T6, T7, T8, U>;
 }
 
 const validate8 = <T1, T2, T3, T4, T5, T6, T7, T8>(
@@ -505,20 +542,25 @@ const validate8 = <T1, T2, T3, T4, T5, T6, T7, T8>(
 		selectEither8(v1, v2, v3, v4, v5, v6, v7, v8)
 			.map(xs => f(...xs));
 
-	const param: Validate8<T1, T2, T3, T4, T5, T6, T7, T8>["param"] = (name, rhs) => {
+	const must: Validate8<T1, T2, T3, T4, T5, T6, T7, T8>["must"] = (name, rhs) => {
 		const next = rhs.mapLeft(e => concatError(name, e));
 		return validate9(v1, v2, v3, v4, v5, v6, v7, v8, next);
 	};
 
+	const option: Validate8<T1, T2, T3, T4, T5, T6, T7, T8>["option"] = val =>
+		validate9(v1, v2, v3, v4, v5, v6, v7, v8, Right(val));
+
 	return {
 		collect,
-		param
+		must,
+		option
 	};
 }
 
 interface Validate7<T1, T2, T3, T4, T5, T6, T7> {
 	collect: <R>(f: (a1: T1, a2: T2, a3: T3, a4: T4, a5: T5, a6: T6, a7: T7) => R) => ES<R>;
-	param: <U>(name: string, rhs: Either<string, U>) => Validate8<T1, T2, T3, T4, T5, T6, T7, U>;
+	must: <U>(name: string, rhs: Either<string, U>) => Validate8<T1, T2, T3, T4, T5, T6, T7, U>;
+	option: <U>(val: U) => Validate8<T1, T2, T3, T4, T5, T6, T7, U>;
 }
 
 const validate7 = <T1, T2, T3, T4, T5, T6, T7>(
@@ -534,20 +576,25 @@ const validate7 = <T1, T2, T3, T4, T5, T6, T7>(
 		selectEither7(v1, v2, v3, v4, v5, v6, v7)
 			.map(xs => f(...xs));
 
-	const param: Validate7<T1, T2, T3, T4, T5, T6, T7>["param"] = (name, rhs) => {
+	const must: Validate7<T1, T2, T3, T4, T5, T6, T7>["must"] = (name, rhs) => {
 		const next = rhs.mapLeft(e => concatError(name, e));
 		return validate8(v1, v2, v3, v4, v5, v6, v7, next);
 	};
 
+	const option: Validate7<T1, T2, T3, T4, T5, T6, T7>["option"] = val =>
+		validate8(v1, v2, v3, v4, v5, v6, v7, Right(val));
+
 	return {
 		collect,
-		param
+		must,
+		option
 	};
 }
 
 interface Validate6<T1, T2, T3, T4, T5, T6> {
 	collect: <R>(f: (a1: T1, a2: T2, a3: T3, a4: T4, a5: T5, a6: T6) => R) => ES<R>;
-	param: <U>(name: string, rhs: Either<string, U>) => Validate7<T1, T2, T3, T4, T5, T6, U>;
+	must: <U>(name: string, rhs: Either<string, U>) => Validate7<T1, T2, T3, T4, T5, T6, U>;
+	option: <U>(val: U) => Validate7<T1, T2, T3, T4, T5, T6, U>;
 }
 
 const validate6 = <T1, T2, T3, T4, T5, T6>(
@@ -562,20 +609,25 @@ const validate6 = <T1, T2, T3, T4, T5, T6>(
 		selectEither6(v1, v2, v3, v4, v5, v6)
 			.map(xs => f(...xs));
 
-	const param: Validate6<T1, T2, T3, T4, T5, T6>["param"] = (name, rhs) => {
+	const must: Validate6<T1, T2, T3, T4, T5, T6>["must"] = (name, rhs) => {
 		const next = rhs.mapLeft(e => concatError(name, e));
 		return validate7(v1, v2, v3, v4, v5, v6, next);
 	};
 
+	const option: Validate6<T1, T2, T3, T4, T5, T6>["option"] = val =>
+		validate7(v1, v2, v3, v4, v5, v6, Right(val));
+
 	return {
 		collect,
-		param
+		must,
+		option
 	};
 }
 
 interface Validate5<T1, T2, T3, T4, T5> {
 	collect: <R>(f: (a1: T1, a2: T2, a3: T3, a4: T4, a5: T5) => R) => ES<R>;
-	param: <U>(name: string, rhs: Either<string, U>) => Validate6<T1, T2, T3, T4, T5, U>;
+	must: <U>(name: string, rhs: Either<string, U>) => Validate6<T1, T2, T3, T4, T5, U>;
+	option: <U>(val: U) => Validate6<T1, T2, T3, T4, T5, U>;
 }
 
 const validate5 = <T1, T2, T3, T4, T5>(
@@ -589,20 +641,25 @@ const validate5 = <T1, T2, T3, T4, T5>(
 		selectEither5(v1, v2, v3, v4, v5)
 			.map(xs => f(...xs));
 
-	const param: Validate5<T1, T2, T3, T4, T5>["param"] = (name, rhs) => {
+	const must: Validate5<T1, T2, T3, T4, T5>["must"] = (name, rhs) => {
 		const next = rhs.mapLeft(e => concatError(name, e));
 		return validate6(v1, v2, v3, v4, v5, next);
 	};
 
+	const option: Validate5<T1, T2, T3, T4, T5>["option"] = val =>
+		validate6(v1, v2, v3, v4, v5, Right(val));
+
 	return {
 		collect,
-		param
+		must,
+		option
 	};
 }
 
 interface Validate4<T1, T2, T3, T4> {
 	collect: <R>(f: (a1: T1, a2: T2, a3: T3, a4: T4) => R) => ES<R>;
-	param: <U>(name: string, rhs: Either<string, U>) => Validate5<T1, T2, T3, T4, U>;
+	must: <U>(name: string, rhs: Either<string, U>) => Validate5<T1, T2, T3, T4, U>;
+	option: <U>(val: U) => Validate5<T1, T2, T3, T4, U>;
 }
 
 const validate4 = <T1, T2, T3, T4>(
@@ -615,20 +672,25 @@ const validate4 = <T1, T2, T3, T4>(
 		selectEither4(v1, v2, v3, v4)
 			.map(xs => f(...xs));
 
-	const param: Validate4<T1, T2, T3, T4>["param"] = (name, rhs) => {
+	const must: Validate4<T1, T2, T3, T4>["must"] = (name, rhs) => {
 		const next = rhs.mapLeft(e => concatError(name, e));
 		return validate5(v1, v2, v3, v4, next);
 	};
 
+	const option: Validate4<T1, T2, T3, T4>["option"] = val =>
+		validate5(v1, v2, v3, v4, Right(val));
+
 	return {
 		collect,
-		param
+		must,
+		option
 	};
 }
 
 interface Validate3<T1, T2, T3> {
 	collect: <R>(f: (a1: T1, a2: T2, a3: T3) => R) => ES<R>;
-	param: <U>(name: string, rhs: Either<string, U>) => Validate4<T1, T2, T3, U>;
+	must: <U>(name: string, rhs: Either<string, U>) => Validate4<T1, T2, T3, U>;
+	option: <U>(val: U) => Validate4<T1, T2, T3, U>;
 }
 
 const validate3 = <T1, T2, T3>(
@@ -640,20 +702,25 @@ const validate3 = <T1, T2, T3>(
 		selectEither3(v1, v2, v3)
 			.map(xs => f(...xs));
 
-	const param: Validate3<T1, T2, T3>["param"] = (name, rhs) => {
+	const must: Validate3<T1, T2, T3>["must"] = (name, rhs) => {
 		const next = rhs.mapLeft(e => concatError(name, e));
 		return validate4(v1, v2, v3, next);
 	};
 
+	const option: Validate3<T1, T2, T3>["option"] = val =>
+		validate4(v1, v2, v3, Right(val));
+
 	return {
 		collect,
-		param
+		must,
+		option
 	};
 }
 
 interface Validate2<T1, T2> {
 	collect: <R>(f: (a1: T1, a2: T2) => R) => ES<R>;
-	param: <U>(name: string, rhs: Either<string, U>) => Validate3<T1, T2, U>;
+	must: <U>(name: string, rhs: Either<string, U>) => Validate3<T1, T2, U>;
+	option: <U>(val: U) => Validate3<T1, T2, U>
 }
 
 const validate2 = <T1, T2>(
@@ -663,20 +730,25 @@ const validate2 = <T1, T2>(
 	const collect: Validate2<T1, T2>["collect"] = f =>
 		selectEither(v1, v2).map(([a1, a2]) => f(a1, a2));
 
-	const param: Validate2<T1, T2>["param"] = (name, rhs) => {
+	const must: Validate2<T1, T2>["must"] = (name, rhs) => {
 		const next = rhs.mapLeft(e => concatError(name, e));
 		return validate3(v1, v2, next);
 	};
 
+	const option: Validate2<T1, T2>["option"] = val =>
+		validate3(v1, v2, Right(val));
+
 	return {
 		collect,
-		param
+		must,
+		option
 	};
 }
 
 interface Validate<T> {
 	collect: <R>(f: (val: T) => R) => ES<R>;
-	param: <U>(name: string, rhs: Either<string, U>) => Validate2<T, U>;
+	must: <U>(name: string, rhs: Either<string, U>) => Validate2<T, U>;
+	option: <U>(val: U) => Validate2<T, U>
 }
 
 export const validate = <T>(name: string, value: Either<string, T>): Validate<T> => {
@@ -684,13 +756,17 @@ export const validate = <T>(name: string, value: Either<string, T>): Validate<T>
 
 	const collect: Validate<T>["collect"] = f => fvalue.map(f);
 
-	const param: Validate<T>["param"] = (name, rhs) => {
+	const must: Validate<T>["must"] = (name, rhs) => {
 		const next = rhs.mapLeft(e => concatError(name, e));
 		return validate2(fvalue, next);
 	};
 
+	const option: Validate<T>["option"] = val =>
+		validate2(fvalue, Right(val));
+
 	return {
 		collect,
-		param
+		must,
+		option
 	};
 };
