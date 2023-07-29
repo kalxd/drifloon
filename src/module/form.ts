@@ -32,8 +32,8 @@ export const Form = <T>(): m.Component<FormAttr<T>> => {
 					{ state: StateLevel.Error },
 					[
 						m("i.close.icon", { onclick }),
-						m("div.header", "验证出错"),
-						m("p", msg)
+						m("div.header", "提交数据验证出错"),
+						m("ul.list", msg.map(a => m("li", a)))
 					]
 				));
 			});

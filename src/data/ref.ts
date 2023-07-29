@@ -54,7 +54,7 @@ export class IORef<T> {
 export class FormData<T> {
 	private initData: T;
 	private data: IORef<T>;
-	public err: Maybe<string> = Nothing;
+	public err: Maybe<Array<string>> = Nothing;
 
 	constructor(data: T) {
 		this.initData = data;
@@ -97,7 +97,7 @@ export class FormData<T> {
 		return this;
 	}
 
-	validate<R>(f: (data: T) => Either<string, R>): Either<string, R> {
+	validate<R>(f: (data: T) => Either<Array<string>, R>): Either<Array<string>, R> {
 		const v = this.data.asks(f);
 		this.err = v.swap().toMaybe();
 		return v;

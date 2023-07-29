@@ -2,13 +2,12 @@ import { FormData } from "drifloon/data/ref";
 import { Color, EmLevel, Size, Wide } from "drifloon/data/var";
 import { Header, Header2 } from "drifloon/element/header";
 import * as m from "mithril";
-import { Either, Maybe, Right } from "purify-ts";
+import { Either, Just, Maybe, Right } from "purify-ts";
 import { Button } from "drifloon/element/button";
 import { Field, FieldGrid, RequireField } from "drifloon/element/form";
 // import { alertMsg } from "drifloon/module/modal";
 import { Form, FormAttr } from "drifloon/module/form";
-import { prefix, notEmpty } from "drifloon/data/validate";
-import { eitherZipWith } from "drifloon/data/fn";
+import { validate, isNotEmpty } from "drifloon/data/validate";
 
 const FormS: m.Component = {
 	view: () => {
@@ -57,11 +56,10 @@ const ValidationS = (): m.Component => {
 		address
 	});
 
-	const validate = (user: User): Either<string, Output> => eitherZipWith(
-		mkOutput,
-		notEmpty(user.name).mapLeft(prefix("用户名")),
-		Right(Maybe.fromFalsy(user.address))
-	);
+	const validateForm = (user: User): Either<Array<string>, Output> =>
+		validate("用户名", isNotEmpty(user.name))
+			.param("", Right(Just(user.address)))
+			.collect(mkOutput);
 
 	const user = new FormData<User>({
 		name: "",
@@ -74,7 +72,7 @@ const ValidationS = (): m.Component => {
 				formdata: user
 			};
 
-			const onsubmit = () => user.validate(validate)
+			const onsubmit = () => user.validate(validateForm)
 				.ifRight(s => console.log(JSON.stringify(s, null, 4)));
 
 			return m(Form, attr, [
