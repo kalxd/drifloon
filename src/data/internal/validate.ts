@@ -751,22 +751,42 @@ interface Validate<T> {
 	option: <U>(val: U) => Validate2<T, U>
 }
 
-export const validate = <T>(name: string, value: Either<string, T>): Validate<T> => {
+export const must = <T>(name: string, value: Either<string, T>): Validate<T> => {
 	const fvalue = value.mapLeft(e => concatError(name, e));
 
 	const collect: Validate<T>["collect"] = f => fvalue.map(f);
 
-	const must: Validate<T>["must"] = (name, rhs) => {
+	const mustImpl: Validate<T>["must"] = (name, rhs) => {
 		const next = rhs.mapLeft(e => concatError(name, e));
 		return validate2(fvalue, next);
 	};
 
-	const option: Validate<T>["option"] = val =>
+	const optionImpl: Validate<T>["option"] = val =>
 		validate2(fvalue, Right(val));
 
 	return {
 		collect,
-		must,
-		option
+		must: mustImpl,
+		option: optionImpl
+	};
+};
+
+export const option = <T>(value: T): Validate<T> => {
+	const fvalue = Right(value);
+
+	const collect: Validate<T>["collect"] = f => fvalue.map(f);
+
+	const mustImpl: Validate<T>["must"] = (name, rhs) => {
+		const next = rhs.mapLeft(e => concatError(name, e));
+		return validate2(fvalue, next);
+	};
+
+	const optionImpl: Validate<T>["option"] = val =>
+		validate2(fvalue, Right(val));
+
+	return {
+		collect,
+		must: mustImpl,
+		option: optionImpl
 	};
 };

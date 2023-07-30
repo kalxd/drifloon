@@ -2,12 +2,12 @@ import { FormData } from "drifloon/data/ref";
 import { Color, EmLevel, Size, Wide } from "drifloon/data/var";
 import { Header, Header2 } from "drifloon/element/header";
 import * as m from "mithril";
-import { Either, Just, Maybe, Right } from "purify-ts";
+import { Either, Just, Maybe } from "purify-ts";
 import { Button } from "drifloon/element/button";
 import { Field, FieldGrid, RequireField } from "drifloon/element/form";
 // import { alertMsg } from "drifloon/module/modal";
 import { Form, FormAttr } from "drifloon/module/form";
-import { validate, isNotEmpty } from "drifloon/data/validate";
+import { must, isNotEmpty } from "drifloon/data/validate";
 
 const FormS: m.Component = {
 	view: () => {
@@ -57,7 +57,7 @@ const ValidationS = (): m.Component => {
 	});
 
 	const validateForm = (user: User): Either<Array<string>, Output> =>
-		validate("用户名", isNotEmpty(user.name))
+		must("用户名", isNotEmpty(user.name))
 			.option(Just(user.address))
 			.collect(mkOutput);
 
