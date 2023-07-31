@@ -51,16 +51,20 @@ const WaitS = (): m.Component => {
 	const f: WaittingFn = () => EitherAsync.fromPromise(async () => {
 		await delay();
 		const n = state.update(s => s + 1).ask();
+
 		if (n % 2 === 0) {
 			return Left("偶数次必然出错!");
 		}
 		else {
-			return Right(m(Message, [
-				m("div.header", `你一共请求了${n}次`),
-				m("div", [
-					m(Button, { connectClick: () => update(f) }, "再请求一次！")
+			return Right({
+				view: () => m(Message, [
+					m("div.header", `你一共请求了${n}次`),
+					m("div", [
+						m("input"),
+						m(Button, { connectClick: () => update(f) }, "再请求一次！")
+					])
 				])
-			]));
+			});
 		}
 	});
 
