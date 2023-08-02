@@ -4,6 +4,7 @@ import { pickKlass, selectKlass } from "../internal/attr";
 import { Maybe } from "purify-ts";
 
 export enum SegmentShape {
+	Basic = "basic",
 	Raise = "raised",
 	Stack = "stacked",
 	TallStack = "tall stacked",
