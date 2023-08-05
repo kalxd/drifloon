@@ -31,16 +31,18 @@ export interface DropdownFrameAttr {
 export const DropdownFrame: m.FactoryComponent<DropdownFrameAttr> = _ => {
 	const toggleNodeList = new IORef<Array<Maybe<Element>>>([]);
 
+	const updateToggle = (dom: Element): void => {
+		toggleNodeList.put([
+			Just(dom),
+			Maybe.fromNullable(dom.querySelector(".icon.dropdown")),
+			Maybe.fromNullable(dom.querySelector("input")),
+			Maybe.fromNullable(dom.querySelector("div.text"))
+		]);
+	};
+
 	return {
-		oncreate: vnode => {
-			const container = vnode.dom;
-			toggleNodeList.put([
-				Just(container),
-				Maybe.fromNullable(container.querySelector(".icon.dropdown")),
-				Maybe.fromNullable(container.querySelector("input")),
-				Maybe.fromNullable(container.querySelector("div.text"))
-			]);
-		},
+		oncreate: vnode => updateToggle(vnode.dom),
+		onupdate: vnode => updateToggle(vnode.dom),
 
 		view: ({ attrs, children }) => {
 			const outterAttr: OutterAttr = {
