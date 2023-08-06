@@ -2,7 +2,7 @@ import * as m from "mithril";
 import { Button } from "drifloon/element/button";
 import { Header } from "drifloon/element/header";
 import { Color, Size } from "drifloon/data/var";
-import { alertText, confirm, modal, ResolveConfirmAttr, ResolveModalAttr } from "drifloon/module/modal";
+import { alertText, confirmAsync, modal, ResolveConfirmAttr, ResolveModalAttr } from "drifloon/module/modal";
 import { Modal, ModalAction, ModalActionAttr } from "drifloon/widget/modal";
 
 const ConfirmS: m.Component = {
@@ -12,11 +12,11 @@ const ConfirmS: m.Component = {
 			content: m("div.label.ui.orange", "理论上，这里写上任何文本。")
 		};
 
-		const onclick1 = async () => {
-			confirm(attr1)
+		const onclick1 = () => {
+			confirmAsync(attr1)
 				.caseOf({
-					Right: () => alertText("你点了确定！"),
-					Left: () => alertText("你点了取消！"),
+					Just: _ => alertText("你点了确定！"),
+					Nothing: () => alertText("你点了取消！"),
 				});
 		};
 
@@ -27,7 +27,8 @@ const ConfirmS: m.Component = {
 const AlertModalHere: m.Component<ResolveModalAttr<void>> = {
 	view: ({ attrs }) => {
 		const actionAttr: ModalActionAttr = {
-			connectResolve: () => attrs.connectResolve(),
+			connectPositive: attrs.connectResolve,
+			connectNegative: attrs.connectResolve
 		};
 
 		return m(Modal, attrs, [
@@ -43,7 +44,7 @@ const AlertModalHere: m.Component<ResolveModalAttr<void>> = {
 
 const ModalS: m.Component = {
 	view: () => {
-		const openModal = () => modal(AlertModalHere, {});
+		const openModal = () => modal(AlertModalHere);
 		return m("div", [
 			m(Button, { connectClick: openModal }, "打开对话框")
 		]);

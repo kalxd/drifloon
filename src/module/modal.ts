@@ -1,6 +1,6 @@
 import * as m from "mithril";
 import { IORef } from "../data/ref";
-import { Maybe, List, Either, EitherAsync } from "purify-ts";
+import { Maybe, List, Just, Nothing, MaybeAsync } from "purify-ts";
 import * as Modal from "../widget/modal";
 
 export interface ResolveModalAttr<T> extends Modal.ModalAttr {
@@ -8,19 +8,17 @@ export interface ResolveModalAttr<T> extends Modal.ModalAttr {
 }
 
 interface ModalState<T> {
-	widget: m.Component<ResolveModalAttr<T>>;
+	widget: m.Component<ResolveModalAttr<T>> | m.FactoryComponent<ResolveModalAttr<T>>;
 	attr: ResolveModalAttr<T>;
 }
 
 const modalRef = new IORef<Array<ModalState<unknown>>>([]);
 
 export const modal = <T>(
-	widget: m.Component<ResolveModalAttr<T>>,
-	attr: Modal.ModalAttr
+	widget: m.Component<ResolveModalAttr<T>> | m.FactoryComponent<ResolveModalAttr<T>>,
 ): Promise<T> => {
 	return new Promise(resolve => {
 		const modalAttr: ResolveModalAttr<T> = {
-			...attr,
 			connectResolve: resolve
 		};
 
@@ -65,13 +63,13 @@ export interface ResolveConfirmAttr extends Modal.ModalAttr {
 
 interface ConfirmState {
 	attr: ResolveConfirmAttr;
-	resolve: (value: Either<void, void>) => void;
+	resolve: (value: Maybe<void>) => void;
 }
 
 const confirmRef = new IORef<Array<ConfirmState>>([]);
 
-export const confirm = (attr: ResolveConfirmAttr): EitherAsync<void, void> =>
-	EitherAsync.fromPromise(() => new Promise(resolve => {
+export const confirm = (attr: ResolveConfirmAttr): Promise<Maybe<void>> =>
+	new Promise(resolve => {
 		const s: ConfirmState = {
 			attr,
 			resolve
@@ -79,10 +77,16 @@ export const confirm = (attr: ResolveConfirmAttr): EitherAsync<void, void> =>
 
 		confirmRef.update(xs => [s, ...xs]);
 		m.redraw();
-	}));
+	});
 
-export const confirmText = (msg: string): EitherAsync<void, void> =>
+export const confirmAsync = (attr: ResolveConfirmAttr): MaybeAsync<void> =>
+	MaybeAsync.fromPromise(() => confirm(attr));
+
+export const confirmText = (msg: string): Promise<Maybe<void>> =>
 	confirm({ content: msg });
+
+export const confirmTextAsync = (msg: string): MaybeAsync<void> =>
+	MaybeAsync.fromPromise(() => confirmText(msg));
 
 const renderConfirm = (state: Array<ConfirmState>): Maybe<m.Children> => {
 	return List.uncons(state)
@@ -96,9 +100,12 @@ const renderConfirm = (state: Array<ConfirmState>): Maybe<m.Children> => {
 				title: w.attr.title,
 				positiveText: w.attr.positiveText,
 				negativeText: w.attr.negativeText,
-				connectResolve: result => {
+				connectPositive: () => {
 					confirmRef.put(ws);
-					w.resolve(result);
+					w.resolve(Just(undefined));
+				},
+				connectNegative: () => {
+					w.resolve(Nothing)
 				}
 			};
 
