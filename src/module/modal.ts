@@ -105,6 +105,7 @@ const renderConfirm = (state: Array<ConfirmState>): Maybe<m.Children> => {
 					w.resolve(Just(undefined));
 				},
 				connectNegative: () => {
+					confirmRef.put(ws);
 					w.resolve(Nothing)
 				}
 			};
@@ -172,9 +173,9 @@ export const ModalMask: m.Component = {
 			.alt(confirmWidget)
 			.alt(modalWidget)
 			.map(_ => m(Modal.ModalDimmer, [
-				alertWidget.extract(),
-				confirmWidget.extract(),
 				modalWidget.extract(),
+				confirmWidget.extract(),
+				alertWidget.extract()
 			]))
 			.extract();
 	}
