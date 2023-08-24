@@ -2,6 +2,7 @@ import { compareEqAt, propOf } from "drifloon/data/fn";
 import { IORef } from "drifloon/data/ref";
 import { Size } from "drifloon/data/var";
 import { Header, Header2 } from "drifloon/element/header";
+import { PlainInput } from "drifloon/element/input";
 import { Toggle, ToggleAttr, CompleteInput, CompleteInputAttr } from "drifloon/widget/input";
 import * as Input from "drifloon/widget/input";
 import * as m from "mithril";
@@ -102,6 +103,25 @@ const RadioboxS = (): m.Component => {
 	};
 };
 
+const InputS = (): m.Component => {
+	const s1 = new IORef<string>("sb");
+
+	return {
+		view: () => {
+			return m("div", [
+				m(PlainInput, {
+					value: s1.ask(),
+					connectChange: s => {
+						console.log("=====");
+						console.log(s);
+						s1.put(s);
+					}
+				})
+			])
+		}
+	};
+};
+
 const CompleteInputS = (): m.Component => {
 	interface Item {
 		id: number;
@@ -140,6 +160,8 @@ const Main: m.Component = {
 			m(CheckBoxS),
 			Header2("单选框"),
 			m(RadioboxS),
+			Header2("普通输入框"),
+			m(InputS),
 			Header2("带补全的输入"),
 			m(CompleteInputS)
 		]);
