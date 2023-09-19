@@ -1,9 +1,9 @@
-import { Maybe, List, Nothing, Just } from "purify-ts";
-import { mutable, Prism } from "./internal/lens";
+import { Maybe, List, Nothing, Just, identity, Either, Right, Left } from "purify-ts";
+import { Prism } from "./internal/lens";
 
 export * from "./internal/lens";
 
-export const _nil = <T>(): Prism<T | undefined, T> => ({
+export const _notNil = <T>(): Prism<T | undefined, T> => ({
 	get: Maybe.fromNullable,
 	set: (state, v) => Maybe.fromNullable(state).map(_ => v)
 });
@@ -20,37 +20,28 @@ export const _ix = <T>(index: number): Prism<Array<T>, T> => ({
 		})
 });
 
-interface Address {
-	name?: string;
-	num: number;
-}
+export const _just = <T>(): Prism<Maybe<T>, T> => ({
+	get: identity,
+	set: (state, v) => state.map(_ => Just(v))
+});
 
-interface User {
-	name: string;
-	address?: Address;
-	info: Array<Address>;
-}
+export const _nothing = <T>(): Prism<Maybe<T>, void> => ({
+	get: state => state.caseOf({
+		Just: _ => Nothing,
+		Nothing: () => Just(void 0)
+	}),
+	set: (state, _) => state.caseOf({
+		Just: _ => Nothing,
+		Nothing: () => Just(Nothing)
+	})
+});
 
-const user: User = {
-	name: "hello world",
-	address: {
-		name: "1111",
-		num: 10
-	},
-	info: [
-		{ name: "sss", num: 1 },
-		{ num: 2 }
-	]
-};
+export const _right = <E, T>(): Prism<Either<E, T>, T> => ({
+	get: state => state.toMaybe(),
+	set: (state, v) => state.toMaybe().map(_ => Right(v))
+});
 
-const state = mutable<User>(user);
-
-const l = state.lens("info").prism(_ix(1)).lens("name").prism(_nil());
-// console.log(l.get());
-l.set("xxxx");
-// console.log(l.get().isJust());
-console.log(state.get());
-/*
-l.set(0);
-console.log(state.get());
-*/
+export const _left = <E, T>(): Prism<Either<E, T>, E> => ({
+	get: state => state.swap().toMaybe(),
+	set: (state, v) => state.swap().toMaybe().map(_ => Left(v))
+});
