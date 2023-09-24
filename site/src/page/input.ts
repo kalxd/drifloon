@@ -7,6 +7,9 @@ import { Toggle, ToggleAttr, CompleteInput, CompleteInputAttr } from "drifloon/w
 import * as Input from "drifloon/widget/input";
 import * as m from "mithril";
 import { Just, Maybe, Nothing } from "purify-ts";
+import { mutable } from "drifloon/data";
+import { alertText } from "drifloon/module/modal";
+import { Button } from "drifloon/element/button";
 
 const ToggleS = (): m.Component => {
 	interface State {
@@ -104,20 +107,20 @@ const RadioboxS = (): m.Component => {
 };
 
 const InputS = (): m.Component => {
-	const s1 = new IORef<string>("sb");
+	const s = mutable<string>("sb");
+
+	const alertResult = () => {
+		alertText(s.get());
+	};
 
 	return {
 		view: () => {
 			return m("div", [
 				m(PlainInput, {
-					value: s1.ask(),
-					connectChange: s => {
-						console.log("=====");
-						console.log(s);
-						s1.put(s);
-					}
-				})
-			])
+					bindValue: s
+				}),
+				m(Button, { connectClick: alertResult }, "查看结果")
+			]);
 		}
 	};
 };

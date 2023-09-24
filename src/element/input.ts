@@ -1,27 +1,26 @@
 import * as m from "mithril";
 import { Just, Maybe } from "purify-ts";
 import { isNotEmpty } from "../data/validate";
+import { BindValue, bindValue } from "../data/internal/value";
 
-export interface PlainInputAttr {
-	value?: string;
+export interface PlainInputAttr extends BindValue<string> {
 	placeholder?: string;
 	type?: string;
-	connectChange?: (input: string) => void;
 	connectEnter?: () => void;
 }
 
 export const PlainInput: m.Component<PlainInputAttr> = {
 	view: ({ attrs }) => {
-		const mchange = Maybe.fromNullable(attrs.connectChange);
+		const mbindValue = bindValue(attrs);
 		const menter = Maybe.fromNullable(attrs.connectEnter);
 
 		const attr = {
-			value: attrs.value,
+			value: mbindValue.value.extract(),
 			placeholder: attrs.placeholder,
 			type: attrs.type,
 			oninput: (e: InputEvent) => {
 				const value = (e.target as HTMLInputElement).value.trim();
-				Just(value).ap(mchange);
+				mbindValue.connectChange(value);
 			},
 			onkeydown: (e: KeyboardEvent & InputEvent) => {
 				const code = e.code;
