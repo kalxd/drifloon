@@ -33,8 +33,3 @@ export const pickKlass = (xs: Array<Maybe<string>>): string | undefined => {
 		.map(xs => xs.join(" "))
 		.extract();
 };
-
-export const withDefault = <T>(
-	def: Required<T>,
-	opt: Partial<T>
-): Required<T> => ({ ...def, ...opt});
