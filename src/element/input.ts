@@ -1,5 +1,5 @@
 import * as m from "mithril";
-import { Just, Maybe } from "purify-ts";
+import { Maybe } from "purify-ts";
 import { isNotEmpty } from "../data/validate";
 import { BindValue, bindValue } from "../data/internal/value";
 
