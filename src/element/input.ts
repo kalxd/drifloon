@@ -33,23 +33,21 @@ export const PlainInput: m.Component<PlainInputAttr> = {
 	}
 };
 
-export interface MPlainInputAttr {
-	value?: Maybe<string>;
+export interface MPlainInputAttr extends BindValue<Maybe<string>> {
 	placeholder?: string;
 	type: string;
-	connectChange?: (input: Maybe<string>) => void;
 	connectEnter?: () => void;
 }
 
 export const MPlainInput: m.Component<MPlainInputAttr> = {
 	view: ({ attrs }) => {
-		const mchange = Maybe.fromNullable(attrs.connectChange);
+		const mbindvalue = bindValue(attrs);
 		const attr: PlainInputAttr = {
-			value: Maybe.fromNullable(attrs.value).join().extract(),
+			value: mbindvalue.value.join().extract(),
 			placeholder: attrs.placeholder,
 			type: attrs.type,
 			connectChange: input =>
-				Just(isNotEmpty(input).toMaybe()).ap(mchange),
+				mbindvalue.connectChange(isNotEmpty(input).toMaybe()),
 			connectEnter: attrs.connectEnter
 		};
 
