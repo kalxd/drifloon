@@ -1,6 +1,6 @@
 {
 	"name": "drifloon",
-	"version": "0.20.15",
+	"version": "0.20.16",
 	"description": "自用前端库，前端真是太垃圾了",
 	"scripts": {
 		"build": "npx tsc",
