@@ -75,3 +75,18 @@ export const MInput: m.Component<MInputAttr> = {
 		return m<TrimInputAttr, {}>(TrimInput, attr);
 	}
 };
+
+export interface PasswordInputAttr extends BindValue<string> {
+	placeholder?: string;
+	connectEnter?: () => void;
+}
+
+export const PasswordInput: m.Component<PasswordInputAttr> = {
+	view: ({ attrs }) => {
+		const attr: InputAttr = {
+			...attrs,
+			type: "password"
+		};
+		return m(Input, attr);
+	}
+};
