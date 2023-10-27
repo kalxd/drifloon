@@ -22,7 +22,7 @@ export const bindValue = <T>(attr: BindValue<T>): BindedValue<T> => {
 		const mvalue = Just(value);
 		mvalue.ap(mbindValue.map(s => s.set));
 		mvalue.ap(mconnectChange);
-	}
+	};
 	return {
 		value,
 		connectChange: changeCallback

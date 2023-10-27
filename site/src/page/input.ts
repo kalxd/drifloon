@@ -2,7 +2,7 @@ import { compareEqAt, propOf } from "drifloon/data/fn";
 import { IORef } from "drifloon/data/ref";
 import { Size } from "drifloon/data/var";
 import { Header, Header2 } from "drifloon/element/header";
-import { PlainInput } from "drifloon/element/input";
+import { TrimInput, Input as RawInput } from "drifloon/element/input";
 import { Toggle, ToggleAttr, CompleteInput, CompleteInputAttr } from "drifloon/widget/input";
 import * as Input from "drifloon/widget/input";
 import * as m from "mithril";
@@ -116,9 +116,8 @@ const InputS = (): m.Component => {
 	return {
 		view: () => {
 			return m("div", [
-				m(PlainInput, {
-					bindValue: s
-				}),
+				m(RawInput, { bindValue: s }),
+				m(TrimInput, { bindValue: s }),
 				m(Button, { connectClick: alertResult }, "查看结果")
 			]);
 		}
