@@ -56,7 +56,7 @@ export const TrimInput: m.Component<TrimInputAttr> = {
 
 export interface MInputAttr extends BindValue<Maybe<string>> {
 	placeholder?: string;
-	type: string;
+	type?: string;
 	connectEnter?: () => void;
 }
 
