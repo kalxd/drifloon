@@ -11,8 +11,8 @@ const lines = (n: number): m.Children => {
 export const FluidPlaceholder: m.Component = {
 	view: () => {
 		return m("div.ui.fluid.placeholder", [
-			m("div.image.header", lines(2)),
-			m("div.paragraph", lines(3))
+			m("div.image.header", lines(3)),
+			m("div.paragraph", lines(5))
 		]);
 	}
 };
