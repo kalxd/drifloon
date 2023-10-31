@@ -1,13 +1,18 @@
-import { FormData } from "drifloon/data/ref";
 import { Color, EmLevel, Size, Wide } from "drifloon/data/var";
 import { Header, Header2 } from "drifloon/element/header";
 import * as m from "mithril";
 import { Either, Just, Maybe } from "purify-ts";
-import { Button } from "drifloon/element/button";
-import { Field, FieldGrid, RequireField } from "drifloon/element/form";
-// import { alertMsg } from "drifloon/module/modal";
+import {
+	Field,
+	FieldGrid,
+	RequireField,
+	Button,
+	TrimInput
+} from "drifloon/element";
+import { alertText } from "drifloon/module/modal";
 import { Form, FormAttr } from "drifloon/module/form";
 import { must, isNotEmpty } from "drifloon/data/validate";
+import { formMut } from "drifloon/data/form";
 
 const FormS: m.Component = {
 	view: () => {
@@ -61,7 +66,7 @@ const ValidationS = (): m.Component => {
 			.option(Just(user.address))
 			.collect(mkOutput);
 
-	const user = new FormData<User>({
+	const user = formMut<User>({
 		name: "",
 		address: "一组默认地址！"
 	});
@@ -73,16 +78,16 @@ const ValidationS = (): m.Component => {
 			};
 
 			const onsubmit = () => user.validate(validateForm)
-				.ifRight(s => console.log(JSON.stringify(s, null, 4)));
+				.ifRight(s => alertText(JSON.stringify(s, null, 4)));
 
 			return m(Form, attr, [
 				m(RequireField, [
 					m("label", "用户名"),
-					m("input", { onchange: e => user.putAt("name", e.target.value) })
+					m(TrimInput, { bindValue: user.prop("name")})
 				]),
 				m(Field, [
 					m("label", "地址"),
-					m("input", { onchange: e => user.putAt("address", e.target.value) })
+					m(TrimInput, { bindValue: user.prop("address")})
 				]),
 				m(Button, { connectClick: onsubmit, color: Color.Blue }, "提交")
 			]);
