@@ -5,6 +5,10 @@ import { LoadingShape, Size, StateLevel } from "../data/var";
 import { FormMutable } from "../data/form";
 import { Message } from "../element/message";
 
+export * from "../element/input";
+export * from "../element/form";
+export * from "../widget/input";
+
 export interface FormAttr<T> {
 	loading?: LoadingShape;
 	isInvert?: boolean;
