@@ -2,15 +2,14 @@ import { Color, EmLevel, Size, Wide } from "drifloon/data/var";
 import { Header, Header2 } from "drifloon/element/header";
 import * as m from "mithril";
 import { Either, Just, Maybe } from "purify-ts";
+import { alertText } from "drifloon/module/modal";
+import { Button } from "drifloon/element";
 import {
 	Field,
 	FieldGrid,
 	RequireField,
-	Button,
-	TrimInput
-} from "drifloon/element";
-import { alertText } from "drifloon/module/modal";
-import { Form, FormAttr } from "drifloon/module/form";
+	TrimInput,
+	Form, FormAttr } from "drifloon/form";
 import { must, isNotEmpty } from "drifloon/data/validate";
 import { formMut } from "drifloon/data/form";
 
