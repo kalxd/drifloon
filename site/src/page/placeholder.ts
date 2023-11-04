@@ -8,7 +8,6 @@ import * as m from "mithril";
 import { IORef } from "drifloon/data/ref";
 import { EitherAsync, Just, Left, Maybe, Nothing, Right } from "purify-ts";
 import { Button } from "drifloon/element/button";
-import { WaittingFn, waitting } from "drifloon/module/loading";
 import { useDefLoader } from "drifloon/module/loader";
 
 const delay = () => new Promise(resolve => setTimeout(resolve, 1000));

@@ -1,5 +1,3 @@
-import { Either, Maybe, Nothing } from "purify-ts";
-
 // 可变的数据。
 export class IORef<T> {
 	private ref: T;
