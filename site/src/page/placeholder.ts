@@ -9,6 +9,7 @@ import { IORef } from "drifloon/data/ref";
 import { EitherAsync, Just, Left, Maybe, Nothing, Right } from "purify-ts";
 import { Button } from "drifloon/element/button";
 import { WaittingFn, waitting } from "drifloon/module/loading";
+import { useDefLoader } from "drifloon/module/loader";
 
 const delay = () => new Promise(resolve => setTimeout(resolve, 1000));
 
@@ -46,9 +47,9 @@ const Timer = () => {
 };
 
 const WaitS = (): m.Component => {
-	const [update, Wait] = waitting();
+	const [update, Wait] = useDefLoader<{}>();
 	const state = new IORef<number>(0);
-	const f: WaittingFn = () => EitherAsync.fromPromise(async () => {
+	const f = () => EitherAsync.fromPromise(async () => {
 		await delay();
 		const n = state.update(s => s + 1).ask();
 
