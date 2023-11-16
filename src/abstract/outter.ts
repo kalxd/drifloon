@@ -1,13 +1,15 @@
 import * as m from "mithril";
 import { Just, Maybe, Nothing } from "purify-ts";
-import { IORef } from "../data/ref";
+import { mutable } from "../data/lens";
+
+type MouseEventCallback = (e: MouseEvent) => void;
 
 export interface OutterAttr {
-	connectOutterClick: (e: MouseEvent) => void;
+	connectOutterClick: MouseEventCallback;
 }
 
 export const Outter: m.FactoryComponent<OutterAttr> = _ => {
-	const bodyClickIO: IORef<Maybe<(ev: MouseEvent) => void>> = new IORef(Nothing);
+	const state = mutable<Maybe<MouseEventCallback>>(Nothing);
 
 	return {
 		oncreate: (vnode) => {
@@ -20,13 +22,12 @@ export const Outter: m.FactoryComponent<OutterAttr> = _ => {
 				}
 			};
 
-			bodyClickIO.put(Just(f));
-
+			state.set(Just(f));
 			document.body.addEventListener("click", f);
 		},
 
 		onremove: (_) => {
-			bodyClickIO.ask().ifJust(f => {
+			state.get().ifJust(f => {
 				document.body.removeEventListener("click", f);
 			});
 		},
