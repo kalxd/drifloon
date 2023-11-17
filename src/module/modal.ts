@@ -1,21 +1,21 @@
 import * as m from "mithril";
-import { IORef } from "../data/ref";
+import { mutable } from "../data/lens";
 import { Maybe, List, Just, Nothing, MaybeAsync } from "purify-ts";
-import * as Modal from "../widget/modal";
+import * as Modal from "../element/modal";
 
 export interface ResolveModalAttr<T> extends Modal.ModalAttr {
 	connectResolve: (result: T) => void;
 }
 
 interface ModalState<T> {
-	widget: m.Component<ResolveModalAttr<T>> | m.FactoryComponent<ResolveModalAttr<T>>;
+	widget: m.ComponentTypes<ResolveModalAttr<T>>,
 	attr: ResolveModalAttr<T>;
 }
 
-const modalRef = new IORef<Array<ModalState<unknown>>>([]);
+const modalState = mutable<Array<ModalState<unknown>>>([]);
 
 export const modal = <T>(
-	widget: m.Component<ResolveModalAttr<T>> | m.FactoryComponent<ResolveModalAttr<T>>,
+	widget: m.ComponentTypes<ResolveModalAttr<T>>
 ): Promise<T> => {
 	return new Promise(resolve => {
 		const modalAttr: ResolveModalAttr<T> = {
@@ -27,10 +27,11 @@ export const modal = <T>(
 			attr: modalAttr,
 		};
 
-		modalRef.update(xs => ([
+		const s = modalState.get();
+		modalState.set([
 			w as ModalState<unknown>,
-			...xs
-		]));
+			...s
+		]);
 
 		m.redraw();
 	});
@@ -46,7 +47,7 @@ const renderModal = <T>(state: Array<ModalState<T>>): Maybe<m.Children> => {
 				...w.attr,
 				connectResolve: (x: T) => {
 					w.attr.connectResolve(x);
-					modalRef.put(ws as Array<ModalState<unknown>>);
+					modalState.set(ws as Array<ModalState<unknown>>);
 				}
 			};
 
@@ -66,7 +67,7 @@ interface ConfirmState {
 	resolve: (value: Maybe<void>) => void;
 }
 
-const confirmRef = new IORef<Array<ConfirmState>>([]);
+const confirmState = mutable<Array<ConfirmState>>([]);
 
 export const confirm = (attr: ResolveConfirmAttr): Promise<Maybe<void>> =>
 	new Promise(resolve => {
@@ -75,7 +76,8 @@ export const confirm = (attr: ResolveConfirmAttr): Promise<Maybe<void>> =>
 			resolve
 		};
 
-		confirmRef.update(xs => [s, ...xs]);
+		const xs = confirmState.get();
+		confirmState.set([s, ...xs]);
 		m.redraw();
 	});
 
@@ -101,11 +103,11 @@ const renderConfirm = (state: Array<ConfirmState>): Maybe<m.Children> => {
 				positiveText: w.attr.positiveText,
 				negativeText: w.attr.negativeText,
 				connectPositive: () => {
-					confirmRef.put(ws);
+					confirmState.set(ws);
 					w.resolve(Just(undefined));
 				},
 				connectNegative: () => {
-					confirmRef.put(ws);
+					confirmState.set(ws);
 					w.resolve(Nothing)
 				}
 			};
@@ -125,7 +127,7 @@ interface AlertState {
 	resolve: () => void;
 };
 
-const alertRef = new IORef<Array<AlertState>>([]);
+const alertState = mutable<Array<AlertState>>([]);
 
 export const alert = (attr: ResolveAlertAttr): Promise<void> => {
 	return new Promise(resolve => {
@@ -134,7 +136,8 @@ export const alert = (attr: ResolveAlertAttr): Promise<void> => {
 			resolve
 		};
 
-		alertRef.update(xs => [s, ...xs]);
+		const xs = alertState.get();
+		alertState.set([s, ...xs]);
 	});
 };
 
@@ -154,7 +157,7 @@ const renderAlert = (state: Array<AlertState>): Maybe<m.Children> => {
 				title: w.attr.title,
 				positiveText: w.attr.positiveText,
 				connectResolve: () => {
-					alertRef.put(ws);
+					alertState.set(ws);
 					w.resolve();
 				}
 			};
@@ -165,9 +168,9 @@ const renderAlert = (state: Array<AlertState>): Maybe<m.Children> => {
 
 export const ModalMask: m.Component = {
 	view: () => {
-		const modalWidget = modalRef.asks(renderModal);
-		const confirmWidget = confirmRef.asks(renderConfirm);
-		const alertWidget = alertRef.asks(renderAlert);
+		const modalWidget = renderModal(modalState.get());
+		const confirmWidget = renderConfirm(confirmState.get());
+		const alertWidget = renderAlert(alertState.get());
 
 		return alertWidget
 			.alt(confirmWidget)

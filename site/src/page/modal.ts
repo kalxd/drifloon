@@ -3,7 +3,8 @@ import { Button } from "drifloon/element/button";
 import { Header } from "drifloon/element/header";
 import { Color, Size } from "drifloon/data/var";
 import { alertText, confirmAsync, modal, ResolveConfirmAttr, ResolveModalAttr } from "drifloon/module/modal";
-import { Modal, ModalAction, ModalActionAttr } from "drifloon/widget/modal";
+import { Modal, ModalAttr } from "drifloon/widget/modal";
+import { Maybe } from "purify-ts";
 
 const ConfirmS: m.Component = {
 	view: () => {
@@ -24,20 +25,16 @@ const ConfirmS: m.Component = {
 	}
 };
 
-const AlertModalHere: m.Component<ResolveModalAttr<void>> = {
+const AlertModalHere: m.Component<ResolveModalAttr<Maybe<void>>> = {
 	view: ({ attrs }) => {
-		const actionAttr: ModalActionAttr = {
-			connectPositive: attrs.connectResolve,
-			connectNegative: attrs.connectResolve
+		const modalAttr: ModalAttr = {
+			...attrs,
+			title: "对话框演示",
 		};
 
-		return m(Modal, attrs, [
-			m("div.header", "点击下面几块按钮"),
-			m("div.content", [
-				m(Button, { connectClick: () => console.log("你看见我了") }, "alert"),
-				m(Button, { connectClick: () => console.info("你看见我了") }, "confirm")
-			]),
-			m(ModalAction, actionAttr)
+		return m(Modal, modalAttr, [
+			m(Button, { connectClick: () => console.log("你看见我了") }, "alert"),
+			m(Button, { connectClick: () => console.info("你看见我了") }, "confirm")
 		]);
 	}
 };
