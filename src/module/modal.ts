@@ -1,6 +1,6 @@
 import * as m from "mithril";
 import { mutable } from "../data/lens";
-import { Maybe, List, Just, Nothing, MaybeAsync } from "purify-ts";
+import { Maybe, List, MaybeAsync } from "purify-ts";
 import * as Modal from "../element/modal";
 
 export interface ResolveModalAttr<T> extends Modal.ModalAttr {
@@ -102,13 +102,9 @@ const renderConfirm = (state: Array<ConfirmState>): Maybe<m.Children> => {
 				title: w.attr.title,
 				positiveText: w.attr.positiveText,
 				negativeText: w.attr.negativeText,
-				connectPositive: () => {
+				connectResolve: value => {
 					confirmState.set(ws);
-					w.resolve(Just(undefined));
-				},
-				connectNegative: () => {
-					confirmState.set(ws);
-					w.resolve(Nothing)
+					w.resolve(value);
 				}
 			};
 

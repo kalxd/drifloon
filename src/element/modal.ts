@@ -1,7 +1,7 @@
 import * as m from "mithril";
 import { Size } from "../data/var";
 import { pickKlass, selectKlass } from "../internal/attr";
-import { Just, Maybe } from "purify-ts";
+import { Just, Maybe, Nothing } from "purify-ts";
 import { AnimateFrame } from "../abstract/animate";
 
 export enum ModalFullscreen {
@@ -49,24 +49,22 @@ export const ModalDimmer: m.Component = {
 export interface ModalActionAttr {
 	positiveText?: string;
 	negativeText?: string;
-	connectPositive?: () => void;
-	connectNegative?: () => void;
+	connectResolve?: (value: Maybe<void>) => void;
 }
 
 export const ModalAction: m.Component<ModalActionAttr> = {
 	view: ({ attrs }) => {
-		const monPositive = Maybe.fromNullable(attrs.connectPositive);
-		const monNegative = Maybe.fromNullable(attrs.connectNegative)
+		const mResolve = Maybe.fromNullable(attrs.connectResolve);
 
 		const negative = m(
 			"button.ui.negative.button",
-			{ onclick: () => monNegative.ifJust(f => f()) },
+			{ onclick: () => mResolve.ifJust(f => f(Nothing)) },
 			attrs.negativeText ?? "不好"
 		);
 
 		const positive = m(
 			"button.ui.positive.right.labeled.icon.button",
-			{ onclick: () => monPositive.ifJust(f => f()) },
+			{ onclick: () => mResolve.ifJust(f => f(Just(undefined))) },
 			[
 				attrs.positiveText ?? "好",
 				m("i.icon.checkmark")
@@ -97,8 +95,7 @@ export const Confirm: m.Component<ConfirmAttr> = {
 		const modalActionAttr: ModalActionAttr = {
 			positiveText: attrs.positiveText,
 			negativeText: attrs.negativeText,
-			connectPositive: attrs.connectPositive,
-			connectNegative: attrs.connectNegative
+			connectResolve: attrs.connectResolve
 		};
 
 		return m(Modal, modalAttr, [
