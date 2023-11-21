@@ -134,6 +134,7 @@ export const alert = (attr: ResolveAlertAttr): Promise<void> => {
 
 		const xs = alertState.get();
 		alertState.set([s, ...xs]);
+		m.redraw();
 	});
 };
 
