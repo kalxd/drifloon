@@ -2,7 +2,14 @@ import * as m from "mithril";
 import { Button } from "drifloon/element/button";
 import { Header } from "drifloon/element/header";
 import { Color, Size } from "drifloon/data/var";
-import { alertText, confirmAsync, modal, ResolveConfirmAttr, ResolveModalAttr } from "drifloon/module/modal";
+import {
+	alertText,
+	confirmAsync,
+	confirmText,
+	modal,
+	ResolveConfirmAttr,
+	ResolveModalAttr
+} from "drifloon/module/modal";
 import { Modal, ModalAttr } from "drifloon/widget/modal";
 import { Maybe } from "purify-ts";
 
@@ -33,8 +40,8 @@ const AlertModalHere: m.Component<ResolveModalAttr<Maybe<void>>> = {
 		};
 
 		return m(Modal, modalAttr, [
-			m(Button, { connectClick: () => console.log("你看见我了") }, "alert"),
-			m(Button, { connectClick: () => console.info("你看见我了") }, "confirm")
+			m(Button, { connectClick: () => alertText("你看见我了") }, "alert"),
+			m(Button, { connectClick: () => confirmText("你看见我了") }, "confirm")
 		]);
 	}
 };
