@@ -12,7 +12,7 @@ export const MainLayout = <T>(): m.Component<T> => ({
 	])
 });
 
-export const mount = <T>(c: m.Component<T>): void => {
+export const mount = <T>(c: m.ComponentTypes<T>): void => {
 	const App: m.Component<T> = {
 		view: () => m(MainLayout, m(c))
 	};
