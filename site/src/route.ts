@@ -12,6 +12,7 @@ import ModalPage from "./page/modal";
 import ProgressPage from "./page/progress";
 import InputPage from "./page/input";
 import FormPage from "./page/form";
+import Pager from "./page/pager";
 import Placeholder from "./page/placeholder";
 import { Menu, MenuAttr, MenuNaviItem } from "drifloon/element/menu";
 import { Header } from "drifloon/element/header";
@@ -62,6 +63,11 @@ const routerMap: Array<RouterPage> = [
 		href: "/placeholder",
 		title: "占位组件",
 		page: Placeholder
+	},
+	{
+		href: "/pager",
+		title: "分页器",
+		page: Pager
 	}
 ];
 
