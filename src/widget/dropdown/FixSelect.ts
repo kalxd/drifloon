@@ -1,5 +1,5 @@
 import * as m from "mithril";
-import { ComponentPanic } from "../../internal/error";
+import { ComponentPanic } from "../../data/internal/error";
 import {
 	DropdownFrame,
 	DropdownMenuFrame,

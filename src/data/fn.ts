@@ -1,7 +1,7 @@
-import { compareEq } from "../internal/function";
+import { compareEq } from "./internal/function";
 
 export * from "./internal/zip";
-export { compareEq } from "../internal/function";
+export { compareEq } from "./internal/function";
 
 export const propOf = <T, K extends keyof T>(
 	k: K

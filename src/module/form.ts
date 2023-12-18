@@ -1,4 +1,4 @@
-import { pickKlass, selectKlass } from "../internal/attr";
+import { pickKlass, selectKlass } from "../data/internal/attr";
 import * as m from "mithril";
 import { Maybe } from "purify-ts";
 import { LoadingShape, Size, StateLevel } from "../data/var";

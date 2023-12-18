@@ -1,6 +1,6 @@
 import * as m from "mithril";
 import { Size } from "../data/var";
-import { pickKlass, selectKlass } from "../internal/attr";
+import { pickKlass, selectKlass } from "../data/internal/attr";
 import { Just, Maybe, Nothing } from "purify-ts";
 import { AnimateFrame } from "../abstract/animate";
 

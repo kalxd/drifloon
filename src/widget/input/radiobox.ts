@@ -1,4 +1,4 @@
-import { cmpDef } from "../../internal/attr";
+import { cmpDef } from "../../data/internal/attr";
 import * as m from "mithril";
 import { Just, Maybe } from "purify-ts";
 

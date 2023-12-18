@@ -1,6 +1,6 @@
 import { Align, AttachPosition, Color, EmLevel } from "../data/var";
 import * as m from "mithril";
-import { pickKlass, selectKlass } from "../internal/attr";
+import { pickKlass, selectKlass } from "../data/internal/attr";
 import { Maybe } from "purify-ts";
 
 export enum SegmentShape {

@@ -1,9 +1,9 @@
 import * as m from "mithril";
 import { Maybe } from "purify-ts";
 
-import { pickKlass, selectKlass } from "../internal/attr";
+import { pickKlass, selectKlass } from "../data/internal/attr";
 import { Color } from "../data/var";
-import { isMatchUrl, pathIntoSegments } from "../internal/route";
+import { isMatchUrl, pathIntoSegments } from "../data/internal/route";
 import { MenuAttr, pickMenuAttrClass } from "./internal/menu";
 
 export * from "./internal/menu";

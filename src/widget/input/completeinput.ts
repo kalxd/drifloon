@@ -2,7 +2,7 @@ import * as m from "mithril";
 import { DropdownFrame, DropdownMenuFrame, DropdownMenuFrameAttr } from "../../element/dropdown";
 import { IORef } from "../../data/ref";
 import { Just, Maybe } from "purify-ts";
-import { compareEq } from "../../internal/function";
+import { compareEq } from "../../data/internal/function";
 
 export interface CompleteInputAttr<T> {
 	value?: string;

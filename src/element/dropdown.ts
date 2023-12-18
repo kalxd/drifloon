@@ -2,7 +2,7 @@ import * as m from "mithril";
 import { Just, Maybe, NonEmptyList } from "purify-ts";
 import { IORef } from "../data/ref";
 import { Outter, OutterAttr } from "../abstract/outter";
-import { pickKlass, selectKlass } from "../internal/attr";
+import { pickKlass, selectKlass } from "../data/internal/attr";
 import { AnimateFrame } from "../abstract/animate";
 
 export interface SelectTextAttr<T> {

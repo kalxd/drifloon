@@ -1,6 +1,6 @@
 import * as m from "mithril";
 import { Align } from "../data/var";
-import { pickKlass, selectKlass } from "../internal/attr";
+import { pickKlass, selectKlass } from "../data/internal/attr";
 import { GridAttr, pickGridKlass } from "./grid";
 import { Maybe } from "purify-ts";
 

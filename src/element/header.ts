@@ -1,5 +1,5 @@
 import * as m from "mithril";
-import { pickKlass, selectKlass } from "../internal/attr";
+import { pickKlass, selectKlass } from "../data/internal/attr";
 import { Align, AttachPosition, Color, Float, Size } from "../data/var";
 import { Maybe, curry } from "purify-ts";
 

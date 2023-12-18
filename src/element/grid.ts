@@ -1,7 +1,7 @@
 import * as m from "mithril";
 import { Maybe } from "purify-ts";
 
-import { fmapKlass, pickKlass, selectKlass } from "../internal/attr";
+import { fmapKlass, pickKlass, selectKlass } from "../data/internal/attr";
 import { Align, Color, Float, Wide, wideBase } from "../data/var";
 
 export enum GridDividType {

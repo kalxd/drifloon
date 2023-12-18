@@ -1,6 +1,6 @@
 import { Maybe } from "purify-ts";
 import { AttachPosition, Color, Wide } from "../../data/var";
-import { fmapKlass, pickKlass, selectKlass } from "../../internal/attr";
+import { fmapKlass, pickKlass, selectKlass } from "../../data/internal/attr";
 
 export enum MenuShape {
 	Point = "pointing",

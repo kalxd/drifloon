@@ -1,6 +1,6 @@
 import * as m from "mithril";
 import { Wide, wideBase } from "../data/var";
-import { fmapKlass, pickKlass, selectKlass } from "../internal/attr";
+import { fmapKlass, pickKlass, selectKlass } from "../data/internal/attr";
 import { Maybe } from "purify-ts";
 
 export interface FieldGridAttr {

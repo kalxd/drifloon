@@ -1,5 +1,5 @@
 import { Maybe, Nothing } from "purify-ts";
-import { ValidatorResult, ValidatorError } from "../internal/error";
+import { ValidatorResult, ValidatorError } from "../data/internal/error";
 import { Mutable, mutable } from "./internal/lens";
 
 export interface FormMutable<T> extends Mutable<T> {

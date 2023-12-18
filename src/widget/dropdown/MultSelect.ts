@@ -2,7 +2,7 @@ import * as m from "mithril";
 import { IORef } from "../../data/ref";
 import { DropdownFrame, DropdownMenuFrame, DropdownMenuFrameAttr } from "../../element/dropdown";
 import { Just, Maybe, NonEmptyList } from "purify-ts";
-import { compareEq } from "../../internal/function";
+import { compareEq } from "../../data/internal/function";
 
 interface TextAttr<T> {
 	value: Array<T>;

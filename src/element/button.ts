@@ -1,6 +1,6 @@
 import * as m from "mithril";
 import { Maybe } from "purify-ts";
-import { pickKlass, selectKlass } from "../internal/attr";
+import { pickKlass, selectKlass } from "../data/internal/attr";
 import { AttachPosition, Color, EmLevel, LoadingShape, Size, StateLevel } from "../data/var";
 
 export enum ButtonStyle {

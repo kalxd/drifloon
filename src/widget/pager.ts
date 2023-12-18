@@ -3,7 +3,7 @@ import { Just, Maybe } from "purify-ts";
 import { Align } from "../data/var";
 import { MenuAttr, pickMenuAttrClass } from "../element/internal/menu";
 import { Segment, SegmentShape, SegmentAttr } from "../element/segment";
-import { pickKlass, selectKlass } from "../internal/attr";
+import { pickKlass, selectKlass } from "../data/internal/attr";
 
 const rangePager = (
 	current: number,
