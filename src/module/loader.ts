@@ -4,17 +4,17 @@ import { mutable } from "../data";
 import { FluidPlaceholder } from "../element/placeholder";
 
 type ComponentResult<E = {}, T = {}> =
-	EitherAsync<E, m.Component<T>>;
+	EitherAsync<E, m.ComponentTypes<T>>;
 
-export type UpdaterFn<E = {}, T = {}> = () => ComponentResult<E, T>;
+type UpdaterFn<E = {}, T = {}> = () => ComponentResult<E, T>;
 
 interface LoaderState<E = {}, T = {}> {
-	dom: Maybe<Either<m.Component<E>, m.Component<T>>>;
-	lastFn: Maybe<UpdaterFn<m.Component<E>, T>>;
+	dom: Maybe<Either<m.ComponentTypes<E>, m.ComponentTypes<T>>>;
+	lastFn: Maybe<UpdaterFn<m.ComponentTypes<E>, T>>;
 }
 
 export const useLoader = <E = {}, T = {}>(
-):[(updater: UpdaterFn<m.Component<E>, T>) => void, m.Component] => {
+): [(updater: UpdaterFn<m.ComponentTypes<E>, T>) => void, m.Component] => {
 	const state = mutable<LoaderState<E, T>>({
 		dom: Nothing,
 		lastFn: Nothing
@@ -22,7 +22,7 @@ export const useLoader = <E = {}, T = {}>(
 
 	const domLens = state.prop("dom");
 
-	const update = async (f: UpdaterFn<m.Component<E>, T>) => {
+	const update = async (f: UpdaterFn<m.ComponentTypes<E>, T>) => {
 		domLens.set(Nothing);
 		state.prop("lastFn").set(Just(f));
 		m.redraw();
@@ -44,17 +44,28 @@ export const useLoader = <E = {}, T = {}>(
 	return [update, comp];
 };
 
+type ErrorMessage = string | Error;
+
+const showErrorMessage = (msg: ErrorMessage): string => {
+	if (msg instanceof Error) {
+		return msg.stack ?? msg.message;
+	}
+	else {
+		return msg;
+	}
+};
+
 export const useDefLoader = <T = {}>(
-): [(updater: UpdaterFn<string, T>) => void, m.Component] => {
+): [(updater: UpdaterFn<ErrorMessage, T>) => void, m.Component] => {
 	const [f, comp] = useLoader<{}, T>();
 
-	const update = async (g: UpdaterFn<string, T>) => {
+	const update = async (g: UpdaterFn<ErrorMessage, T>) => {
 		const k: ComponentResult<m.Component, T>  = g().mapLeft(msg => ({
 			view: () => m("div.ui.icon.negative.message", [
 				m("i.icon.exclamation"),
 				m("div.content", [
 					m("div.header", "出现了错误！"),
-					m("p", msg),
+					m("p", showErrorMessage(msg)),
 					m("button.ui.negative.right.labeled.icon.button", { onclick: () => update(g) }, [
 						m("i.right.icon.redo"),
 						"重试"
