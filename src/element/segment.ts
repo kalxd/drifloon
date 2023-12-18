@@ -1,4 +1,4 @@
-import { Align, AttachPosition, Color } from "../data/var";
+import { Align, AttachPosition, Color, EmLevel } from "../data/var";
 import * as m from "mithril";
 import { pickKlass, selectKlass } from "../internal/attr";
 import { Maybe } from "purify-ts";
@@ -19,6 +19,7 @@ export interface SegmentAttr {
 	attach?: AttachPosition;
 	color?: Color;
 	align?: Align;
+	em?: EmLevel;
 }
 
 export const Segment: m.Component<SegmentAttr> = {
@@ -30,7 +31,8 @@ export const Segment: m.Component<SegmentAttr> = {
 			selectKlass("inverted", attrs.isInvert),
 			Maybe.fromNullable(attrs.attach),
 			Maybe.fromNullable(attrs.color),
-			Maybe.fromNullable(attrs.align)
+			Maybe.fromNullable(attrs.align),
+			Maybe.fromNullable(attrs.em)
 		]);
 
 		return m("div.ui.segment", { class: klass }, children);
