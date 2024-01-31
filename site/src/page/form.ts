@@ -1,7 +1,7 @@
 import { Color, EmLevel, Size, Wide } from "drifloon/data/var";
 import { Header, Header2 } from "drifloon/element/header";
 import * as m from "mithril";
-import { Either, Just, Maybe } from "purify-ts";
+import { Either, EitherAsync, Just, Maybe } from "purify-ts";
 import { alertText } from "drifloon/module/modal";
 import { Button } from "drifloon/element";
 import {
@@ -12,6 +12,7 @@ import {
 	Form, FormAttr } from "drifloon/form";
 import { must, isNotEmpty } from "drifloon/data/validate";
 import { formMut } from "drifloon/data/form";
+import { ValidatorResult } from "drifloon/data";
 
 const FormS: m.Component = {
 	view: () => {
@@ -60,10 +61,17 @@ const ValidationS = (): m.Component => {
 		address
 	});
 
-	const validateForm = (user: User): Either<Array<string>, Output> =>
+	const validateInput = (user: User): Either<Array<string>, Output> =>
 		must("用户名", isNotEmpty(user.name))
 			.option(Just(user.address))
 			.collect(mkOutput);
+
+	const validateForm = (user: User): ValidatorResult<Output> => {
+		return EitherAsync.fromPromise(async () => {
+			await new Promise(r => setTimeout(r, 1000 * 2));
+			return validateInput(user);
+		});
+	};
 
 	const user = formMut<User>({
 		name: "",
@@ -76,7 +84,7 @@ const ValidationS = (): m.Component => {
 				formdata: user
 			};
 
-			const onsubmit = () => user.validate(validateForm)
+			const onsubmit = async () => (await user.validate(validateForm))
 				.ifRight(s => alertText(JSON.stringify(s, null, 4)));
 
 			return m(Form, attr, [

@@ -1,8 +1,8 @@
-import { Either } from "purify-ts";
+import { EitherAsync } from "purify-ts";
 import { IsNil, isNil } from "./function";
 
 export type ValidatorError = Array<string>;
-export type ValidatorResult<T> = Either<ValidatorError, T>;
+export type ValidatorResult<T> = EitherAsync<ValidatorError, T>;
 
 export class ComponentPanic {
 	private readonly name: string;

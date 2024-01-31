@@ -17,8 +17,11 @@ export const Form = <T>(): m.Component<FormAttr<T>> => {
 		view: ({ attrs, children }) => {
 			const fd = Maybe.fromNullable(attrs.formdata)
 
+			const loadShape = fd.filter(d => d.isValidating())
+				.map(() => attrs.loading ?? LoadingShape.Default);
+
 			const klass = pickKlass([
-				Maybe.fromNullable(attrs.loading),
+				loadShape,
 				selectKlass("inverted", attrs.isInvert),
 				Maybe.fromNullable(attrs.size),
 				fd.chain(fd => fd.getErr()).map(_ => "error")
