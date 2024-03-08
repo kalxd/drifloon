@@ -25,7 +25,7 @@ export interface ButtonAttr {
 	style?: ButtonStyle;
 	iconStyle?: IconStyle;
 	isDisable?: boolean;
-	connectClick?: (e: MouseEvent) => void;
+	connectClick?: () => void;
 }
 
 const pickAttr = (attr: ButtonAttr): m.Attributes => {
@@ -42,9 +42,9 @@ const pickAttr = (attr: ButtonAttr): m.Attributes => {
 		Maybe.fromNullable(attr.iconStyle)
 	]);
 
-	const onclick = (e: MouseEvent): void => {
+	const onclick = (): void => {
 		if (!attr.isDisable && attr.connectClick) {
-			attr.connectClick(e);
+			attr.connectClick();
 		}
 	};
 
