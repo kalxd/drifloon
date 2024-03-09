@@ -8,7 +8,6 @@ import { MenuAttr, pickMenuAttrClass } from "./internal/menu";
 
 export * from "./internal/menu";
 
-
 export const Menu: m.Component<MenuAttr> = {
 	view: ({ attrs, children }) => {
 		const klass = pickMenuAttrClass(attrs);
