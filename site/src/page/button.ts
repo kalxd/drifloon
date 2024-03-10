@@ -1,4 +1,4 @@
-import { Button } from "drifloon/element/button";
+import { Button, PrimaryButton } from "drifloon/element/button";
 import { Header } from "drifloon/element/header";
 import { Segment } from "drifloon/element/segment";
 import { Color, EmLevel, Size, StateLevel } from "drifloon/data/var";
@@ -9,7 +9,7 @@ const S1 = m("div", [
 ]);
 
 const EmS = m("div", [
-	m(Button, { em: EmLevel.Primary }, "primary"),
+	m(PrimaryButton, { connectClick: console.log }, "primary"),
 	m(Button, { em: EmLevel.Secondary }, "seconary")
 ]);
 

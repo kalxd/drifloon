@@ -60,3 +60,25 @@ export const Button: m.Component<ButtonAttr> = {
 		return m("button.ui.button", prop, children);
 	}
 };
+
+export const PrimaryButton: m.Component<Omit<ButtonAttr, "em">> = {
+	view: ({ attrs, children }) => {
+		const attr: ButtonAttr = {
+			...attrs,
+			em: EmLevel.Primary
+		};
+
+		return m(Button, attr, children);
+	}
+};
+
+export const SuccButton: m.Component<Omit<ButtonAttr, "level">> = {
+	view: ({ attrs, children }) => {
+		const attr: ButtonAttr = {
+			...attrs,
+			level: StateLevel.Positive
+		};
+
+		return m(Button, attr, children);
+	}
+};
