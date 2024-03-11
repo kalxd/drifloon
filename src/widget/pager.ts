@@ -1,7 +1,7 @@
 import * as m from "mithril";
 import { Just, Maybe } from "purify-ts";
 import { Align } from "../data/var";
-import { MenuAttr, pickMenuAttrClass } from "../element/internal/menu";
+import { Menu, MenuAttr, MenuStyle } from "../element/menu";
 import { Segment, SegmentShape, SegmentAttr } from "../element/segment";
 import { pickKlass, selectKlass } from "../data/internal/attr";
 
@@ -57,7 +57,6 @@ export const Pager: m.Component<PagerAttr> = {
 
 		const totalPage = Math.ceil(total / limit);
 		const current = Math.max(1, Math.min(currentDef, totalPage));
-		const klass = pickMenuAttrClass(attrs);
 
 		const segmentAttr: SegmentAttr = {
 			align: Align.Center,
@@ -101,8 +100,13 @@ export const Pager: m.Component<PagerAttr> = {
 			m("i.angle.double.right.icon")
 		);
 
+		const menuAttr: MenuAttr = {
+			...attrs,
+			style: MenuStyle.Pagination
+		};
+
 		return m(Segment, segmentAttr, [
-			m("div.ui.pagination.menu", { class: klass }, [
+			m(Menu, menuAttr, [
 				firstItem,
 				...itemList,
 				lastItem

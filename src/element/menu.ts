@@ -1,16 +1,53 @@
 import * as m from "mithril";
 import { Maybe } from "purify-ts";
 
-import { pickKlass, selectKlass } from "../data/internal/attr";
-import { Color } from "../data/var";
+import { fmapKlass, pickKlass, selectKlass } from "../data/internal/attr";
+import { AttachPosition, Color, Wide } from "../data/var";
 import { isMatchUrl, pathIntoSegments } from "../data/internal/route";
-import { MenuAttr, pickMenuAttrClass } from "./internal/menu";
 
-export * from "./internal/menu";
+export enum MenuFixPosition {
+	Top = "top fixed",
+	Bottom = "bottom fixed",
+	Left = "left fixed",
+	Right = "right fixed"
+}
+
+export enum MenuStyle {
+	Secondary = "secondary",
+	Pointing = "pointing",
+	SecondaryPointing = "secondary pointing",
+	Tabular = "tabular",
+	Text = "text",
+	Pagination = "pagination"
+}
+
+export interface MenuAttr {
+	style?: MenuStyle;
+	wide?: Wide;
+	attach?: AttachPosition;
+	isVertical?: boolean;
+	invert?: boolean;
+	isRight?: boolean;
+	fixAt?: MenuFixPosition;
+	color?: Color;
+	isFluid?: boolean;
+	isBorderless?: boolean;
+}
 
 export const Menu: m.Component<MenuAttr> = {
 	view: ({ attrs, children }) => {
-		const klass = pickMenuAttrClass(attrs);
+		const klass = pickKlass([
+		Maybe.fromNullable(attrs.style),
+			fmapKlass(wide => `${wide} item`, attrs.wide),
+			Maybe.fromNullable(attrs.attach),
+			selectKlass("vertical", attrs.isVertical),
+			selectKlass("inverted", attrs.invert),
+			selectKlass("right", attrs.isRight),
+			Maybe.fromNullable(attrs.fixAt),
+			Maybe.fromNullable(attrs.color),
+			selectKlass("fluid", attrs.isFluid),
+			selectKlass("borderless", attrs.isBorderless)
+		]);
 		return m("div.ui.menu", { class: klass }, children);
 	}
 };
