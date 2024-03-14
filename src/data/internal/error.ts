@@ -21,15 +21,18 @@ export class ComponentPanic {
 		}
 	}
 
-	public panicNil<T>(value: IsNil<T>, msg: string): void {
+	public panicNil<T>(value: IsNil<T>, msg: string): T {
 		if (isNil(value)) {
 			this.panic(msg);
 		}
+		return value;
 	}
 
-	public panicEmpty<T>(value: Array<T>, msg: string): void {
+	public panicEmpty<T>(value: Array<T>, msg: string): Array<T> {
 		if (!value.length) {
 			this.panic(msg);
 		}
+
+		return value;
 	}
 }

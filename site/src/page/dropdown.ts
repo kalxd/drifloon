@@ -1,9 +1,10 @@
 import { Header } from "drifloon/element/header";
-import { Select, SelectAttr, MultSelect, MultSelectAttr } from "drifloon/widget/dropdown";
+import { Select, SelectAttr, MultSelect, MultSelectAttr, FixSelect, FixSelectAttr } from "drifloon/widget/dropdown";
 import { IORef } from "drifloon/data/ref";
 import { Size } from "drifloon/data/var";
 import * as m from "mithril";
 import { Maybe, Nothing } from "purify-ts";
+import { mutable, propOf } from "drifloon/data";
 
 interface Item {
 	key: number;
@@ -18,22 +19,32 @@ const items: Array<Item> = [
 ];
 
 const FixSelectS = (): m.Component => {
-	const dynState = new IORef<Maybe<Item>>(Nothing);
+	// const dynState = new IORef<Maybe<Item>>(Nothing);
+	const dynState = mutable<Maybe<Item>>(Nothing);
+	const fixState = mutable<Item>(items[0]);
 
 	return {
 		view: () => {
 			const dynAttr: SelectAttr<Item> = {
-				value: dynState.ask(),
+				value: dynState.get(),
 				placeholder: "请选择",
 				itemList: items,
 				renderItem: item => item.value,
 				renderText: item => item.value,
-				connectChange: item => dynState.put(item)
+				connectChange: dynState.set
+			};
+
+			const fixAttr: FixSelectAttr<Item> = {
+				value: fixState.get(),
+				itemList: items,
+				renderItem: propOf("value"),
+				renderText: propOf("value"),
+				connectChange: fixState.set
 			};
 
 			return m.fragment({}, [
 				m<SelectAttr<Item>, {}>(Select, dynAttr),
-				m<SelectAttr<Item>, {}>(Select, dynAttr)
+				m<FixSelectAttr<Item>, {}>(FixSelect, fixAttr)
 			]);
 		}
 	};
