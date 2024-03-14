@@ -5,23 +5,26 @@ import { Outter, OutterAttr } from "../abstract/outter";
 import { pickKlass, selectKlass } from "../data/internal/attr";
 import { AnimateFrame } from "../abstract/animate";
 
-export interface SelectTextAttr<T> {
-	text?: T;
+export interface SelectTextAttr {
+	text?: string;
 	placeholder?: string;
-	renderText?: (item: T) => m.Children;
+	connectClick?: () => void;
 }
 
-export const SelectText = <T>(): m.Component<SelectTextAttr<T>> => ({
-	view: ({ attrs }) => Maybe.fromNullable(attrs.text)
-		.caseOf({
-			Just: text => {
-				const render = attrs.renderText ?? String;
-				return m("div.text", render(text));
-			},
-			Nothing: () =>
-				m("div.default.text", attrs.placeholder)
-		})
-});
+export const SelectText: m.Component<SelectTextAttr> = {
+	view: ({ attrs }) => {
+		const mclickE = Maybe.fromNullable(attrs.connectClick);
+		const textClick = () => mclickE.ifJust(f => f());
+
+		return Maybe.fromNullable(attrs.text)
+			.caseOf({
+				Just: text =>
+					m("div.text", { onclick: textClick }, text),
+				Nothing: () =>
+					m("div.default.text", { onclick: textClick }, attrs.placeholder)
+			});
+	}
+};
 
 export interface DropdownFrameAttr {
 	value: IORef<boolean>;

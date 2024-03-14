@@ -1,5 +1,5 @@
 import { Header } from "drifloon/element/header";
-import { FixSelect, FixSelectAttr, Select, SelectAttr, MultSelect, MultSelectAttr } from "drifloon/widget/dropdown";
+import { Select, SelectAttr, MultSelect, MultSelectAttr } from "drifloon/widget/dropdown";
 import { IORef } from "drifloon/data/ref";
 import { Size } from "drifloon/data/var";
 import * as m from "mithril";
@@ -18,19 +18,10 @@ const items: Array<Item> = [
 ];
 
 const FixSelectS = (): m.Component => {
-	const fixState = new IORef<Item>({ key: 1, value: "item 1"});
 	const dynState = new IORef<Maybe<Item>>(Nothing);
 
 	return {
 		view: () => {
-			const fixAttr: FixSelectAttr<Item> = {
-				value: fixState.ask(),
-				itemList: items,
-				renderItem: item => item.value,
-				renderText: item => item.value,
-				connectChange: item => fixState.put(item)
-			};
-
 			const dynAttr: SelectAttr<Item> = {
 				value: dynState.ask(),
 				placeholder: "请选择",
@@ -41,7 +32,7 @@ const FixSelectS = (): m.Component => {
 			};
 
 			return m.fragment({}, [
-				m<FixSelectAttr<Item>, {}>(FixSelect, fixAttr),
+				m<SelectAttr<Item>, {}>(Select, dynAttr),
 				m<SelectAttr<Item>, {}>(Select, dynAttr)
 			]);
 		}
