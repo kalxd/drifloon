@@ -90,10 +90,9 @@ export const Select = <T>(): m.Component<SelectAttr<T>> => {
 		connectOutterClick: () => state.set(false)
 	};
 
-	const toggleE = (e: MouseEvent) => {
+	const toggleE = () => {
 		const v = state.get();
 		state.set(!v);
-		e.stopPropagation();
 	};
 
 	return {
@@ -109,7 +108,10 @@ export const Select = <T>(): m.Component<SelectAttr<T>> => {
 
 			const removeIcon = Maybe.fromFalsy(attrs.isShowRemoveIcon ?? true)
 				.map(_ => {
-					const f = () => mchangeE.ifJust(f => f(Nothing));
+					const f = (e: MouseEvent) => {
+						mchangeE.ifJust(f => f(Nothing));
+						e.stopPropagation();
+					};
 					return m("i.icon.remove", { onclick: f });
 				});
 
@@ -128,7 +130,7 @@ export const Select = <T>(): m.Component<SelectAttr<T>> => {
 			return m(Outter, outterAttr, [
 				m("div.ui.selection.dropdown", dropdownAttr, [
 					m("div.text.default", "请选择一个选项"),
-					m("i.icon.dropdown", { onclick: toggleE }),
+					m("i.icon.dropdown"),
 					removeIcon.extract(),
 					dropdownMenu.extract()
 				])
