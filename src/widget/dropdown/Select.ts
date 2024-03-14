@@ -9,15 +9,31 @@ import {
 	} from "../../element/dropdown";
 */
 import { Just, Maybe, Nothing } from "purify-ts";
+import { AnimateFrame } from "../../abstract/animate";
 import { Outter, OutterAttr } from "../../abstract/outter";
 import { mutable } from "../../data";
 import { pickKlass, selectKlass } from "../../data/internal/attr";
 
-interface SelectMenuAttr {}
+interface SelectMenuAttr<T> {
+	itemList: Array<T>;
+	renderItem: (item: T) => m.Children;
+	connectSelect: (item: T) => void;
+}
 
-const SelectMenu: m.Component<SelectMenuAttr> = {
-	view: () => {}
-};
+const SelectMenu = <T>(): m.Component<SelectMenuAttr<T>> => ({
+	view: ({ attrs }) => {
+		const itemList = attrs.itemList.map(item => {
+			const f = () => attrs.connectSelect(item);
+			return m("div.item", { onclick: f }, attrs.renderItem(item))
+		});
+
+		return m(
+			AnimateFrame,
+			{ el: "div.menu.transition.visible" },
+			itemList
+		);
+	}
+});
 
 export interface SelectAttr<T> {
 	value?: Maybe<T>;
@@ -97,11 +113,24 @@ export const Select = <T>(): m.Component<SelectAttr<T>> => {
 					return m("i.icon.remove", { onclick: f });
 				});
 
+			const dropdownMenu = Maybe.fromNullable(attrs.itemList)
+				.filter(state.get)
+				.map(itemList => {
+					const menuAttr: SelectMenuAttr<T> = {
+						itemList,
+						renderItem: attrs.renderItem ?? String,
+						connectSelect: item => mchangeE.ifJust(f => f(Just(item)))
+					};
+
+					return m<SelectMenuAttr<T>, {}>(SelectMenu, menuAttr);
+				})
+
 			return m(Outter, outterAttr, [
 				m("div.ui.selection.dropdown", dropdownAttr, [
 					m("div.text.default", "请选择一个选项"),
 					m("i.icon.dropdown", { onclick: toggleE }),
-					removeIcon.extract()
+					removeIcon.extract(),
+					dropdownMenu.extract()
 				])
 			]);
 		}
