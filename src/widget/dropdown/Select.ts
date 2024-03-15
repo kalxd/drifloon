@@ -18,11 +18,23 @@ const SelectMenu = <T>(): m.Component<SelectMenuAttr<T>> => ({
 			return m("div.item", { onclick: f }, attrs.renderItem(item))
 		});
 
-		return m(
-			AnimateFrame,
-			{ el: "div.menu.transition.visible" },
-			itemList
-		);
+		if (itemList.length === 0) {
+			return m(
+				AnimateFrame,
+				{ el: "div.menu.transition.visible" },
+				m("div.message", [
+					m("i.icon.dizzy"),
+					"暂无数据"
+				])
+			);
+		}
+		else {
+			return m(
+				AnimateFrame,
+				{ el: "div.menu.transition.visible" },
+				itemList
+			);
+		}
 	}
 });
 

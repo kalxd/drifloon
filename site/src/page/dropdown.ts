@@ -19,7 +19,6 @@ const items: Array<Item> = [
 ];
 
 const FixSelectS = (): m.Component => {
-	// const dynState = new IORef<Maybe<Item>>(Nothing);
 	const dynState = mutable<Maybe<Item>>(Nothing);
 	const fixState = mutable<Item>(items[0]);
 
