@@ -1,5 +1,4 @@
 import { compareEqAt, propOf } from "drifloon/data/fn";
-import { IORef } from "drifloon/data/ref";
 import { Size } from "drifloon/data/var";
 import { Header, Header2 } from "drifloon/element/header";
 import { TrimInput, Input as RawInput } from "drifloon/element/input";
@@ -16,23 +15,28 @@ const ToggleS = (): m.Component => {
 		s1: boolean;
 		s2: boolean;
 	}
-	const value = new IORef<State>({
+	const value = mutable<State>({
 		s1: false,
 		s2: true
 	});
 
 	return {
 		view: () => {
-			const attr1: ToggleAttr = value.asks(s => ({
-				value: s.s1,
-				connectChange: b => value.putAt("s1", b)
-			}));
+			const attr1: ToggleAttr = (state => {
+				const lens = state.prop("s1");
+				return {
+					value: lens.get(),
+					connectChange: lens.set
+				};
+			})(value);
 
-			const attr2: ToggleAttr = value.asks(s => ({
-				value: s.s2,
-				connectChange: b => value.putAt("s2", b)
-			}));
-
+			const attr2: ToggleAttr = (state => {
+				const lens = state.prop("s2");
+				return {
+					value: lens.get(),
+					connectChange: lens.set
+				};
+			})(value);
 			return m("div", [
 				m("div", [
 					m(Toggle, attr1, "自愿打工")
@@ -51,18 +55,20 @@ const CheckBoxS = (): m.Component => {
 		isDisable: boolean;
 	}
 
-	const state = new IORef<State>({ isGo: false, isDisable: true });
+	const state = mutable<State>({ isGo: false, isDisable: true });
+	const goLens = state.prop("isGo");
+	const disableLens = state.prop("isDisable");
 
 	return {
 		view: () => {
 			const a1: Input.CheckboxAttr = {
-				value: state.askAt("isGo"),
-				connectChange: b => state.putAt("isGo", b)
+				value: goLens.get(),
+				connectChange: goLens.set
 			};
 
 			const a2: Input.CheckboxAttr = {
-				value: state.askAt("isDisable"),
-				connectChange: b => state.putAt("isDisable", b)
+				value: disableLens.get(),
+				connectChange: disableLens.set
 			};
 
 			return m("div", [
@@ -81,7 +87,7 @@ const RadioboxS = (): m.Component => {
 		value: string;
 	}
 
-	const state = new IORef<Maybe<Item>>(Nothing);
+	const state = mutable<Maybe<Item>>(Nothing);
 
 	const itemList: Array<Item> = [
 		{ key: 1, value: "hello 1" },
@@ -92,11 +98,11 @@ const RadioboxS = (): m.Component => {
 	return {
 		view: () => {
 			const attr: Input.RadioboxAttr<Item> = {
-				value: state.ask().extract(),
+				value: state.get().extract(),
 				itemList,
 				compare: compareEqAt("key"),
 				renderItem: propOf("value"),
-				connectChange: item => state.put(Just(item))
+				connectChange: item => state.set(Just(item))
 			};
 
 			return m("div", [

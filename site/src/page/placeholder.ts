@@ -5,26 +5,26 @@ import { FluidPlaceholder } from "drifloon/element/placeholder";
 import { Message } from "drifloon/element/message";
 import { loading } from "drifloon/widget/load";
 import * as m from "mithril";
-import { IORef } from "drifloon/data/ref";
 import { EitherAsync, Just, Left, Maybe, Nothing, Right } from "purify-ts";
 import { Button } from "drifloon/element/button";
 import { useDefLoader } from "drifloon/module/loader";
+import { mutable } from "drifloon/data";
 
 const delay = () => new Promise(resolve => setTimeout(resolve, 1000));
 
 const Timer = () => {
-	const list = new IORef<Maybe<Array<number>>>(Nothing);
+	const list = mutable<Maybe<Array<number>>>(Nothing);
 
 	const fetchData = async () => {
 		await delay();
-		list.put(Just([1, 2, 3, 4, 5]));
+		list.set(Just([1, 2, 3, 4, 5]));
 		m.redraw();
 	};
 
 	const startTimer = () => {
-		list.ask()
+		list.get()
 			.ifJust(async () => {
-				list.put(Nothing);
+				list.set(Nothing);
 				await fetchData();
 			});
 	};
@@ -39,7 +39,7 @@ const Timer = () => {
 		view: () => {
 			return m("div", [
 				m(Button, { connectClick: startTimer }, "执行"),
-				loading(render, list.ask())
+				loading(render, list.get())
 			]);
 		}
 	};
@@ -47,10 +47,15 @@ const Timer = () => {
 
 const WaitS = (): m.Component => {
 	const [update, Wait] = useDefLoader<{}>();
-	const state = new IORef<number>(0);
+	const state = mutable<number>(0);
 	const f = () => EitherAsync.fromPromise(async () => {
 		await delay();
-		const n = state.update(s => s + 1).ask();
+		const n = (state => {
+			const a = state.get();
+			const b = a + 1;
+			state.set(b);
+			return b;
+		})(state);
 
 		if (n % 2 === 0) {
 			return Left("偶数次必然出错!");
