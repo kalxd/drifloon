@@ -2,9 +2,8 @@ import { compareEqAt, propOf } from "drifloon/data/fn";
 import { Size } from "drifloon/data/var";
 import { Header, Header2 } from "drifloon/element/header";
 import { TrimInput, Input as RawInput } from "drifloon/element/input";
-import { Toggle, ToggleAttr } from "drifloon/widget/input";
 import * as Input from "drifloon/widget/input";
-import { Checkbox, CheckboxAttr } from "drifloon/element/input";
+import { Checkbox, CheckboxAttr, Toggle, ToggleAttr } from "drifloon/form";
 import * as m from "mithril";
 import { Just, Maybe, Nothing } from "purify-ts";
 import { mutable } from "drifloon/data";
@@ -57,19 +56,15 @@ const CheckBoxS = (): m.Component => {
 	}
 
 	const state = mutable<State>({ isGo: false, isDisable: true });
-	const goLens = state.prop("isGo");
-	const disableLens = state.prop("isDisable");
 
 	return {
 		view: () => {
 			const a1: CheckboxAttr = {
-				value: goLens.get(),
-				connectChange: goLens.set
+				bindValue: state.prop("isGo")
 			};
 
 			const a2: CheckboxAttr = {
-				value: disableLens.get(),
-				connectChange: disableLens.set
+				bindValue: state.prop("isDisable")
 			};
 
 			return m("div", [
