@@ -1,6 +1,5 @@
 import { Header } from "drifloon/element/header";
-import { Select, SelectAttr, MultSelect, MultSelectAttr, FixSelect, FixSelectAttr } from "drifloon/widget/dropdown";
-import { IORef } from "drifloon/data/ref";
+import { Select, SelectAttr, MultiSelect, MultiSelectAttr, FixSelect, FixSelectAttr } from "drifloon/widget/dropdown";
 import { Size } from "drifloon/data/var";
 import * as m from "mithril";
 import { Maybe, Nothing } from "purify-ts";
@@ -50,19 +49,19 @@ const FixSelectS = (): m.Component => {
 };
 
 const MultSelectS = (): m.Component => {
-	const state = new IORef<Array<Item>>([]);
+	const state = mutable<Array<Item>>([]);
 	return {
 		view: () => {
-			const attr: MultSelectAttr<Item> = {
-				value: state.ask(),
+			const attr: MultiSelectAttr<Item> = {
+				value: state.get(),
 				itemList: items,
 				renderText: item => item.value,
 				renderItem: item => item.value,
 				placeholder: "来选一个",
-				connectChange: xs => state.put(xs)
+				connectChange: state.set
 			};
 
-			return m(MultSelect, attr);
+			return m(MultiSelect, attr);
 		}
 	};
 };

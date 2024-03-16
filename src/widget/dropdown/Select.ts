@@ -90,7 +90,7 @@ export const Select = <T>(): m.Component<SelectAttr<T>> => {
 					return m("i.icon.remove", { onclick: f });
 				});
 
-			const dropdownMenu = Maybe.fromNullable(attrs.itemList)
+			const dropdownMenu = Maybe.of(attrs.itemList ?? [])
 				.filter(state.get)
 				.map(itemList => {
 					const menuAttr: SelectMenuAttr<T> = {
