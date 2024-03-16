@@ -75,6 +75,7 @@ export interface MultiSelectAttr<T> {
 	compareEq?: (value: T, item: T) => boolean;
 	renderText?: (value: T) => m.Children;
 	renderItem?: (item: T) => m.Children;
+	isFluid?: boolean;
 	connectChange?: (value: Array<T>) => void;
 }
 
@@ -97,7 +98,8 @@ export const MultiSelect = <T>(): m.Component<MultiSelectAttr<T>> => {
 
 			const dropdownAttr: m.Attributes = {
 				class: pickKlass([
-					selectKlass("active", state.get())
+					selectKlass("active", state.get()),
+					selectKlass("fluid", attrs.isFluid)
 				]),
 				onclick: toggleE
 			};

@@ -46,6 +46,7 @@ export interface SelectAttr<T> {
 	renderText?: (item: T) => string;
 	connectChange?: (item: Maybe<T>) => void;
 	isShowRemoveIcon?: boolean;
+	isFluid?: boolean;
 }
 
 export const Select = <T>(): m.Component<SelectAttr<T>> => {
@@ -66,7 +67,8 @@ export const Select = <T>(): m.Component<SelectAttr<T>> => {
 
 			const dropdownAttr: m.Attributes = {
 				class: pickKlass([
-					selectKlass("active", state.get())
+					selectKlass("active", state.get()),
+					selectKlass("fluid", attrs.isFluid)
 				]),
 				onclick: toggleE
 			};
