@@ -4,6 +4,7 @@ import { Header, Header2 } from "drifloon/element/header";
 import { TrimInput, Input as RawInput } from "drifloon/element/input";
 import { Toggle, ToggleAttr } from "drifloon/widget/input";
 import * as Input from "drifloon/widget/input";
+import { Checkbox, CheckboxAttr } from "drifloon/element/input";
 import * as m from "mithril";
 import { Just, Maybe, Nothing } from "purify-ts";
 import { mutable } from "drifloon/data";
@@ -61,20 +62,20 @@ const CheckBoxS = (): m.Component => {
 
 	return {
 		view: () => {
-			const a1: Input.CheckboxAttr = {
+			const a1: CheckboxAttr = {
 				value: goLens.get(),
 				connectChange: goLens.set
 			};
 
-			const a2: Input.CheckboxAttr = {
+			const a2: CheckboxAttr = {
 				value: disableLens.get(),
 				connectChange: disableLens.set
 			};
 
 			return m("div", [
 				m("div", [
-					m(Input.Checkbox, a1, "不同意"),
-					m(Input.Checkbox, a2, "禁止访问")
+					m(Checkbox, a1, "不同意"),
+					m(Checkbox, a2, "禁止访问")
 				])
 			]);
 		}

@@ -1,7 +1,7 @@
 import * as m from "mithril";
 import { Maybe, Just } from "purify-ts";
-import { isNotEmpty } from "../data/validate";
-import { BindValue, bindValue } from "../data/internal/value";
+import { isNotEmpty } from "../../data/validate";
+import { BindValue, bindValue } from "../../data/internal/value";
 
 export interface InputAttr extends BindValue<string> {
 	placeholder?: string;
