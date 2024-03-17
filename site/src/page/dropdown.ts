@@ -51,12 +51,11 @@ const MultSelectS = (): m.Component => {
 	return {
 		view: () => {
 			const attr: MultiSelectAttr<Item> = {
-				value: state.get(),
+				bindValue: state,
 				itemList: items,
 				renderText: item => item.value,
 				renderItem: item => item.value,
 				placeholder: "来选一个",
-				connectChange: state.set
 			};
 
 			return m(MultiSelect, attr);

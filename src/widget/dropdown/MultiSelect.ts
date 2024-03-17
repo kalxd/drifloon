@@ -5,6 +5,7 @@ import { mutable } from "../../data";
 import { Outter, OutterAttr } from "../../abstract/outter";
 import { AnimateFrame } from "../../abstract/animate";
 import { pickKlass, selectKlass } from "../../data/internal/attr";
+import { bindValue, BindValue } from "../../data/internal/value";
 
 interface TextAttr<T> {
 	value: Array<T>;
@@ -68,15 +69,13 @@ const MultiSelectMenu = <T>(): m.Component<MultiSelectMenuAttr<T>> => ({
 	}
 });
 
-export interface MultiSelectAttr<T> {
-	value?: Array<T>;
+export interface MultiSelectAttr<T> extends BindValue<Array<T>> {
 	itemList?: Array<T>;
 	placeholder?: string;
 	compareEq?: (value: T, item: T) => boolean;
 	renderText?: (value: T) => m.Children;
 	renderItem?: (item: T) => m.Children;
 	isFluid?: boolean;
-	connectChange?: (value: Array<T>) => void;
 }
 
 export const MultiSelect = <T>(): m.Component<MultiSelectAttr<T>> => {
@@ -93,8 +92,7 @@ export const MultiSelect = <T>(): m.Component<MultiSelectAttr<T>> => {
 
 	return {
 		view: ({ attrs }) => {
-			const mvalue = Maybe.fromNullable(attrs.value);
-			const mchangeE = Maybe.fromNullable(attrs.connectChange);
+			const mbindvalue = bindValue(attrs);
 
 			const dropdownAttr: m.Attributes = {
 				class: pickKlass([
@@ -105,12 +103,12 @@ export const MultiSelect = <T>(): m.Component<MultiSelectAttr<T>> => {
 			};
 
 			const textAttr: TextAttr<T> = {
-				value: mvalue.orDefault([]),
+				value: mbindvalue.value.orDefault([]),
 				placeholder: attrs.placeholder,
 				renderText: attrs.renderText ?? String,
 				connectRemove: index => {
-					mvalue.map(xs => xs.filter((_, i) => i !== index))
-						.ap(mchangeE);
+					mbindvalue.value.map(xs => xs.filter((_, i) => i !== index))
+						.ifJust(mbindvalue.connectChange);
 					state.set(true);
 				}
 			};
@@ -120,7 +118,7 @@ export const MultiSelect = <T>(): m.Component<MultiSelectAttr<T>> => {
 				.filter(state.get)
 				.map(xs => {
 					const submenuItemList = xs.filter(item => {
-						return mvalue.map(value => !value.some(x => compareItem(x, item)))
+						return mbindvalue.value.map(value => !value.some(x => compareItem(x, item)))
 							.orDefault(true);
 					});
 
@@ -128,7 +126,8 @@ export const MultiSelect = <T>(): m.Component<MultiSelectAttr<T>> => {
 						itemList: submenuItemList,
 						renderItem: attrs.renderItem ?? String,
 						connectClickItem: item => {
-							mvalue.map(xs => ([...xs, item])).ap(mchangeE);
+							mbindvalue.value.map(xs => ([...xs, item]))
+								.ifJust(mbindvalue.connectChange);
 						}
 					};
 					return m<MultiSelectMenuAttr<T>, {}>(MultiSelectMenu, menuAttr);
