@@ -24,12 +24,11 @@ const FixSelectS = (): m.Component => {
 	return {
 		view: () => {
 			const dynAttr: SelectAttr<Item> = {
-				value: dynState.get(),
+				bindValue: dynState,
 				placeholder: "请选择",
 				itemList: items,
 				renderItem: item => item.value,
-				renderText: item => item.value,
-				connectChange: dynState.set
+				renderText: item => item.value
 			};
 
 			const fixAttr: FixSelectAttr<Item> = {

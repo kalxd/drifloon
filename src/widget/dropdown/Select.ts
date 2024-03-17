@@ -4,6 +4,7 @@ import { AnimateFrame } from "../../abstract/animate";
 import { Outter, OutterAttr } from "../../abstract/outter";
 import { mutable } from "../../data";
 import { pickKlass, selectKlass } from "../../data/internal/attr";
+import { bindValue, BindValue } from "../../data/internal/value";
 
 interface SelectMenuAttr<T> {
 	itemList: Array<T>;
@@ -38,13 +39,11 @@ const SelectMenu = <T>(): m.Component<SelectMenuAttr<T>> => ({
 	}
 });
 
-export interface SelectAttr<T> {
-	value?: Maybe<T>;
+export interface SelectAttr<T> extends BindValue<Maybe<T>> {
 	placeholder?: string;
 	itemList?: Array<T>;
 	renderItem?: (item: T) => m.Children;
 	renderText?: (item: T) => string;
-	connectChange?: (item: Maybe<T>) => void;
 	isShowRemoveIcon?: boolean;
 	isFluid?: boolean;
 }
@@ -63,7 +62,7 @@ export const Select = <T>(): m.Component<SelectAttr<T>> => {
 
 	return {
 		view: ({ attrs }) => {
-			const mchangeE = Maybe.fromNullable(attrs.connectChange);
+			const mbindvalue = bindValue(attrs);
 
 			const dropdownAttr: m.Attributes = {
 				class: pickKlass([
@@ -73,7 +72,7 @@ export const Select = <T>(): m.Component<SelectAttr<T>> => {
 				onclick: toggleE
 			};
 
-			const textBox = Maybe.fromNullable(attrs.value)
+			const textBox = mbindvalue.value
 				.join()
 				.caseOf({
 					Just: t => {
@@ -86,7 +85,7 @@ export const Select = <T>(): m.Component<SelectAttr<T>> => {
 			const removeIcon = Maybe.fromFalsy(attrs.isShowRemoveIcon ?? true)
 				.map(_ => {
 					const f = (e: MouseEvent) => {
-						mchangeE.ifJust(f => f(Nothing));
+						mbindvalue.connectChange(Nothing);
 						e.stopPropagation();
 					};
 					return m("i.icon.remove", { onclick: f });
@@ -98,11 +97,11 @@ export const Select = <T>(): m.Component<SelectAttr<T>> => {
 					const menuAttr: SelectMenuAttr<T> = {
 						itemList,
 						renderItem: attrs.renderItem ?? String,
-						connectSelect: item => mchangeE.ifJust(f => f(Just(item)))
+						connectSelect: item => mbindvalue.connectChange(Just(item))
 					};
 
 					return m<SelectMenuAttr<T>, {}>(SelectMenu, menuAttr);
-				})
+				});
 
 			return m(Outter, outterAttr, [
 				m("div.ui.selection.dropdown", dropdownAttr, [
