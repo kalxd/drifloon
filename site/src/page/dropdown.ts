@@ -32,11 +32,10 @@ const FixSelectS = (): m.Component => {
 			};
 
 			const fixAttr: FixSelectAttr<Item> = {
-				value: fixState.get(),
+				bindValue: fixState,
 				itemList: items,
 				renderItem: propOf("value"),
-				renderText: propOf("value"),
-				connectChange: fixState.set
+				renderText: propOf("value")
 			};
 
 			return m.fragment({}, [
