@@ -2,8 +2,14 @@ import { compareEqAt, propOf } from "drifloon/data/fn";
 import { Size } from "drifloon/data/var";
 import { Header, Header2 } from "drifloon/element/header";
 import { TrimInput, Input as RawInput } from "drifloon/element/input";
-import * as Input from "drifloon/widget/input";
-import { Checkbox, CheckboxAttr, Toggle, ToggleAttr } from "drifloon/form";
+import {
+	Checkbox,
+	CheckboxAttr,
+	Toggle,
+	ToggleAttr,
+	Radiobox,
+	RadioboxAttr
+} from "drifloon/form";
 import * as m from "mithril";
 import { Just, Maybe, Nothing } from "purify-ts";
 import { mutable } from "drifloon/data";
@@ -93,17 +99,17 @@ const RadioboxS = (): m.Component => {
 
 	return {
 		view: () => {
-			const attr: Input.RadioboxAttr<Item> = {
+			const attr: RadioboxAttr<Item> = {
 				value: state.get().extract(),
 				itemList,
-				compare: compareEqAt("key"),
+				compareEq: compareEqAt("key"),
 				renderItem: propOf("value"),
 				connectChange: item => state.set(Just(item))
 			};
 
 			return m("div", [
-				m(Input.Radiobox, attr)
-			])
+				m(Radiobox, attr)
+			]);
 		}
 	};
 };
