@@ -3,16 +3,17 @@ import * as m from "mithril";
 import { pickKlass, selectKlass } from "../data/internal/attr";
 import { Maybe } from "purify-ts";
 
-export enum SegmentShape {
+export enum SegmentStyle {
 	Basic = "basic",
 	Raise = "raised",
 	Stack = "stacked",
 	TallStack = "tall stacked",
-	Pile = "piled"
+	Pile = "piled",
+	Tab = "tab"
 }
 
 export interface SegmentAttr {
-	shape?: SegmentShape;
+	style?: SegmentStyle;
 	isVertical?: boolean;
 	isLoading?: boolean;
 	isInvert?: boolean;
@@ -20,19 +21,21 @@ export interface SegmentAttr {
 	color?: Color;
 	align?: Align;
 	em?: EmLevel;
+	isActive?: boolean;
 }
 
 export const Segment: m.Component<SegmentAttr> = {
 	view: ({ attrs, children }) => {
 		const klass = pickKlass([
-			Maybe.fromNullable(attrs.shape),
+			Maybe.fromNullable(attrs.style),
 			selectKlass("vertical", attrs.isVertical),
 			selectKlass("loading", attrs.isLoading),
 			selectKlass("inverted", attrs.isInvert),
 			Maybe.fromNullable(attrs.attach),
 			Maybe.fromNullable(attrs.color),
 			Maybe.fromNullable(attrs.align),
-			Maybe.fromNullable(attrs.em)
+			Maybe.fromNullable(attrs.em),
+			selectKlass("active", attrs.isActive)
 		]);
 
 		return m("div.ui.segment", { class: klass }, children);

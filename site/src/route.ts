@@ -14,6 +14,7 @@ import InputPage from "./page/input";
 import FormPage from "./page/form";
 import Pager from "./page/pager";
 import Placeholder from "./page/placeholder";
+import Tab from "./page/tab";
 import { Menu, MenuAttr, MenuNaviItem } from "drifloon/element/menu";
 import { Header } from "drifloon/element/header";
 
@@ -68,6 +69,11 @@ const routerMap: Array<RouterPage> = [
 		href: "/pager",
 		title: "分页器",
 		page: Pager
+	},
+	{
+		href: "/tab",
+		title: "标签页",
+		page: Tab
 	}
 ];
 

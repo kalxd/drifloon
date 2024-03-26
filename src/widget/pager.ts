@@ -2,7 +2,7 @@ import * as m from "mithril";
 import { Just, Maybe } from "purify-ts";
 import { Align } from "../data/var";
 import { Menu, MenuAttr, MenuStyle } from "../element/menu";
-import { Segment, SegmentShape, SegmentAttr } from "../element/segment";
+import { Segment, SegmentStyle, SegmentAttr } from "../element/segment";
 import { pickKlass, selectKlass } from "../data/internal/attr";
 
 const rangePager = (
@@ -60,7 +60,7 @@ export const Pager: m.Component<PagerAttr> = {
 
 		const segmentAttr: SegmentAttr = {
 			align: Align.Center,
-			shape: SegmentShape.Basic
+			style: SegmentStyle.Basic
 		};
 
 		const itemList = rangePager(current, totalPage)
