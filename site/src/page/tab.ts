@@ -1,6 +1,6 @@
 import { mutable } from "drifloon/data";
 import { Color } from "drifloon/data/var";
-import { Button, ButtonAttr, Header1, Segment } from "drifloon/element";
+import { Button, ButtonAttr, Header1, Message, Segment } from "drifloon/element";
 import { useTab } from "drifloon/module/tab";
 import * as m from "mithril";
 
@@ -21,20 +21,36 @@ const IncButton: m.ClosureComponent = () => {
 };
 
 const TabS: m.ClosureComponent = () => {
-	const state = mutable<number>(0);
+	interface State {
+		root: number;
+		sub: number;
+	};
+	const state = mutable<State>({ root: 0, sub: 0 });
 	const [TabFrame, Tab] = useTab();
+	const [SubTabFrame, SubTab] = useTab();
 
 	return {
 		view: () => {
-			return m(TabFrame, { bindValue: state }, [
-				m(Tab, { title: "tab 1" }, [
-					"请看表演",
-					m(IncButton),
-					m(IncButton)
-				]),
-				m(Tab, [
-					"带状态的组件",
-					m(IncButton)
+			return m.fragment({}, [
+				m(
+					Message,
+					{ color: Color.Yellow },
+					"每次切换标签，都会触发组件重新渲染，请谨懎选择合适状态管理方式！"
+				),
+				m(TabFrame, { bindValue: state.prop("root") }, [
+					m(Tab, { title: "tab 1" }, [
+						"请看表演",
+						m(IncButton),
+						m(IncButton)
+					]),
+					m(Tab, [
+						"带状态的组件",
+						m(IncButton),
+						m(SubTabFrame, { bindValue: state.prop("sub") }, [
+							m(SubTab, "第一个标签"),
+							m(SubTab, "第二个标签")
+						])
+					])
 				])
 			]);
 		}
