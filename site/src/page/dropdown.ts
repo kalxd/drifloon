@@ -1,7 +1,7 @@
 import { Header } from "drifloon/element/header";
 import { Select, SelectAttr, MultiSelect, MultiSelectAttr, FixSelect, FixSelectAttr } from "drifloon/widget/dropdown";
 import { Size } from "drifloon/data/var";
-import * as m from "mithril";
+import * as m from "drifloon/m";
 import { Maybe, Nothing } from "purify-ts";
 import { mutable, propOf } from "drifloon/data";
 

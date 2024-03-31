@@ -10,7 +10,7 @@ import {
 	Radiobox,
 	RadioboxAttr
 } from "drifloon/form";
-import * as m from "mithril";
+import * as m from "drifloon/m";
 import { Just, Maybe, Nothing } from "purify-ts";
 import { mutable } from "drifloon/data";
 import { alertText } from "drifloon/module/modal";

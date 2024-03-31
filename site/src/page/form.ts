@@ -1,6 +1,6 @@
 import { Color, EmLevel, Size, Wide } from "drifloon/data/var";
 import { Header, Header2 } from "drifloon/element/header";
-import * as m from "mithril";
+import * as m from "drifloon/m";
 import { Either, EitherAsync, Just, Maybe } from "purify-ts";
 import { alertText } from "drifloon/module/modal";
 import { Button } from "drifloon/element";

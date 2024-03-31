@@ -2,7 +2,7 @@ import { mutable } from "drifloon/data";
 import { Color } from "drifloon/data/var";
 import { Button, ButtonAttr, Header1, Message, Segment } from "drifloon/element";
 import { useTab } from "drifloon/module/tab";
-import * as m from "mithril";
+import * as m from "drifloon/m";
 
 const IncButton: m.ClosureComponent = () => {
 	const state = mutable<number>(0);

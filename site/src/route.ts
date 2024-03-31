@@ -1,4 +1,4 @@
-import * as m from "mithril";
+import * as m from "drifloon/m";
 import { Container } from "drifloon/element/container";
 import { Column, Grid } from "drifloon/element/grid";
 import { Align, Color, Size, Wide } from "drifloon/data/var";

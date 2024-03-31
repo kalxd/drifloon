@@ -1,4 +1,4 @@
-import * as m from "mithril";
+import * as m from "drifloon/m";
 import { Button } from "drifloon/element/button";
 import { Header } from "drifloon/element/header";
 import { Color, Size } from "drifloon/data/var";

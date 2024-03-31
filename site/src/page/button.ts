@@ -2,7 +2,7 @@ import { Button, PrimaryButton } from "drifloon/element/button";
 import { Header } from "drifloon/element/header";
 import { Segment } from "drifloon/element/segment";
 import { Color, EmLevel, Size, StateLevel } from "drifloon/data/var";
-import * as m from "mithril";
+import * as m from "drifloon/m";
 
 const S1 = m("div", [
 	m(Button, "Button 1")

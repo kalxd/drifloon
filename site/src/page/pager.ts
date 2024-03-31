@@ -2,7 +2,7 @@ import { Size } from "drifloon/data/var";
 import { Header } from "drifloon/element";
 import { Pager, PagerAttr } from "drifloon/widget";
 
-import * as m from "mithril";
+import * as m from "drifloon/m";
 
 const SampleS: m.ClosureComponent = () => {
 	return {
