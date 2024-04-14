@@ -21,6 +21,8 @@ interface Prismable<T> {
 	set: (value: T) => void;
 	prop: <K extends keyof T>(key: K) => Prismable<T[K]>;
 	prism: <R>(prism: Prism<T, R>) => Prismable<R>;
+	update: (f: (value: T) => T) => Maybe<T>;
+	updateWith: (f: (value: T) => Maybe<T>) => Maybe<T>;
 }
 
 const prismable = <T>(prismLens: PropLens<Maybe<T>>): Prismable<T> => {
@@ -60,11 +62,19 @@ const prismable = <T>(prismLens: PropLens<Maybe<T>>): Prismable<T> => {
 		return prismable(sublens);
 	};
 
+	const update: Prismable<T>["update"] = f =>
+		get().map(f).ifJust(set);
+
+	const updateWith: Prismable<T>["updateWith"] = f =>
+		get().chain(f).ifJust(set)
+
 	return {
 		get,
 		set,
 		prop,
-		prism
+		prism,
+		update,
+		updateWith
 	};
 };
 
@@ -74,6 +84,8 @@ export interface Mutable<T> {
 	lens: <R>(lens: Lens<T, R>) => Mutable<R>;
 	prop: <K extends keyof T>(key: K) => Mutable<T[K]>;
 	prism: <R>(prism: Prism<T, R>) => Prismable<R>;
+	update: (f: (value: T) => T) => T;
+	updateWith: (f: (value: T) => Maybe<T>) => Maybe<T>;
 }
 
 const mutableByProp = <T>(lensOp: PropLens<T>): Mutable<T> => {
@@ -114,12 +126,23 @@ const mutableByProp = <T>(lensOp: PropLens<T>): Mutable<T> => {
 		return prismable(subprism);
 	};
 
+	const update: Mutable<T>["update"] = f => {
+		const v = f(get());
+		set(v);
+		return v;
+	};
+
+	const updateWith: Mutable<T>["updateWith"] = f =>
+		f(get()).ifJust(set);
+
 	return {
 		get,
 		set,
 		lens,
 		prop,
-		prism
+		prism,
+		update,
+		updateWith
 	};
 };
 
