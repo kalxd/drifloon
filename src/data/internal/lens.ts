@@ -16,7 +16,7 @@ export interface Prism<S, T> {
 	set: (state: S, value: T) => Maybe<S>;
 }
 
-export interface Prismable<T> {
+interface Prismable<T> {
 	get: () => Maybe<T>;
 	set: (value: T) => void;
 	prop: <K extends keyof T>(key: K) => Prismable<T[K]>;
