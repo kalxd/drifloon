@@ -1,5 +1,23 @@
 export * from "purify-ts/Codec";
 
+const takeUnderscorePrefix = (input: string): [string, string] => {
+	let prefix = "";
+	let i = 0;
+	while (i < input.length) {
+		const c = input[i];
+		if (c === "_") {
+			prefix += c;
+			++i;
+		}
+		else {
+			break;
+		}
+	}
+
+	const rest = input.substring(i);
+	return [prefix, rest];
+};
+
 // _a_ab => _aAb
 // a_ab => aAb
 type ToCamelCase<T> = T extends `_${infer Rest}`
