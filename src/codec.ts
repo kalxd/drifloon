@@ -20,33 +20,33 @@ const takeUnderscorePrefix = (input: string): [string, string] => {
 
 // _a_ab => _aAb
 // a_ab => aAb
-type ToCamelCase<T> = T extends `_${infer Rest}`
+type ToCamelCase<T extends string> = T extends `_${infer Rest}`
 	? `_${ToCamelCase<Rest>}`
 	: T extends `${infer First}_${infer Rest}`
-	? `${First}${Capitalize<ToCamelCase<Rest>>}` : T;
+	? `${First}${Capitalize<ToCamelCase<Rest>>}`
+	: T;
+
+const capitalize = (input: string): string => {
+	if (input === "") {
+		return input;
+	}
+
+	const f = input[0];
+	const rest = input.substring(1);
+	return f.toUpperCase() + rest;
+};
+
+const toCamelCase = <T extends string>(input: T): ToCamelCase<T> => {
+	const [prefix, rest] = takeUnderscorePrefix(input);
+	const [firstWord, ...restWord] = rest.split("_");
+	const capitalWord = restWord.map(capitalize).join("");
+	return `${prefix}${firstWord}${capitalWord}` as ToCamelCase<T>;
+};
 
 // _aAb => _a_ab
 // aAb => a_ab
-type ToSnakeCase<T> = T extends `_${infer Rest}`
+type ToSnakeCase<T extends string> = T extends `_${infer Rest}`
 	? `_${ToSnakeCase<Rest>}`
 	: T extends `${infer FirstChar}${infer Rest}`
 	? `${FirstChar extends Capitalize<FirstChar> ? "_" : ""}${Lowercase<FirstChar>}${ToSnakeCase<Rest>}`
 	: T;
-
-/*
-const takeUnderscoreWhile = <T extends string>(key: T): [T, T] => {
-	const prefix = "";
-};
-
-const toCamelCaseString = <T extends string>(key: T): ToCamelCase<T> => {
-};
-
-const toCamelCase = <T, K extends keyof T & string>(input: T): ToCamelCase<T> => {
-	let result = {} as ToCamelCase<T>;
-
-	for (const k in input) {
-	}
-
-	return result;
-};
-*/
