@@ -1,5 +1,8 @@
 export * from "purify-ts/Codec";
 
+import { Codec } from "purify-ts/Codec";
+import * as FP from "purify-ts/Codec";
+
 const takeUnderscorePrefix = (input: string): [string, string] => {
 	let prefix = "";
 	let i = 0;
@@ -42,6 +45,30 @@ const toCamelCase = <T extends string>(input: T): ToCamelCase<T> => {
 	const capitalWord = restWord.map(capitalize).join("");
 	return `${prefix}${firstWord}${capitalWord}` as ToCamelCase<T>;
 };
+
+type SnakeCodecMap = Record<string, Codec<any>>;
+type SnakeCodecMapOutput<T extends SnakeCodecMap> = {
+	[K in keyof T as ToCamelCase<K & string>]: T[K]
+};
+
+const camelCaseCodec = <T extends SnakeCodecMap>(input: T): SnakeCodecMapOutput<T> => {
+	let result = {} as SnakeCodecMapOutput<T>;
+
+	for (const k in input) {
+		type Key = keyof SnakeCodecMapOutput<T>;
+		const camelCaseKey = toCamelCase(k) as Key;
+		result[camelCaseKey] = input[k] as SnakeCodecMapOutput<T>[Key];
+	}
+
+	return result;
+};
+
+const a = camelCaseCodec({
+	a_b: FP.string,
+	your_name: FP.number
+});
+
+console.log(a);
 
 // _aAb => _a_ab
 // aAb => a_ab
