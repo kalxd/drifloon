@@ -1,7 +1,9 @@
 export * from "purify-ts/Codec";
 
-import { Codec } from "purify-ts/Codec";
+import { Codec, GetType } from "purify-ts/Codec";
 import * as FP from "purify-ts/Codec";
+
+type CodecInterface = Record<string, Codec<any>>;
 
 const takeUnderscorePrefix = (input: string): [string, string] => {
 	let prefix = "";
@@ -46,30 +48,6 @@ const toCamelCase = <T extends string>(input: T): ToCamelCase<T> => {
 	return `${prefix}${firstWord}${capitalWord}` as ToCamelCase<T>;
 };
 
-type SnakeCodecMap = Record<string, Codec<any>>;
-type SnakeCodecMapOutput<T extends SnakeCodecMap> = {
-	[K in keyof T as ToCamelCase<K & string>]: T[K]
-};
-
-const camelCaseCodec = <T extends SnakeCodecMap>(input: T): SnakeCodecMapOutput<T> => {
-	let result = {} as SnakeCodecMapOutput<T>;
-
-	for (const k in input) {
-		type Key = keyof SnakeCodecMapOutput<T>;
-		const camelCaseKey = toCamelCase(k) as Key;
-		result[camelCaseKey] = input[k] as SnakeCodecMapOutput<T>[Key];
-	}
-
-	return result;
-};
-
-const a = camelCaseCodec({
-	a_b: FP.string,
-	your_name: FP.number
-});
-
-console.log(a);
-
 // _aAb => _a_ab
 // aAb => a_ab
 type ToSnakeCase<T extends string> = T extends `_${infer Rest}`
@@ -77,3 +55,56 @@ type ToSnakeCase<T extends string> = T extends `_${infer Rest}`
 	: T extends `${infer FirstChar}${infer Rest}`
 	? `${FirstChar extends Capitalize<FirstChar> ? "_" : ""}${Lowercase<FirstChar>}${ToSnakeCase<Rest>}`
 	: T;
+
+const splitCamelCase = (input: string): Array<string> => {
+	const reg = /[A-Z]/;
+	const x = input[0];
+	if (reg.test(x)) {
+		const xs = input.substring(1);
+		const index = xs.search(reg);
+		if (index === -1) {
+			return [x + input];
+		}
+
+		const curWord = x + xs.substring(0, index);
+		const restWord = xs.substring(index);
+		return [curWord, ...splitCamelCase(restWord)];
+	}
+	else {
+		const index = input.search(reg);
+		if (index === -1) {
+			return [input];
+		}
+		const curWord = input.substring(0, index);
+		const restWord = input.substring(index);
+		return [curWord, ...splitCamelCase(restWord)];
+	}
+};
+
+const toSnakeCase = <T extends string>(input: T): ToSnakeCase<T> => {
+	const [prefix, rest] = takeUnderscorePrefix(input);
+	const word = splitCamelCase(rest).map(x => x.toLowerCase()).join("_");
+	return prefix + word as ToSnakeCase<T>;
+};
+
+console.log(toSnakeCase("__CamsYYouXixi"));
+
+type ToCamelCaseCodec<T extends CodecInterface> = {
+	[K in keyof T as ToCamelCase<K & string>]: T[K]
+};
+
+/*
+export const camelCaseCodec = <T extends CodecInterface>(prop: T): ToCamelCase<T> => {
+	const innserSnakeCodec = {} as ToCamelCaseCodec<T>;
+	for (const k in prop) {
+		const snakeKey = 0;
+	}
+
+
+	const innerCodec = Codec.custom<ToCamelCaseCodec<T>>({
+		decode: input => {},
+		encode: self => {}
+		});
+
+		};
+*/
