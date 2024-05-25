@@ -1,6 +1,7 @@
 export * from "purify-ts/Codec";
 
-import { Codec, GetType } from "purify-ts/Codec";
+import { Either } from "purify-ts";
+import { Codec, GetType, string as stringc } from "purify-ts/Codec";
 
 type CodecInterface = Record<string, Codec<any>>;
 
@@ -146,3 +147,22 @@ export const snakeCaseCode = <T extends CodecInterface>(prop: T): Codec<ToSnakeC
 		encode: toCamelCaseProp
 	});
 };
+
+export const urlc = Codec.custom({
+	decode: input => {
+		return stringc.decode(input)
+			.map(url => {
+				if (url.startsWith("http")) {
+					return url;
+				}
+				else {
+					return `http://${url}`;
+				}
+			})
+			.chain(url => {
+				return Either.encase(() => new URL(url))
+					.mapLeft(_ => `${url}不是有合法的URL`);
+			});
+	},
+	encode: input => input.toString()
+});
