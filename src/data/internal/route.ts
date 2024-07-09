@@ -1,3 +1,5 @@
+// 路由相关
+
 import { Either, Left, Right } from "purify-ts";
 
 // TS的垃圾枚举
@@ -81,7 +83,7 @@ export const isMatchUrl = (pathsegments: PathSegments, path: string): boolean =>
 	}
 
 	for (let i = 0; i < pathsegments.segments.length; ++i) {
-		const segment = pathsegments.segments[i]!;
+		const segment = pathsegments.segments[i];
 		if (segment._tag === "LitPath") {
 			if (paths[i] === null || paths[i] !== segment.path) {
 				return false;

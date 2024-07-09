@@ -1,7 +1,6 @@
 {
 	"compilerOptions": {
 		"strict": true,
-		"noUncheckedIndexedAccess": true,
 		"lib": ["es2020", "dom"],
 		"outDir": "./dist",
 		"declaration": true
