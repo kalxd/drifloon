@@ -36,7 +36,7 @@ const capitalize = (input: string): string => {
 		return input;
 	}
 
-	const f = input[0];
+	const f = input[0]!;
 	const rest = input.substring(1);
 	return f.toUpperCase() + rest;
 };
@@ -72,7 +72,7 @@ type ToSnakeCase<T extends string> = T extends `_${infer Rest}`
 
 const splitCamelCase = (input: string): Array<string> => {
 	const reg = /[A-Z]/;
-	const x = input[0];
+	const x = input[0]!;
 	if (reg.test(x)) {
 		const xs = input.substring(1);
 		const index = xs.search(reg);
