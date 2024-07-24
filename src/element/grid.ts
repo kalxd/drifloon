@@ -14,6 +14,11 @@ export enum GridCellType {
 	All = "celled"
 }
 
+export enum GridPadType {
+	Pad = "padded",
+	Compact = "compact"
+}
+
 export enum GridMiddleAlignType {
 	Top = "top aligned",
 	Middle = "middle aligned",
@@ -23,6 +28,7 @@ export enum GridMiddleAlignType {
 export interface GridAttr {
 	wide?: Wide;
 	isEqualWidth?: boolean;
+	pad?: GridPadType;
 	isRelax?: boolean;
 	isCenter?: boolean;
 	middleAlign?: GridMiddleAlignType;
@@ -37,6 +43,7 @@ export const pickGridKlass = (attr: GridAttr): Array<Maybe<string>> => [
 	selectKlass("centered", attr.isCenter),
 	Maybe.fromNullable(attr.divid),
 	Maybe.fromNullable(attr.cell),
+	Maybe.fromNullable(attr.pad),
 	Maybe.fromNullable(attr.middleAlign)
 ];
 
