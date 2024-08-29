@@ -31,14 +31,14 @@ type ToCamelCase<T extends string> = T extends `_${infer Rest}`
 	? `${First}${Capitalize<ToCamelCase<Rest>>}`
 	: T;
 
-const capitalize = (input: string): string => {
+const capitalize = (input: string): Capitalize<string> => {
 	if (input === "") {
 		return input;
 	}
 
 	const f = input[0];
 	const rest = input.substring(1);
-	return f.toUpperCase() + rest;
+	return f.toUpperCase() + rest as Capitalize<string>;
 };
 
 const toCamelCase = <T extends string>(input: T): ToCamelCase<T> => {
