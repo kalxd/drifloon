@@ -11,7 +11,7 @@
 	"module": "main.js",
 	"types": "main.d.ts",
 	"dependencies": {
-		"mithril": "2.2.2",
+		"mithril": "2.2.15",
 		"purify-ts": "2.1.0"
 	},
 	"devDependencies": {
