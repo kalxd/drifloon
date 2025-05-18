@@ -15,7 +15,7 @@
 		"purify-ts": "2.1.0"
 	},
 	"devDependencies": {
-		"@types/mithril": "2.0.12",
-		"typescript": "5.5.4"
+		"@types/mithril": "2.2.7",
+		"typescript": "5.8.3"
 	}
 }
