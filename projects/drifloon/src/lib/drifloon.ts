@@ -1,15 +1,14 @@
 import { Component } from '@angular/core';
 
 @Component({
-  selector: 'lib-drifloon',
-  imports: [],
-  template: `
+	selector: 'lib-drifloon',
+	imports: [],
+	template: `
     <p>
       drifloon works!
     </p>
   `,
-  styles: ``
+	styles: ``
 })
 export class Drifloon {
-
 }

@@ -2,32 +2,32 @@
 	"$schema": "./node_modules/@angular/cli/lib/config/schema.json",
 	"version": 1,
 	"newProjectRoot": "projects",
-  "projects": {
-    "drifloon": {
-      "projectType": "library",
-      "root": "projects/drifloon",
-      "sourceRoot": "projects/drifloon/src",
-      "prefix": "lib",
-      "architect": {
-        "build": {
-          "builder": "@angular/build:ng-packagr",
-          "configurations": {
-            "production": {
-              "tsConfig": "projects/drifloon/tsconfig.lib.prod.json"
-            },
-            "development": {
-              "tsConfig": "projects/drifloon/tsconfig.lib.json"
-            }
-          },
-          "defaultConfiguration": "production"
-        },
-        "test": {
-          "builder": "@angular/build:karma",
-          "options": {
-            "tsConfig": "projects/drifloon/tsconfig.spec.json"
-          }
-        }
-      }
-    }
-  }
+	"projects": {
+		"drifloon": {
+			"projectType": "library",
+			"root": "projects/drifloon",
+			"sourceRoot": "projects/drifloon/src",
+			"prefix": "ui",
+			"architect": {
+				"build": {
+					"builder": "@angular/build:ng-packagr",
+					"configurations": {
+						"production": {
+							"tsConfig": "projects/drifloon/tsconfig.lib.prod.json"
+						},
+						"development": {
+							"tsConfig": "projects/drifloon/tsconfig.lib.json"
+						}
+					},
+					"defaultConfiguration": "production"
+				},
+				"test": {
+					"builder": "@angular/build:karma",
+					"options": {
+						"tsConfig": "projects/drifloon/tsconfig.spec.json"
+					}
+				}
+			}
+		}
+	}
 }
