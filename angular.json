@@ -2,6 +2,18 @@
 	"$schema": "./node_modules/@angular/cli/lib/config/schema.json",
 	"version": 1,
 	"newProjectRoot": "projects",
+	"schematics": {
+		"@schematics/angular:interceptor": {
+			"skipTests": true
+		},
+		"@schematics/angular:component": {
+			"prefix": "xg",
+			"skipTests": true
+		},
+		"@schematics/angular:service": {
+			"skipTests": true
+		}
+	},
 	"projects": {
 		"drifloon": {
 			"projectType": "library",
@@ -28,6 +40,87 @@
 					}
 				}
 			}
+		},
+		"site": {
+			"projectType": "application",
+			"schematics": {},
+			"root": "projects/site",
+			"sourceRoot": "projects/site/src",
+			"prefix": "app",
+			"architect": {
+				"build": {
+					"builder": "@angular/build:application",
+					"options": {
+						"browser": "projects/site/src/main.ts",
+						"tsConfig": "projects/site/tsconfig.app.json",
+						"assets": [
+							{
+								"glob": "**/*",
+								"input": "projects/site/public"
+							}
+						],
+						"styles": [
+							"projects/site/src/styles.css"
+						]
+					},
+					"configurations": {
+						"production": {
+							"budgets": [
+								{
+									"type": "initial",
+									"maximumWarning": "500kB",
+									"maximumError": "1MB"
+								},
+								{
+									"type": "anyComponentStyle",
+									"maximumWarning": "4kB",
+									"maximumError": "8kB"
+								}
+							],
+							"outputHashing": "all"
+						},
+						"development": {
+							"optimization": false,
+							"extractLicenses": false,
+							"sourceMap": true
+						}
+					},
+					"defaultConfiguration": "production"
+				},
+				"serve": {
+					"builder": "@angular/build:dev-server",
+					"configurations": {
+						"production": {
+							"buildTarget": "site:build:production"
+						},
+						"development": {
+							"buildTarget": "site:build:development"
+						}
+					},
+					"defaultConfiguration": "development"
+				},
+				"extract-i18n": {
+					"builder": "@angular/build:extract-i18n"
+				},
+				"test": {
+					"builder": "@angular/build:karma",
+					"options": {
+						"tsConfig": "projects/site/tsconfig.spec.json",
+						"assets": [
+							{
+								"glob": "**/*",
+								"input": "projects/site/public"
+							}
+						],
+						"styles": [
+							"projects/site/src/styles.css"
+						]
+					}
+				}
+			}
 		}
+	},
+	"cli": {
+		"analytics": false
 	}
 }
