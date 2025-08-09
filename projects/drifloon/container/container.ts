@@ -1,9 +1,9 @@
 import { Component } from '@angular/core';
 
 @Component({
-	selector: 'ui-container',
+	selector: 'fui-container',
 	imports: [],
-	templateUrl: './container.html',
+	template: `<div class="ui container"><ng-content /></div>`,
 	styleUrl: './container.css'
 })
 export class UIContainer {}
