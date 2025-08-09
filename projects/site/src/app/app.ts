@@ -1,14 +1,14 @@
 import { Component, signal } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
-import { UIButton } from "drifloon/button";
-import { UIContainer } from "drifloon/container";
+import { FUIButton } from "drifloon/button";
+import { FUIContainer } from "drifloon/container";
 
 @Component({
 	selector: 'app-root',
 	imports: [
 		RouterOutlet,
-		UIButton,
-		UIContainer
+		FUIButton,
+		FUIContainer
 	],
 	templateUrl: './app.html',
 	styleUrl: './app.css'

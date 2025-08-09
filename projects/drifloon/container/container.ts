@@ -6,4 +6,4 @@ import { Component } from '@angular/core';
 	template: `<div class="ui container"><ng-content /></div>`,
 	styleUrl: './container.css'
 })
-export class UIContainer {}
+export class FUIContainer {}
