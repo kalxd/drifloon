@@ -1,6 +1,7 @@
 import { Component, signal } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
-import { UIButton, UIContainer } from "drifloon";
+import { UIButton } from "drifloon/button";
+import { UIContainer } from "drifloon/container";
 
 @Component({
 	selector: 'app-root',

@@ -8,7 +8,7 @@
   },
   "include": [
     "src/**/*.ts"
-, "../../../../../../../tmp/!home!kalxd!Workspace!XGLib!drifloon!projects!site!src!main.ts~"  ],
+  ],
   "exclude": [
     "src/**/*.spec.ts"
   ]

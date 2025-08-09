@@ -7,7 +7,6 @@
 			"skipTests": true
 		},
 		"@schematics/angular:component": {
-			"prefix": "xg",
 			"skipTests": true
 		},
 		"@schematics/angular:service": {
@@ -19,7 +18,7 @@
 			"projectType": "library",
 			"root": "projects/drifloon",
 			"sourceRoot": "projects/drifloon/src",
-			"prefix": "ui",
+			"prefix": "fui",
 			"architect": {
 				"build": {
 					"builder": "@angular/build:ng-packagr",
