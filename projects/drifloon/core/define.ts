@@ -2,11 +2,17 @@
  全局定义
  ************/
 
-/**
- * 语义化的宽度
- */
-export enum Wide {
+export enum FuiWide {
 	One = "one",
 	Two = "two",
-	Three = "three"
+	Three = "three",
+	Four = "four",
+	Five = "five"
+}
+
+export enum FuiAttach {
+	Top = "top",
+	Bottom = "bottom",
+	Left = "left",
+	Right = "right"
 }

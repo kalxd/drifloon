@@ -18,7 +18,7 @@
 			"projectType": "library",
 			"root": "projects/drifloon",
 			"sourceRoot": "projects/drifloon/src",
-			"prefix": "fui",
+			"prefix": "ui",
 			"architect": {
 				"build": {
 					"builder": "@angular/build:ng-packagr",
