@@ -1,12 +1,18 @@
 export class CssStyleBuilder {
 	private css: Partial<CSSStyleDeclaration> = {};
 
-	set<K extends keyof CSSStyleDeclaration>(key: K, value: CSSStyleDeclaration[K]): this {
+	set<K extends keyof CSSStyleDeclaration>(
+		key: K,
+		value: CSSStyleDeclaration[K]
+	): this {
 		this.css[key] = value;
 		return this;
 	}
 
-	setJust<K extends keyof CSSStyleDeclaration>(key: K, value: CSSStyleDeclaration[K] | null | undefined): this {
+	setOptional<K extends keyof CSSStyleDeclaration>(
+		key: K,
+		value: CSSStyleDeclaration[K] | null | undefined
+	): this {
 		if (value === null || value === undefined) {
 			return this;
 		}

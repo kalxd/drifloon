@@ -13,7 +13,7 @@ export class UiItem {
 	@HostBinding("style")
 	get style(): Partial<CSSStyleDeclaration> {
 		let cssBuilder = new CssStyleBuilder();
-		cssBuilder.setJust("flexGrow", this.grow()?.toString());
+		cssBuilder.setOptional("flexGrow", this.grow()?.toString());
 
 		return cssBuilder.build();
 	}
