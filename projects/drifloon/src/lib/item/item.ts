@@ -1,5 +1,5 @@
 import { Component, HostBinding, input } from '@angular/core';
-import { CssStyleBuilder } from '../ty';
+import { CssStyleBuilder } from '../internal';
 
 @Component({
 	selector: 'ui-item',
