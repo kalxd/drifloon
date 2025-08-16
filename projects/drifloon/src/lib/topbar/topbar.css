@@ -1,4 +1,6 @@
 .ui.topbar {
 	display: flex;
 	align-items: center;
+	border-bottom: 2px solid deepskyblue;
+	border-image: linear-gradient(to right, deepskyblue, seagreen) 1;
 }
