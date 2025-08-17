@@ -1,59 +1,32 @@
+import { Maybe } from "./internal/maybe";
 import * as R from "rxjs";
 
-interface ActionOk<T> {
-	tag: "__action_ok";
-	value: T;
-}
-
-interface ActionPend {
-	tag: "__action_pend"
-}
-
-type ActionType<T> = ActionOk<T> | ActionPend;
-
+/**
+ * 一些动作的中间值，类似Promise的三个状态。
+ */
 export class ActionResult<T> {
 	static ok<T>(value: T): ActionResult<T> {
-		return new ActionResult({ tag: "__action_ok", value });
+		return new ActionResult(Maybe.Just(value));
 	}
 
-	static Pend: ActionResult<any> = new ActionResult({ tag: "__action_pend" });
+	static Pend: ActionResult<any> = new ActionResult(Maybe.Nothing);
 
 	static map<T, R>(
 		f: (value: T, index: number) => R
 	): R.OperatorFunction<ActionResult<T>, ActionResult<R>> {
 		return source => {
 			return source.pipe(
-				R.map((value, item) => {
-					if (value.innerValue.tag === "__action_ok") {
-						const nextval = f(value.value, item);
-						return ActionResult.ok(nextval);
-					}
-
-					return ActionResult.Pend;
+				R.map((value, idx) => {
+					const v = value.innerValue.map(v => f(v, idx));
+					return new ActionResult(v);
 				})
 			)
 		};
 	}
 
-	private innerValue: ActionType<T>;
-
-	constructor(value: ActionType<T>) {
-		this.innerValue = value;
-	}
-
-	get valueOptional(): T | null {
-		if (this.innerValue.tag === "__action_ok") {
-			return this.innerValue.value;
-		}
-
-		return null;
-	}
+	constructor(private innerValue: Maybe<T>) {}
 
 	get value(): T {
-		if (this.innerValue.tag === "__action_ok") {
-			return this.innerValue.value;
-		}
-
-		throw new Error("尝试从ActionPend取值！");
+		return this.innerValue.unwrap();
 	}
 }
