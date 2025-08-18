@@ -1,0 +1,10 @@
+<div class="ui field">
+	<label>{{ label() }}</label>
+	<div class="control">
+		<ng-content />
+
+		@if (errorMsg(); as errMsg) {
+		<div>{{ errMsg }}</div>
+		}
+	</div>
+</div>

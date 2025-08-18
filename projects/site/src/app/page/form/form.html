@@ -1,1 +1,11 @@
-<p>form works!</p>
+<ui-form [formGroup]="fd">
+	<ui-form-field label="用户名">
+		<input formControlName="username" />
+	</ui-form-field>
+
+	<ui-form-field label="密码">
+		<input formControlName="password" />
+	</ui-form-field>
+
+	<button (click)="showResult()">show</button>
+</ui-form>
