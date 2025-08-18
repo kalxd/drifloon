@@ -1,10 +1,10 @@
-<div class="ui field">
+<div class="ui field" [class.require]="isInputNeedRequire()">
 	<label>{{ label() }}</label>
-	<div class="control">
+	<div #el class="control">
 		<ng-content />
 
 		@if (errorMsg(); as errMsg) {
-		<div>{{ errMsg }}</div>
+		<div class="error">{{ errMsg }}</div>
 		}
 	</div>
 </div>

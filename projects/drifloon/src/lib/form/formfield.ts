@@ -1,5 +1,20 @@
-import { afterEveryRender, Component, ElementRef, forwardRef, Host, inject, input, Optional, SkipSelf } from "@angular/core";
-import { AbstractControl, ControlContainer, ControlValueAccessor, FormControlName, FormsModule, NG_VALUE_ACCESSOR, NgControl } from "@angular/forms";
+import {
+	Component,
+	ElementRef,
+	Host,
+	input,
+	Optional,
+	SkipSelf,
+    viewChild,
+	AfterContentInit,
+} from "@angular/core";
+import {
+	AbstractControl,
+	ControlContainer,
+	FormsModule,
+	NG_VALUE_ACCESSOR,
+	Validators
+} from "@angular/forms";
 
 @Component({
 	selector: "ui-form-field",
@@ -14,8 +29,8 @@ import { AbstractControl, ControlContainer, ControlValueAccessor, FormControlNam
 		}
 	]
 })
-export class UiFormField {
-	private el = inject(ElementRef);
+export class UiFormField implements AfterContentInit {
+	private el = viewChild<ElementRef>("el");
 	private control: AbstractControl | undefined;
 
 	label = input("");
@@ -24,29 +39,29 @@ export class UiFormField {
 		@Optional() @Host() @SkipSelf()
 		private controlContainer: ControlContainer | null
 	) {
-
-		this.initControl();
 	}
 
-	private initControl(): void {
+	ngAfterContentInit(): void {
 		if (!this.controlContainer) {
 			return ;
 		}
 
-		afterEveryRender(() => {
-			const controlEl = this.el.nativeElement.querySelector("[formControlName]") as (HTMLBaseElement | null);
-			const name = controlEl?.getAttribute("formControlName");
-
-			if (name) {
-				const control = this.controlContainer?.control?.get(name);
-				if (control) {
-					this.control = control;
-				}
+		const controlEl = this.el()?.nativeElement?.querySelector("[formControlName]") as (HTMLBaseElement | null);
+		const name = controlEl?.getAttribute("formControlName");
+		if (name) {
+			const control = this.controlContainer?.control?.get(name);
+			if (control) {
+				this.control = control;
 			}
-		});
+		}
 	}
 
-	errorMsg(): string | null {
+	protected isInputNeedRequire(): boolean {
+		const b = this.control?.hasValidator(Validators.required);
+		return b === true;
+	}
+
+	protected errorMsg(): string | null {
 		if (!this.control) {
 			return null;
 		}
