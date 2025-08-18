@@ -1,0 +1,13 @@
+nav > a {
+	display: block;
+	padding: 0.2rem 1rem;
+	display: block;
+	padding: 0.2rem 1rem;
+	border: 2px solid transparent;
+	border-right: none;
+
+}
+
+nav > a.active {
+	border-image: linear-gradient(to right, deepskyblue, seagreen) 1;
+}

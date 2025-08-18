@@ -1,7 +1,7 @@
 import { Component, signal } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 import { UiContainer, UiTopbar, UiItem } from "drifloon";
-import { SiteForm } from "./form/form";
+import { SiteSidebar } from "./sidebar/sidebar";
 
 @Component({
 	selector: 'app-root',
@@ -10,7 +10,7 @@ import { SiteForm } from "./form/form";
 		UiContainer,
 		UiTopbar,
 		UiItem,
-		SiteForm
+		SiteSidebar
 	],
 	templateUrl: './app.html',
 	styleUrl: './app.css'

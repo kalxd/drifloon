@@ -5,13 +5,15 @@
 </ui-topbar>
 
 <ui-container>
-	<h1>
-		drifloon
-		<small>大道至简</small>
-	</h1>
-	<button>sb</button>
+	<ui-item textAlign="center">
+		<h1>
+			drifloon
+			<small>大道至简</small>
+		</h1>
+	</ui-item>
 
-	<site-form />
+	<site-sidebar />
+	<router-outlet />
 </ui-container>
 
-<router-outlet />
+
