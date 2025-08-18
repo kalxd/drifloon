@@ -1,4 +1,5 @@
 abstract class MaybeTrait<T> {
+	abstract isJust(): boolean;
 	abstract map<R>(f: (value: T) => R): MaybeTrait<R>;
 	abstract flatMap<R>(f: (value: T) => Maybe<R>): Maybe<R>;
 }
@@ -8,11 +9,15 @@ class Just<T> extends MaybeTrait<T> {
 		super()
 	}
 
-	map<R>(f: (value: T) => R): Just<R> {
+	override isJust(): boolean {
+		return true;
+	}
+
+	override map<R>(f: (value: T) => R): Just<R> {
 		return new Just(f(this.value));
 	}
 
-	flatMap<R>(f: (value: T) => Maybe<R>): Maybe<R> {
+	override flatMap<R>(f: (value: T) => Maybe<R>): Maybe<R> {
 		return f(this.value);
 	}
 }
@@ -20,11 +25,15 @@ class Just<T> extends MaybeTrait<T> {
 class Nothing<T> extends MaybeTrait<T> {
 	static Nothing: Nothing<any> = new Nothing;
 
-	map<R>(_: (value: T) => R): Nothing<R> {
+	override isJust(): boolean {
+		return false;
+	}
+
+	override map<R>(_: (value: T) => R): Nothing<R> {
 		return Nothing.Nothing;
 	}
 
-	flatMap<R>(_: (value: T) => Maybe<R>): Maybe<R> {
+	override flatMap<R>(_: (value: T) => Maybe<R>): Maybe<R> {
 		return Maybe.Nothing;
 	}
 }
@@ -40,11 +49,19 @@ export class Maybe<T> extends MaybeTrait<T> {
 		super();
 	}
 
-	map<R>(f: (value: T) => R): Maybe<R> {
+    override isJust(): boolean {
+		return this.value.isJust();
+
+    }
+    isNothing(): boolean {
+		return !this.isJust();
+    }
+
+	override map<R>(f: (value: T) => R): Maybe<R> {
 		return new Maybe(this.value.map(f));
 	}
 
-	flatMap<R>(f: (value: T) => Maybe<R>): Maybe<R> {
+	override flatMap<R>(f: (value: T) => Maybe<R>): Maybe<R> {
 		return this.value.flatMap(f);
 	}
 
