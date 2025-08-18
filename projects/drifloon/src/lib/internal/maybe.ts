@@ -49,13 +49,14 @@ export class Maybe<T> extends MaybeTrait<T> {
 		super();
 	}
 
-    override isJust(): boolean {
+	override isJust(): boolean {
 		return this.value.isJust();
 
-    }
-    isNothing(): boolean {
+	}
+
+	isNothing(): boolean {
 		return !this.isJust();
-    }
+	}
 
 	override map<R>(f: (value: T) => R): Maybe<R> {
 		return new Maybe(this.value.map(f));

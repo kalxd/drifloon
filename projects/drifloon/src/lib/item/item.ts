@@ -1,5 +1,5 @@
 import { Component, HostBinding, input } from '@angular/core';
-import { CssStyleBuilder } from '../internal';
+import { CssStyleBuilder } from '../internal/cssstylebuilder';
 
 type Align = "left" | "right" | "center";
 
