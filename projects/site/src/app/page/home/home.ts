@@ -1,8 +1,11 @@
 import { Component } from '@angular/core';
+import { UiDivider } from 'drifloon';
 
 @Component({
 	selector: 'site-home',
-	imports: [],
+	imports: [
+		UiDivider
+	],
 	templateUrl: './home.html',
 	styleUrl: './home.css'
 })

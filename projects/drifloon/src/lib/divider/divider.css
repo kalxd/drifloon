@@ -1,0 +1,8 @@
+.ui.divider.pad {
+	margin-top: 1rem;
+	margin-bottom: 1rem;
+}
+
+.ui.divider.transparent {
+	border-color: transparent;
+}
