@@ -5,3 +5,5 @@ export * from "./lib/divider/divider";
 
 export * from "./lib/form/form";
 export * from "./lib/form/formfield";
+
+export * from "./lib/pager/pager";

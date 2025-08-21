@@ -1,0 +1,13 @@
+<ui-form-field label="当前页">
+	<input [(ngModel)]="page" />
+</ui-form-field>
+
+<ui-form-field label="每页个数">
+	<input [(ngModel)]="size" />
+</ui-form-field>
+
+<ui-form-field label="总个数">
+	<input [(ngModel)]="count" />
+</ui-form-field>
+
+<ui-pager [pager]="thePager()" />
