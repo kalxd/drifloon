@@ -1,13 +1,19 @@
 <ui-form-field label="当前页">
-	<input [(ngModel)]="page" />
+	<input [(ngModel)]="page" type="number" />
 </ui-form-field>
 
 <ui-form-field label="每页个数">
-	<input [(ngModel)]="size" />
+	<input [(ngModel)]="size" type="number" />
 </ui-form-field>
 
 <ui-form-field label="总个数">
-	<input [(ngModel)]="count" />
+	<input [(ngModel)]="count" type="number" />
 </ui-form-field>
 
-<ui-pager [pager]="thePager()" />
+<ui-pager [pager]="thePager()" (pageChange)="connectPageChange($event)" />
+
+<ol>
+@for (h of changeHistory(); track $index) {
+<li>{{ h }}</li>
+}
+</ol>
