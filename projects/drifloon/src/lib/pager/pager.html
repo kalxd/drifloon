@@ -1,4 +1,4 @@
-<nav class="ui pager">
+<div class="ui pager">
 	<button class="button" (click)="connectToPage(1)">第一页</button>
 	<button class="button" (click)="connectToPage(pagerResult().prevPage)">上一页</button>
 	<select class="selection" [value]="pagerResult().page" (change)="connectSelectChange($event)">
@@ -8,4 +8,4 @@
 	</select>
 	<button class="button" (click)="connectToPage(pagerResult().nextPage)">下一页</button>
 	<button class="button" (click)="connectToPage(pagerResult().totalPage)">最后页</button>
-</nav>
+</div>

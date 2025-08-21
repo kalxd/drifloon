@@ -56,8 +56,6 @@ export class UiPager {
 	});
 
 	protected connectToPage(page: number): void {
-		console.log("do this?");
-		console.log(page);
 		this.pageChange.emit(page);
 	}
 
