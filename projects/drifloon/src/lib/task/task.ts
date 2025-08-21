@@ -114,7 +114,6 @@ export class UiTaskDirective<T> implements OnInit {
 	ngOnInit(): void {
 		this.taskFrom()
 			.subscribe(value => {
-				console.log(value);
 				this.container.clear();
 				if (!value.isOk()) {
 					this.container.createComponent(UiSkeleton);
