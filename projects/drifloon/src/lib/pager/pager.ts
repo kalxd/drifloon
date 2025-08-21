@@ -11,6 +11,16 @@ interface PagerResult {
 	prevPage: number;
 	nextPage: number;
 	totalPage: number;
+	selectPages: Array<number>;
+}
+
+const range = (start: number, end: number): Array<number> => {
+	let xs = [];
+	for (let i = start; i <= end; ++i) {
+		xs.push(i);
+	}
+
+	return xs;
 }
 
 @Component({
@@ -30,15 +40,30 @@ export class UiPager {
 		const prevPage = Math.max(1, pager.page - 1);
 		const nextPage = Math.min(totalPage, pager.page + 1);
 
+		const prevCuror = Math.max(1, pager.page - 4);
+		const prevRange = range(prevCuror, pager.page - 1);
+
+		const nextCuror = Math.min(totalPage, pager.page + 4);
+		const nextRange = range(pager.page, nextCuror);
+
 		return {
 			page: pager.page,
 			prevPage,
 			nextPage,
 			totalPage,
+			selectPages: prevRange.concat(nextRange)
 		};
 	});
 
 	protected connectToPage(page: number): void {
+		console.log("do this?");
+		console.log(page);
 		this.pageChange.emit(page);
+	}
+
+	protected connectSelectChange(event: Event): void {
+		const el = (event.target as HTMLSelectElement);
+		const value = parseInt(el.value);
+		this.connectToPage(value);
 	}
 }
