@@ -7,3 +7,4 @@ export * from "./lib/form/form";
 export * from "./lib/form/formfield";
 
 export * from "./lib/pager/pager";
+export * from "./lib/skeleton/skeleton";

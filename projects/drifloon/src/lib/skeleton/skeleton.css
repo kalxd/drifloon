@@ -1,0 +1,7 @@
+.ui.skeleton {
+	display: flex;
+	min-height: 10rem;
+	border: 4px double dodgerblue;
+	justify-content: center;
+	align-items: center;;
+}
