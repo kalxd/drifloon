@@ -5,6 +5,8 @@ abstract class MaybeTrait<T> {
 }
 
 class Just<T> extends MaybeTrait<T> {
+	readonly tag = "Just";
+
 	constructor(public value: T) {
 		super()
 	}
@@ -23,6 +25,8 @@ class Just<T> extends MaybeTrait<T> {
 }
 
 class Nothing<T> extends MaybeTrait<T> {
+	readonly tag = "Nothing";
+
 	static Nothing: Nothing<any> = new Nothing;
 
 	override isJust(): boolean {

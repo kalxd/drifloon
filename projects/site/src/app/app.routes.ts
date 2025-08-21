@@ -3,6 +3,7 @@ import { SiteHome } from "./page/home/home";
 import { SiteForm } from "./page/form/form";
 import { SitePager } from "./page/pager/pager";
 import { SiteSkeleton } from "./page/skeleton/skeleton";
+import { SiteTask } from "./page/task/task";
 
 export const routes: Routes = [
 	{
@@ -23,5 +24,10 @@ export const routes: Routes = [
 	{
 		path: "skeleton",
 		component: SiteSkeleton
+	},
+
+	{
+		path: "task",
+		component: SiteTask
 	}
 ];
