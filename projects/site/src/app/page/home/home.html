@@ -2,4 +2,8 @@ hello home
 
 <ui-divider />
 
-hello home
+<ui-box [align]="boxAlign()" pad>
+	<button (click)="boxAlign.set('left')">button 1</button>
+	<input placeholder="占位" />
+	<button (click)="boxAlign.set('right')">button 2</button>
+</ui-box>

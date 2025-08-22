@@ -1,0 +1,8 @@
+.ui.box {
+	display: flex;
+}
+
+.ui.box.pad {
+	padding-top: 1rem;
+	padding-bottom: 1rem;
+}

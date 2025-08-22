@@ -1,14 +1,15 @@
-import { Component } from '@angular/core';
-import { UiDivider } from 'drifloon';
+import { Component, signal } from '@angular/core';
+import { UiBox, UiDivider } from 'drifloon';
 
 @Component({
 	selector: 'site-home',
 	imports: [
-		UiDivider
+		UiDivider,
+		UiBox
 	],
 	templateUrl: './home.html',
 	styleUrl: './home.css'
 })
 export class SiteHome {
-
+	boxAlign = signal<"left" | "right">("left");
 }
