@@ -11,4 +11,10 @@
 	</div>
 </ui-dialog>
 
-<button>另一个对话框</button>
+<ui-divider />
+
+<button (click)="formDialog().show()">另一个对话框</button>
+
+<ui-dialog #form>
+	<page-form (cancel)="formDialog().close()" (submit)="connectFormOk($event)" />
+</ui-dialog>

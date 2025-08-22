@@ -1,0 +1,16 @@
+<ui-topbar>
+	应用表单
+</ui-topbar>
+
+<ui-form [formGroup]="formData">
+	<ui-form-field label="用户名">
+		<input formControlName="username" />
+	</ui-form-field>
+
+	<ui-form-field label="密码">
+		<input type="password" formControlName="password" />
+	</ui-form-field>
+
+	<button (click)="cancel.emit()">取消</button>
+	<button (click)="connectSubmit()">确定</button>
+</ui-form>
