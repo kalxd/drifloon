@@ -19,7 +19,7 @@ export class UiDialog<R> {
 
 	show(): R.Observable<R> {
 		this.dialogRef()?.nativeElement.showModal();
-		return this.actionOk$.pipe(R.first());
+		return this.actionOk$;
 	}
 
 	close(): void {
