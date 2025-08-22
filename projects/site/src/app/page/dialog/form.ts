@@ -1,6 +1,6 @@
 import { Component, inject, output } from "@angular/core";
 import { FormBuilder, ReactiveFormsModule, Validators } from "@angular/forms";
-import { UiForm, UiFormField, UiTopbar } from "drifloon";
+import { UiDialogBox, UiForm, UiFormField, UiTopbar } from "drifloon";
 
 export interface PageFormResult {
 	username: string;
@@ -14,7 +14,8 @@ export interface PageFormResult {
 		UiTopbar,
 		UiForm,
 		UiFormField,
-		ReactiveFormsModule
+		ReactiveFormsModule,
+		UiDialogBox
 	]
 })
 export class PageForm {

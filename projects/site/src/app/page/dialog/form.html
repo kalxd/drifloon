@@ -11,6 +11,5 @@
 		<input type="password" formControlName="password" />
 	</ui-form-field>
 
-	<button (click)="cancel.emit()">取消</button>
-	<button (click)="connectSubmit()">确定</button>
+	<ui-dialog-box (cancel)="cancel.emit()" (ok)="connectSubmit()" />
 </ui-form>

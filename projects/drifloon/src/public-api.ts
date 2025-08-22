@@ -3,6 +3,7 @@ export * from "./lib/topbar/topbar";
 export * from "./lib/item/item";
 export * from "./lib/divider/divider";
 export * from "./lib/box/box";
+export * from "./lib/box/dialog-box";
 
 export * from "./lib/form/form";
 export * from "./lib/form/formfield";
