@@ -4,6 +4,7 @@ import { SiteForm } from "./page/form/form";
 import { SitePager } from "./page/pager/pager";
 import { SiteSkeleton } from "./page/skeleton/skeleton";
 import { SiteTask } from "./page/task/task";
+import { SiteDialog } from './page/dialog/dialog';
 
 export const routes: Routes = [
 	{
@@ -29,5 +30,10 @@ export const routes: Routes = [
 	{
 		path: "task",
 		component: SiteTask
+	},
+
+	{
+		path: "dialog",
+		component: SiteDialog
 	}
 ];

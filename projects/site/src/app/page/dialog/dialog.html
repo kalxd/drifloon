@@ -1,0 +1,14 @@
+<button (click)="plainDialog().show()">打开对话框</button>
+
+<ui-dialog #plain>
+	<ui-topbar>
+		这里是一个对话框
+	</ui-topbar>
+
+	<div>
+		<button (click)="plainDialog().close()">取消</button>
+		<button (click)="connectPlainOk()">确定</button>
+	</div>
+</ui-dialog>
+
+<button>另一个对话框</button>
