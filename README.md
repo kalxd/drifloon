@@ -1,59 +1,17 @@
-# Drifloon
+# drifloon
 
-This project was generated using [Angular CLI](https://github.com/angular/angular-cli) version 20.1.4.
+![npm](https://img.shields.io/npm/v/drifloon?color=brightgreen&label=npm)
+[![LICENSE](https://img.shields.io/badge/LICENSE-AGPL%20v3-blue)](https://www.gnu.org/licenses/agpl-3.0.en.html)
+![drifloon publish](https://github.com/kalxd/drifloon/workflows/drifloon%20publish/badge.svg)
 
-## Development server
+![drifloon](https://media.52poke.com/wiki/archive/e/eb/20140413170939%21425Drifloon.png)
 
-To start a local development server, run:
+个人主义前端组件库。
 
-```bash
-ng serve
-```
+# 使用范围
 
-Once the server is running, open your browser and navigate to `http://localhost:4200/`. The application will automatically reload whenever you modify any of the source files.
+angular >= 20
 
-## Code scaffolding
+# 协议
 
-Angular CLI includes powerful code scaffolding tools. To generate a new component, run:
-
-```bash
-ng generate component component-name
-```
-
-For a complete list of available schematics (such as `components`, `directives`, or `pipes`), run:
-
-```bash
-ng generate --help
-```
-
-## Building
-
-To build the project run:
-
-```bash
-ng build
-```
-
-This will compile your project and store the build artifacts in the `dist/` directory. By default, the production build optimizes your application for performance and speed.
-
-## Running unit tests
-
-To execute unit tests with the [Karma](https://karma-runner.github.io) test runner, use the following command:
-
-```bash
-ng test
-```
-
-## Running end-to-end tests
-
-For end-to-end (e2e) testing, run:
-
-```bash
-ng e2e
-```
-
-Angular CLI does not come with an end-to-end testing framework by default. You can choose one that suits your needs.
-
-## Additional Resources
-
-For more information on using the Angular CLI, including detailed command references, visit the [Angular CLI Overview and Command Reference](https://angular.dev/tools/cli) page.
+AGPL v3
