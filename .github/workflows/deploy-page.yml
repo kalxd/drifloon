@@ -16,7 +16,7 @@ jobs:
       run: |
         npm install
         npx ng build drifloon
-        npx ng build site
+        npx ng build site --base-href ./
     - name: deploy to page
       uses: peaceiris/actions-gh-pages@v3
       with:
