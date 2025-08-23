@@ -14,17 +14,12 @@ jobs:
     - uses: actions/checkout@v3
     - name: build drifloon package
       run: |
-        npm install
-        npx tsc
-        cp package.json dist
+        npx ng build drifloon
     - name: build the site
       run: |
-        cd site/
-        npm install
-        npx webpack
-        cp -r assert/* dist
+        npx ng build site
     - name: deploy to page
       uses: peaceiris/actions-gh-pages@v3
       with:
         github_token: ${{ secrets.GITHUB_TOKEN }}
-        publish_dir: ./site/dist
+        publish_dir: ./dist/site/browser
