@@ -8,26 +8,49 @@ import * as R from "rxjs";
 @Component({
 	selector: 'ui-dialog',
 	imports: [],
-	templateUrl: './dialog.html',
+	templateUrl: "./dialog.html",
 	styleUrl: './dialog.css'
 })
-export class UiDialog<R> {
-	private dialogRef = viewChild.required<ElementRef<HTMLDialogElement>>("dialog");
+export class UiDialog {
+	private dialogRef = viewChild<ElementRef<HTMLDialogElement>>("dialog");
 
-	private actionOk = new R.Subject<R>();
-	private actionOk$ = this.actionOk.asObservable();
-
-	show(): R.Observable<R> {
+	show(): void {
 		this.dialogRef()?.nativeElement.showModal();
-		return this.actionOk$;
 	}
 
 	close(): void {
 		this.dialogRef()?.nativeElement.close();
 	}
+}
 
-	ok(value: R): void {
+@Component({
+	selector: "ui-base-dialog",
+	template: "",
+})
+export class UiBaseDialog<T, R> {
+	private dialogRef = viewChild(UiDialog);
+	private resultSubject = new R.Subject<R>();
+	private result$ = this.resultSubject.asObservable();
+
+	protected updateInput(_: T): void {
+	}
+
+	protected setResult(value: R): void {
+		this.resultSubject.next(value);
+	}
+
+	protected setFinalResult(value: R): void {
+		this.setResult(value);
 		this.close();
-		this.actionOk.next(value);
+	}
+
+	show(input: T): R.Observable<R> {
+		this.updateInput(input);
+		this.dialogRef()?.show();
+		return this.result$;
+	}
+
+	close(): void {
+		this.dialogRef()?.close();
 	}
 }
