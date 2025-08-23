@@ -1,0 +1,12 @@
+<ui-dialog>
+	<ui-form label="表单演示" [formGroup]="form">
+		<ui-form-field label="用户名">
+			<input formControlName="name" />
+		</ui-form-field>
+		<ui-form-field label="密码">
+			<input formControlName="password" type="password" />
+		</ui-form-field>
+	</ui-form>
+
+	<ui-dialog-box (cancel)="close()" (ok)="connectOk()" />
+</ui-dialog>

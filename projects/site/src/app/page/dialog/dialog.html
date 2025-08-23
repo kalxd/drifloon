@@ -3,3 +3,17 @@
 <page-plain #plain />
 
 <ui-divider />
+
+<div>
+	<label>用户名</label>
+	<input [(ngModel)]="name" />
+</div>
+
+<div>
+	<label>密码</label>
+	<input [(ngModel)]="password" />
+</div>
+
+<button (click)="connectShowPlain()">显示编辑对话框</button>
+
+<page-form #form />

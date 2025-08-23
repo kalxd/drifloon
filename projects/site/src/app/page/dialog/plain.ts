@@ -5,7 +5,7 @@ import { UiBaseDialog, UiDialog } from "drifloon";
 	selector: "page-plain",
 	templateUrl: "./plain.html",
 	imports: [
-		UiDialog,
+		UiDialog
 	]
 })
 export class PagePlain extends UiBaseDialog<void, void> {}
