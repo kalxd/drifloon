@@ -6,9 +6,9 @@ import { PagerInput, UiFormField, UiPager } from 'drifloon';
 	providedIn: "root"
 })
 class PagerState {
-	page = signal(1);
+	page = signal(12);
 	size = signal(1);
-	count = signal(100);
+	count = signal(10);
 
 	pager = computed<PagerInput>(() => {
 		return {

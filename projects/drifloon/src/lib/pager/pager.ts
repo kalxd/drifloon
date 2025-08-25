@@ -38,21 +38,23 @@ export class UiPager {
 		const count = Math.max(1, pager.count);
 
 		const totalPage = Math.ceil(count / pager.size);
-		const prevPage = Math.max(1, pager.page - 1);
-		const nextPage = Math.min(totalPage, pager.page + 1);
+		const curPage = Math.max(1, Math.min(totalPage, pager.page));
 
-		const prevCuror = Math.max(1, pager.page - 4);
-		const prevRange = range(prevCuror, pager.page - 1);
+		const prevPage = Math.max(1, curPage - 1);
+		const nextPage = Math.min(totalPage, curPage + 1);
 
-		const nextCuror = Math.min(totalPage, pager.page + 4);
-		const nextRange = range(pager.page, nextCuror);
+		const prevCuror = Math.max(1, curPage - 4);
+		const prevRange = range(prevCuror, curPage - 1);
+
+		const nextCuror = Math.min(totalPage, curPage + 4);
+		const nextRange = range(pager.page + 1, nextCuror);
 
 		return {
-			page: pager.page,
+			page: curPage,
 			prevPage,
 			nextPage,
 			totalPage,
-			selectPages: prevRange.concat(nextRange)
+			selectPages: prevRange.concat([curPage]).concat(nextRange)
 		};
 	});
 
