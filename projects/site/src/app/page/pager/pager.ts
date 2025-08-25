@@ -1,6 +1,23 @@
-import { Component, signal } from '@angular/core';
+import { Component, computed, inject, Injectable, signal } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { PagerInput, UiFormField, UiPager } from 'drifloon';
+
+@Injectable({
+	providedIn: "root"
+})
+class PagerState {
+	page = signal(1);
+	size = signal(1);
+	count = signal(100);
+
+	pager = computed<PagerInput>(() => {
+		return {
+			page: this.page(),
+			count: this.count(),
+			size: this.size()
+		};
+	});
+}
 
 @Component({
 	selector: 'site-pager',
@@ -13,19 +30,9 @@ import { PagerInput, UiFormField, UiPager } from 'drifloon';
 	styleUrl: './pager.css'
 })
 export class SitePager {
-	page = signal(1);
-	size = signal(10);
-	count = signal(100);
+	pagerState = inject(PagerState);
 
 	protected changeHistory = signal<Array<number>>([]);
-
-	protected thePager(): PagerInput {
-		return {
-			page: this.page(),
-			count: this.count(),
-			size: this.size()
-		};
-	}
 
 	protected connectPageChange(page: number): void {
 		this.changeHistory.update(xs => {
@@ -33,6 +40,6 @@ export class SitePager {
 			return xs;
 		});
 
-		this.page.set(page);
+		this.pagerState.page.set(page);
 	}
 }

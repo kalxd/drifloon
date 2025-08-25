@@ -1,4 +1,4 @@
-import { Component, computed, input, output, Signal } from '@angular/core';
+import { Component, computed, input, output } from '@angular/core';
 
 export interface PagerInput {
 	page: number;
@@ -31,12 +31,13 @@ const range = (start: number, end: number): Array<number> => {
 })
 export class UiPager {
 	pager = input.required<PagerInput>();
-
 	pageChange = output<number>();
 
-	protected pagerResult: Signal<PagerResult> = computed(() => {
+	protected pagerResult = computed<PagerResult>(() => {
 		const pager = this.pager();
-		const totalPage = Math.ceil(pager.count / pager.size);
+		const count = Math.max(1, pager.count);
+
+		const totalPage = Math.ceil(count / pager.size);
 		const prevPage = Math.max(1, pager.page - 1);
 		const nextPage = Math.min(totalPage, pager.page + 1);
 
