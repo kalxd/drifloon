@@ -1,6 +1,6 @@
 import { Component, computed, input, output } from '@angular/core';
 
-export interface PagerInput {
+export interface UiPagerInput {
 	page: number;
 	size: number;
 	count: number;
@@ -30,7 +30,7 @@ const range = (start: number, end: number): Array<number> => {
 	styleUrl: './pager.css'
 })
 export class UiPager {
-	pager = input.required<PagerInput>();
+	pager = input.required<UiPagerInput>();
 	pageChange = output<number>();
 
 	protected pagerResult = computed<PagerResult>(() => {
