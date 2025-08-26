@@ -32,34 +32,36 @@ const range = (start: number, end: number): Array<number> => {
 export class UiPager {
 	pager = input.required<UiPagerInput>();
 	pageChange = output<number>();
+	pageOnlyChange = output<number>();
 
 	protected pagerResult = computed<PagerResult>(() => {
 		const pager = this.pager();
-		const count = Math.max(1, pager.count);
+		const totalPage = Math.max(pager.page, Math.ceil(pager.count / pager.size));
 
-		const totalPage = Math.ceil(count / pager.size);
-		const curPage = Math.max(1, Math.min(totalPage, pager.page));
+		const prevPage = Math.max(1, pager.page - 1);
+		const nextPage = Math.min(totalPage, pager.page + 1);
 
-		const prevPage = Math.max(1, curPage - 1);
-		const nextPage = Math.min(totalPage, curPage + 1);
+		const prevCuror = Math.max(1, pager.page - 4);
+		const prevRange = range(prevCuror, pager.page - 1);
 
-		const prevCuror = Math.max(1, curPage - 4);
-		const prevRange = range(prevCuror, curPage - 1);
-
-		const nextCuror = Math.min(totalPage, curPage + 4);
-		const nextRange = range(pager.page + 1, nextCuror);
+		const nextCuror = Math.min(totalPage, pager.page + 4);
+		const nextRange = range(pager.page, nextCuror);
 
 		return {
-			page: curPage,
+			page: pager.page,
 			prevPage,
 			nextPage,
 			totalPage,
-			selectPages: prevRange.concat([curPage]).concat(nextRange)
+			selectPages: prevRange.concat(nextRange)
 		};
 	});
 
 	protected connectToPage(page: number): void {
 		this.pageChange.emit(page);
+
+		if (this.pager().page !== page) {
+			this.pageOnlyChange.emit(page);
+		}
 	}
 
 	protected connectSelectChange(event: Event): void {

@@ -10,10 +10,25 @@
 	<input [(ngModel)]="pagerState.count" type="number" />
 </ui-form-field>
 
-<ui-pager [pager]="pagerState.pager()" (pageChange)="connectPageChange($event)" />
+<ui-pager
+	[pager]="pagerState.pager()"
+	(pageChange)="connectPageChange($event)"
+	(pageOnlyChange)="connectPageOnlyChange($event)"
+	/>
 
-<ol>
-@for (h of changeHistory(); track $index) {
-<li>{{ h }}</li>
-}
-</ol>
+<div class="container">
+	<div class="item">
+		<ol>
+			@for (h of changeHistory(); track $index) {
+			<li>{{ h }}</li>
+			}
+		</ol>
+	</div>
+	<div class="item">
+		<ol>
+			@for (h of changeOnlyHistory(); track $index) {
+			<li>{{ h }}</li>
+			}
+		</ol>
+	</div>
+</div>

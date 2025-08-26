@@ -33,6 +33,7 @@ export class SitePager {
 	pagerState = inject(PagerState);
 
 	protected changeHistory = signal<Array<number>>([]);
+	protected changeOnlyHistory = signal<Array<number>>([]);
 
 	protected connectPageChange(page: number): void {
 		this.changeHistory.update(xs => {
@@ -41,5 +42,12 @@ export class SitePager {
 		});
 
 		this.pagerState.page.set(page);
+	}
+
+	connectPageOnlyChange(page: number): void {
+		this.changeOnlyHistory.update(xs => {
+			xs.unshift(page);
+			return xs;
+		});
 	}
 }
