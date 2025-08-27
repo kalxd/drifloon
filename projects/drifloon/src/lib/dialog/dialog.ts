@@ -4,7 +4,7 @@ import {
 	inject,
 	viewChild
 } from '@angular/core';
-import { FormBuilder, ReactiveFormsModule } from '@angular/forms';
+import { FormBuilder } from '@angular/forms';
 import * as R from "rxjs";
 
 @Component({
@@ -39,10 +39,7 @@ export class UiDialog {
 
 @Component({
 	selector: "ui-base-dialog",
-	template: "",
-	imports: [
-		ReactiveFormsModule
-	]
+	template: ""
 })
 export abstract class UiBaseDialog<T, R> {
 	private dialogRef = viewChild(UiDialog);
@@ -50,8 +47,7 @@ export abstract class UiBaseDialog<T, R> {
 	private result$ = this.resultSubject.asObservable();
 	protected fb = inject(FormBuilder);
 
-	protected updateInput(_: T): void {
-	}
+	protected init(_: T): void {}
 
 	protected setResult(value: R): void {
 		this.resultSubject.next(value);
@@ -63,7 +59,7 @@ export abstract class UiBaseDialog<T, R> {
 	}
 
 	show(input: T): R.Observable<R> {
-		this.updateInput(input);
+		this.init(input);
 		this.dialogRef()?.show();
 		return this.result$;
 	}
