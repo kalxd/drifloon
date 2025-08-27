@@ -1,6 +1,6 @@
 import { Component, computed, inject, Injectable, signal } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { UiPagerInput, UiFormField, UiPager } from 'drifloon';
+import { PagerInput, UiFormField, UiPager } from 'drifloon';
 
 @Injectable({
 	providedIn: "root"
@@ -10,7 +10,7 @@ class PagerState {
 	size = signal(1);
 	count = signal(10);
 
-	pager = computed<UiPagerInput>(() => {
+	pager = computed<PagerInput>(() => {
 		return {
 			page: this.page(),
 			count: this.count(),
