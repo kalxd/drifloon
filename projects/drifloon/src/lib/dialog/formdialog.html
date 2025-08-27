@@ -8,7 +8,7 @@
 	<ng-content select="dialog-footer" />
 
 	@if (isLoad()) {
-	<ui-skeleton />
+	<ui-skeleton suit="dialog" />
 	}
 	@else {
 	<ui-dialog-box (cancel)="close()" (ok)="submit.emit()" />

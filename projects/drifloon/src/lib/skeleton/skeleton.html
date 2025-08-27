@@ -1,5 +1,7 @@
-<div #container class="ui skeleton" aria-busy="true">
+<div class="ui skeleton" aria-busy="true" [class]="theClass()">
+	@if (suit() === "page") {
 	<div>正在加载……</div>
+	}
 
 	<progress></progress>
 </div>
