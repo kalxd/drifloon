@@ -28,7 +28,7 @@ export class PageForm extends UiBaseFormDialog<PageFormData, PageFormData> {
 		this.fg.setValue(value);
 	}
 
-    override connectSubmit(): R.Observable<PageFormData> {
+    override submit(): R.Observable<PageFormData> {
 		const value = this.fg.value as PageFormData;
 		return R.of(value).pipe(
 			R.delay(2000)

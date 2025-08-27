@@ -64,7 +64,7 @@ export abstract class UiBaseFormDialog<T, R> {
 		this.dialogRef()?.close();
 	}
 
-	connectFormSubmit(): void {
+	connectSubmit(): void {
 		this.fg.markAllAsDirty();
 		if (this.fg.invalid) {
 			return ;
@@ -72,7 +72,7 @@ export abstract class UiBaseFormDialog<T, R> {
 
 		this.dialogRef()?.setLoad();
 
-		this.connectSubmit()
+		this.submit()
 			.pipe(
 				R.finalize(() => this.dialogRef()?.setUnload())
 			)
@@ -83,5 +83,5 @@ export abstract class UiBaseFormDialog<T, R> {
 			});
 	}
 
-	abstract connectSubmit(): R.Observable<R>;
+	abstract submit(): R.Observable<R>;
 }
