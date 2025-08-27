@@ -1,8 +1,8 @@
-import { Component, inject, signal, viewChild } from '@angular/core';
+import { Component, signal, viewChild } from '@angular/core';
 import { UiDivider } from 'drifloon';
 import { PagePlain } from "./plain";
 import { PageForm } from './form';
-import { FormBuilder, FormsModule } from '@angular/forms';
+import { FormsModule } from '@angular/forms';
 
 @Component({
 	selector: 'site-dialog',

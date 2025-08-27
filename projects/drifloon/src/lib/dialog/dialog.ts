@@ -8,6 +8,18 @@ import { FormBuilder, ReactiveFormsModule } from '@angular/forms';
 import * as R from "rxjs";
 
 @Component({
+	selector: "dialog-header",
+	template: "<ng-content />"
+})
+export class DialogHeader {}
+
+@Component({
+	selector: "dialog-footer",
+	template: "<ng-content />"
+})
+export class DialogFooter {}
+
+@Component({
 	selector: 'ui-dialog',
 	imports: [],
 	templateUrl: "./dialog.html",
@@ -32,7 +44,7 @@ export class UiDialog {
 		ReactiveFormsModule
 	]
 })
-export class UiBaseDialog<T, R> {
+export abstract class UiBaseDialog<T, R> {
 	private dialogRef = viewChild(UiDialog);
 	private resultSubject = new R.Subject<R>();
 	private result$ = this.resultSubject.asObservable();

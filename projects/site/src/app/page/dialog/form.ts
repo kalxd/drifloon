@@ -1,6 +1,7 @@
 import { Component } from "@angular/core";
 import { ReactiveFormsModule, Validators } from "@angular/forms";
-import { UiBaseDialog, UiDialog, UiDialogBox, UiForm, UiFormField } from "drifloon";
+import { DialogFooter, UiBaseFormDialog, UiFormDialog, UiFormField } from "drifloon";
+import * as R from "rxjs";
 
 export interface PageFormData {
 	name: string;
@@ -11,28 +12,26 @@ export interface PageFormData {
 	selector: "page-form",
 	templateUrl: "./form.html",
 	imports: [
-		UiDialog,
-		UiDialogBox,
-		UiForm,
+		UiFormDialog,
+		DialogFooter,
 		UiFormField,
 		ReactiveFormsModule
 	]
 })
-export class PageForm extends UiBaseDialog<PageFormData, PageFormData> {
-	protected form = this.fb.group({
+export class PageForm extends UiBaseFormDialog<PageFormData, PageFormData> {
+    override fg = this.fb.group({
 		name: ["", Validators.required],
 		password: [""]
-	})
+	});
 
-	override updateInput(value: PageFormData): void {
-		this.form.setValue(value);
+	override init(value: PageFormData): void {
+		this.fg.setValue(value);
 	}
 
-	protected connectOk(): void {
-		this.form.markAllAsDirty();
-
-		if (this.form.valid) {
-			this.setFinalResult(this.form.value as PageFormData);
-		}
-	}
+    override connectSubmit(): R.Observable<PageFormData> {
+		const value = this.fg.value as PageFormData;
+		return R.of(value).pipe(
+			R.delay(2000)
+		);
+    }
 }

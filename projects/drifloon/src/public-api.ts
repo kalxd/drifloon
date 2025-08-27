@@ -13,3 +13,4 @@ export * from "./lib/skeleton/skeleton";
 export * from "./lib/task/task";
 
 export * from "./lib/dialog/dialog";
+export * from "./lib/dialog/formdialog";
