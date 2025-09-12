@@ -13,20 +13,12 @@
 <ui-pager
 	[pager]="pagerState.pager()"
 	(pageChange)="connectPageChange($event)"
-	(pageOnlyChange)="connectPageOnlyChange($event)"
 	/>
 
 <div class="container">
 	<div class="item">
 		<ol>
 			@for (h of changeHistory(); track $index) {
-			<li>{{ h }}</li>
-			}
-		</ol>
-	</div>
-	<div class="item">
-		<ol>
-			@for (h of changeOnlyHistory(); track $index) {
 			<li>{{ h }}</li>
 			}
 		</ol>

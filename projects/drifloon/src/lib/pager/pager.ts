@@ -32,7 +32,6 @@ const range = (start: number, end: number): Array<number> => {
 export class UiPager {
 	pager = input.required<PagerInput>();
 	pageChange = output<number>();
-	pageOnlyChange = output<number>();
 
 	protected pagerResult = computed<PagerResult>(() => {
 		const pager = this.pager();
@@ -57,10 +56,8 @@ export class UiPager {
 	});
 
 	protected connectToPage(page: number): void {
-		this.pageChange.emit(page);
-
 		if (this.pager().page !== page) {
-			this.pageOnlyChange.emit(page);
+			this.pageChange.emit(page);
 		}
 	}
 
