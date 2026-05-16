@@ -37,8 +37,8 @@ export class UiPager {
 		const pager = this.pager();
 		const totalPage = Math.max(pager.page, Math.ceil(pager.count / pager.size));
 
-		const prevPage = Math.max(1, pager.page - 1);
-		const nextPage = Math.min(totalPage, pager.page + 1);
+		const prevPage = pager.page - 1;
+		const nextPage = pager.page + 1;
 
 		const prevCuror = Math.max(1, pager.page - 4);
 		const prevRange = range(prevCuror, pager.page - 1);
@@ -56,7 +56,19 @@ export class UiPager {
 	});
 
 	protected connectToPage(page: number): void {
-		if (this.pager().page !== page) {
+		if (this.pagerResult().page === page) {
+			// 同一页。
+			return ;
+		}
+		else if (page < 1) {
+			alert("已经到第一页了。");
+			return ;
+		}
+		else if (page > this.pagerResult().totalPage) {
+			alert("已经到最后一页了。");
+			return ;
+		}
+		else {
 			this.pageChange.emit(page);
 		}
 	}
