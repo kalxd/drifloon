@@ -59,28 +59,21 @@ export const fmapUndefined = <T, R>(
 };
 
 /**
- * `trim`一条字符串`input`，
- * 如果trim后为空字符串，则返回undefined，反之返回trim后的结果。
+ * 该函数一般用于FromGroup的value格式化。
+ * 对于不确定*input*是否为空值的情况下，都可以使用该函数进行处理。
+ * 处理后的字符串会`trim`过，不会包含多余空格；如果为空字符串，返回`null`。
  *
  * @example
  * ```
- * emptyStrToUndefined("  "); // undefined
- * emptyStrToUndefined("  abc"); // "abc"
+ * normalizeString("  hell o "); // "hell o";
+ * normalizeString(undefined); // null
  * ```
  */
-export const emptyStrToUndefined = (input: string): string | undefined => {
-	const s= input.trim();
-	if (s.length === 0) {
-		return undefined;
+export const normalizeString = (input: string | null | undefined): string | null => {
+	if (input === null || input === undefined) {
+		return null;
 	}
-	return s;
-};
 
-/**
- * 类似{@link emptyStrToUndefined}，
- * 空字符串返回`null`。
- */
-export const emptyStrToNull = (input: string): string | null => {
 	const s = input.trim();
 	if (s.length === 0) {
 		return null;

@@ -1,12 +1,12 @@
 {
-  "name": "drifloon",
-  "version": "0.30.7",
-  "peerDependencies": {
-    "@angular/common": "^21.0.0",
-    "@angular/core": "^21.0.0"
-  },
-  "dependencies": {
-    "tslib": "^2.3.0"
-  },
-  "sideEffects": false
+	"name": "drifloon",
+	"version": "0.30.8",
+	"peerDependencies": {
+		"@angular/common": "^21.0.0",
+		"@angular/core": "^21.0.0"
+	},
+	"dependencies": {
+		"tslib": "^2.3.0"
+	},
+	"sideEffects": false
 }
