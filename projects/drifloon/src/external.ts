@@ -81,3 +81,15 @@ export const normalizeString = (input: string | null | undefined): string | null
 
 	return s;
 };
+
+/**
+ * 在运行时验证`input`必须不能为空。
+ * 此处常用于延后初始化的情景，例如对话打开之后才开始初始化一些成员。
+ */
+export const assertNotNull = <T>(input: T | null | undefined): NonNullable<T> => {
+	if (input === null || input === undefined) {
+		throw new Error("input本当有值，此时却是个空！");
+	}
+
+	return input;
+};
