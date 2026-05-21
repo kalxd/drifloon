@@ -15,5 +15,5 @@ export * from "./lib/task/task";
 export * from "./lib/dialog/dialog";
 export * from "./lib/dialog/formdialog";
 
-export * as Fx from "./external";
+export * as Fx from "./fx";
 export * as Fc  from "./codec";
