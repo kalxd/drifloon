@@ -16,4 +16,4 @@ export * from "./lib/dialog/dialog";
 export * from "./lib/dialog/formdialog";
 
 export * as Fx from "./fx";
-export * as Fc  from "./codec";
+export * as Fc  from "./fc";
