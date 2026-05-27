@@ -1,6 +1,6 @@
 import { Component } from "@angular/core";
 import { ReactiveFormsModule, Validators } from "@angular/forms";
-import { DialogFooter, UiBaseFormDialog, UiFormDialog, UiFormField } from "drifloon";
+import { DialogFooter, UiBaseFormDialog, UiDatetimePipe, UiFormDialog, UiFormField } from "drifloon";
 import * as R from "rxjs";
 
 export interface PageFormData {
@@ -15,10 +15,13 @@ export interface PageFormData {
 		UiFormDialog,
 		DialogFooter,
 		UiFormField,
-		ReactiveFormsModule
+		ReactiveFormsModule,
+		UiDatetimePipe
 	]
 })
 export class PageForm extends UiBaseFormDialog<PageFormData, PageFormData> {
+	protected now: Date = new Date();
+
     override fg = this.fb.group({
 		name: ["", Validators.required],
 		password: [""]
