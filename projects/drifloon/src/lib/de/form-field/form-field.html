@@ -1,0 +1,12 @@
+<div class="ui field" [class.required]="isRequire()">
+	<label>{{ labelTitle() }}</label>
+	<div class="control">
+		<ng-content />
+
+		@if (errors !== null) {
+		@for (e in errors; track $index) {
+		<div class="error">{{ e }}</div>
+		}
+		}
+	</div>
+</div>
