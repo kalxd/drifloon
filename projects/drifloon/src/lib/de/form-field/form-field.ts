@@ -7,7 +7,7 @@ import { FieldTree } from '@angular/forms/signals';
   templateUrl: './form-field.html',
   styleUrl: './form-field.css',
 })
-export class FormField {
+export class XUiFormField {
 	fieldName = input<FieldTree<any>>();
 	label = input<string>();
 

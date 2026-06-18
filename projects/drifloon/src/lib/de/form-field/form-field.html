@@ -3,8 +3,8 @@
 	<div class="control">
 		<ng-content />
 
-		@if (errors !== null) {
-		@for (e in errors; track $index) {
+		@if (errors() !== null) {
+		@for (e of errors(); track $index) {
 		<div class="error">{{ e }}</div>
 		}
 		}

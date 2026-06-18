@@ -1,13 +1,15 @@
 import { Component, inject } from '@angular/core';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { UiForm, UiFormField } from "drifloon";
+import { SiteSignalForm } from './signal-form';
 
 @Component({
 	selector: 'site-form',
 	imports: [
 		ReactiveFormsModule,
 		UiForm,
-		UiFormField
+		UiFormField,
+		SiteSignalForm
 	],
 	templateUrl: './form.html',
 	styleUrl: './form.css'

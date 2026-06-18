@@ -23,4 +23,4 @@ export * as Fx from "./fx";
 export * as Fc  from "./fc";
 
 // 实验性质的组件。
-export * as De from "./lib/de";
+export * from "./lib/de";
