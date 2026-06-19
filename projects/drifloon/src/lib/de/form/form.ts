@@ -1,4 +1,4 @@
-import { Component, ElementRef, input, signal, viewChildren } from '@angular/core';
+import { Component, ElementRef, input, signal, viewChild, viewChildren } from '@angular/core';
 import { FieldTree } from '@angular/forms/signals';
 import * as R from "rxjs";
 
@@ -25,12 +25,19 @@ const markOneLensDirty = <T>(prop: FieldTree<T>, keys: Array<string>): void => {
 
 export abstract class XUiBaseForm<T> {
 	protected abstract formData: FieldTree<T>;
-	private formControls = viewChildren<ElementRef>("[formField]");
 	private isLoading = signal(false);
 
 	private markAllDirty(): void {
-		for (const control of this.formControls()) {
-			const field = (control.nativeElement as HTMLHtmlElement).getAttribute("formField");
+		const formBody = viewChild<ElementRef<HTMLHtmlElement>>("body");
+		const formFieldControls = formBody()?.nativeElement?.querySelectorAll("[formField]");
+		console.log(formFieldControls);
+
+		if (formFieldControls === undefined) {
+			return ;
+		}
+
+		for (const control of formFieldControls) {
+			const field = control.getAttribute("formField");
 			if (field !== null) {
 				const [_, ...keys] = field.split("."); // 跳过`formData`。
 				markOneLensDirty(this.formData, keys);
@@ -38,7 +45,7 @@ export abstract class XUiBaseForm<T> {
 		}
 	}
 
-	protected abstract submit<R>(): R.Observable<R>;
+	protected abstract submit(): R.Observable<void>;
 
 	protected connectSubmit(): void {
 		this.isLoading.set(true);

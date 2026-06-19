@@ -1,6 +1,7 @@
 import { Component, signal } from "@angular/core";
-import { form, FormField } from "@angular/forms/signals";
-import { UiForm, XUiFormField } from "drifloon";
+import { form, FormField, required } from "@angular/forms/signals";
+import { XUiBaseForm, XUiForm, XUiFormField } from "drifloon";
+import * as R from "rxjs";
 
 interface UserModel {
 	username: string,
@@ -11,19 +12,22 @@ interface UserModel {
 	selector: "site-signal-form",
 	imports: [
 		FormField,
-		UiForm,
+		XUiForm,
 		XUiFormField
 	],
 	templateUrl: "./signal-form.html"
 })
-export class SiteSignalForm {
+export class SiteSignalForm extends XUiBaseForm<UserModel> {
 	private formModel = signal<UserModel>({
 		username: "",
 		password: ""
 	});
 
-	protected formData = form(this.formModel);
+	protected formData = form(this.formModel, p => {
+		required(p.username);
+	});
 
-	connectSubmit(): void {
+	override submit(): R.Observable<void> {
+		return R.of(undefined);
 	}
 }
