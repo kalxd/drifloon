@@ -3,4 +3,10 @@
 	<div class="body">
 		<ng-content />
 	</div>
+
+	@if (isLoading()) {
+	<div class="mask">
+		正在提交……
+	</div>
+	}
 </fieldset>
