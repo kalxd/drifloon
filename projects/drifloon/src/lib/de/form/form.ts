@@ -1,4 +1,4 @@
-import { Component, ElementRef, input, signal, viewChild, viewChildren } from '@angular/core';
+import { Component, input, signal, WritableSignal } from '@angular/core';
 import { FieldTree } from '@angular/forms/signals';
 import * as R from "rxjs";
 
@@ -13,35 +13,15 @@ export class XUiForm {
 	isLoading = input(false);
 }
 
-const markOneLensDirty = <T>(prop: FieldTree<T>, keys: Array<string>): void => {
-	if (keys.length === 0) {
-		prop().markAsDirty();
-		return ;
-	}
+export abstract class XUiBaseForm<T extends {}> {
+	protected abstract formModel: WritableSignal<T>;
+	protected abstract formData: FieldTree<T>
 
-	const [key, ...restKeys] = keys;
-	return markOneLensDirty((prop() as any)[key], restKeys);
-};
-
-export abstract class XUiBaseForm<T> {
-	protected abstract formData: FieldTree<T>;
 	private isLoading = signal(false);
 
 	private markAllDirty(): void {
-		const formBody = viewChild<ElementRef<HTMLHtmlElement>>("body");
-		const formFieldControls = formBody()?.nativeElement?.querySelectorAll("[formField]");
-		console.log(formFieldControls);
-
-		if (formFieldControls === undefined) {
-			return ;
-		}
-
-		for (const control of formFieldControls) {
-			const field = control.getAttribute("formField");
-			if (field !== null) {
-				const [_, ...keys] = field.split("."); // 跳过`formData`。
-				markOneLensDirty(this.formData, keys);
-			}
+		for (const key of Object.keys(this.formModel())) {
+			(this.formData as any)[key]().markAsDirty();
 		}
 	}
 

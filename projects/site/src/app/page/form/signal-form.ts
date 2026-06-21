@@ -18,16 +18,17 @@ interface UserModel {
 	templateUrl: "./signal-form.html"
 })
 export class SiteSignalForm extends XUiBaseForm<UserModel> {
-	private formModel = signal<UserModel>({
-		username: "",
-		password: ""
+	override formModel = signal<UserModel>({
+		password: "",
+		username: ""
 	});
 
-	protected formData = form(this.formModel, p => {
-		required(p.username);
-	});
+	override formData = form(this.formModel);
 
 	override submit(): R.Observable<void> {
+		this.formData.password().markAsDirty();
+		console.log(this.formModel());
+		console.log(Object.keys(this.formModel()));
 		return R.of(undefined);
 	}
 }
