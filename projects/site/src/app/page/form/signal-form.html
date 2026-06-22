@@ -1,9 +1,9 @@
 <xui-form>
-	<xui-form-field label="用户名">
+	<xui-form-field label="用户名" [fieldName]="formData.username">
 		<input [formField]="formData.username">
 	</xui-form-field>
 
-	<xui-form-field label="密码">
+	<xui-form-field label="密码" [fieldName]="formData.password">
 		<input [formField]="formData.password">
 	</xui-form-field>
 	<button (click)="connectSubmit()">submit</button>

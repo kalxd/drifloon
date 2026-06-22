@@ -1,0 +1,9 @@
+.ui.field.required > label::before {
+	content: "*";
+	color: orangered;
+}
+
+.ui.field .error {
+	font-size: 80%;
+	color: mediumvioletred;
+}

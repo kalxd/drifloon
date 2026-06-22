@@ -23,12 +23,12 @@ export class SiteSignalForm extends XUiBaseForm<UserModel> {
 		username: ""
 	});
 
-	override formData = form(this.formModel);
+	override formData = form(this.formModel, p => {
+		required(p.username);
+	});
 
 	override submit(): R.Observable<void> {
-		this.formData.password().markAsDirty();
-		console.log(this.formModel());
-		console.log(Object.keys(this.formModel()));
+		console.log("do this?");
 		return R.of(undefined);
 	}
 }
