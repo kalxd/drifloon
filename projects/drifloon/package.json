@@ -1,6 +1,6 @@
 {
 	"name": "drifloon",
-	"version": "0.30.9",
+	"version": "0.30.10",
 	"peerDependencies": {
 		"@angular/common": "^21.0.0",
 		"@angular/core": "^21.0.0"
