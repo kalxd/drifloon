@@ -28,9 +28,13 @@ export abstract class XUiBaseForm<T extends {}> {
 	protected abstract submit(): R.Observable<void>;
 
 	protected connectSubmit(): void {
-		this.isLoading.set(true);
 		this.markAllDirty();
 
+		if (this.formData().invalid()) {
+			return ;
+		}
+
+		this.isLoading.set(true);
 		this.submit().subscribe(_ => {
 			this.isLoading.set(false);
 		});
