@@ -28,7 +28,6 @@ export class SiteSignalForm extends XUiBaseForm<UserModel> {
 	});
 
 	override submit(): R.Observable<void> {
-		console.log("do this?");
-		return R.of(undefined);
+		return R.timer(3000).pipe(R.map(_ => undefined));
 	}
 }

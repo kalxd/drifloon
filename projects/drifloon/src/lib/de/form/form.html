@@ -9,4 +9,10 @@
 		正在提交……
 	</div>
 	}
+
+	@if (isLoading()) {
+	<div class="loading mask">
+		<label class="text">请稍候……</label>
+	</div>
+	}
 </fieldset>

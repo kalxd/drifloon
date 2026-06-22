@@ -1,6 +1,10 @@
-import { Component, input, signal, WritableSignal } from '@angular/core';
+import { Component, computed, input, signal, WritableSignal } from '@angular/core';
 import { FieldTree } from '@angular/forms/signals';
 import * as R from "rxjs";
+
+export interface XUiFormState {
+	isLoading: boolean;
+}
 
 @Component({
 	selector: 'xui-form',
@@ -10,14 +14,19 @@ import * as R from "rxjs";
 })
 export class XUiForm {
 	title = input<string>("请填写");
-	isLoading = input(false);
+	state = input<XUiFormState | undefined>();
+
+	isLoading = computed(() => {
+		return this.state?.()?.isLoading === true;
+	});
 }
 
 export abstract class XUiBaseForm<T extends {}> {
 	protected abstract formModel: WritableSignal<T>;
 	protected abstract formData: FieldTree<T>
-
-	private isLoading = signal(false);
+	protected state = signal<XUiFormState>({
+		isLoading: false
+	});
 
 	private markAllDirty(): void {
 		for (const key of Object.keys(this.formModel())) {
@@ -34,9 +43,9 @@ export abstract class XUiBaseForm<T extends {}> {
 			return ;
 		}
 
-		this.isLoading.set(true);
+		this.state.update(s => ({ ...s, isLoading: true }));
 		this.submit().subscribe(_ => {
-			this.isLoading.set(false);
+			this.state.update(s => ({ ...s, isLoading: false }));
 		});
 	}
 }
