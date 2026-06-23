@@ -44,8 +44,10 @@ export abstract class XUiBaseForm<T extends {}> {
 		}
 
 		this.state.update(s => ({ ...s, isLoading: true }));
-		this.submit().subscribe(_ => {
-			this.state.update(s => ({ ...s, isLoading: false }));
-		});
+		this.submit()
+			.pipe(R.finalize(() => {
+				this.state.update(s => ({ ...s, isLoading: false }));
+			}))
+			.subscribe();
 	}
 }
