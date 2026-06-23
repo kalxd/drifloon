@@ -18,7 +18,7 @@ export class AppError {
 	}
 }
 
-export const showErrorMsg = (e: unknown): string => {
+export const fmtErrorMsg = (e: unknown): string => {
 	if (e instanceof AppError) {
 		return e.msg;
 	}
