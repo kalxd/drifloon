@@ -1,6 +1,7 @@
 import { Component, computed, input, signal, WritableSignal } from '@angular/core';
 import { FieldTree } from '@angular/forms/signals';
 import * as R from "rxjs";
+import { showErrorMsg } from '../../data/error';
 
 export interface XUiFormState {
 	isLoading: boolean;
@@ -48,6 +49,8 @@ export abstract class XUiBaseForm<T extends {}> {
 			.pipe(R.finalize(() => {
 				this.state.update(s => ({ ...s, isLoading: false }));
 			}))
-			.subscribe();
+			.subscribe({
+				error: showErrorMsg
+			});
 	}
 }
