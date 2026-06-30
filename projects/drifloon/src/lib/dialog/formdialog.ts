@@ -40,10 +40,9 @@ export class UiFormDialog {
 	}
 }
 
-@Component({
-	selector: "ui-base-form-dialog",
-	template: ""
-})
+/**
+ * @deprecated 废弃，请使用signal forms。后几个版本会被替换。
+ */
 export abstract class UiBaseFormDialog<T, R> {
 	private dialogRef = viewChild(UiFormDialog);
 	protected fb = inject(FormBuilder);
