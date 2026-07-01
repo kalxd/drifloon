@@ -1,4 +1,4 @@
-<xui-form-dialog title="你好啊">
+<xui-form-dialog title="你好啊" (submit)="connectSubmit()">
 	<xui-form-field [fieldName]="formData.name">
 		<input [formField]="formData.name" />
 	</xui-form-field>
