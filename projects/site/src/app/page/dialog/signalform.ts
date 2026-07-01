@@ -1,6 +1,6 @@
 import { Component, signal } from "@angular/core";
-import { form, required } from "@angular/forms/signals";
-import { UiFormDialog, XUiBaseFormDialog, XUiFormField } from "drifloon";
+import { form, FormField, required } from "@angular/forms/signals";
+import { XUiBaseFormDialog, XUiFormDialog, XUiFormField } from "drifloon";
 import * as R from "rxjs";
 
 export interface TheSignalFormData {
@@ -10,10 +10,11 @@ export interface TheSignalFormData {
 
 @Component({
 	selector: "the-signal-form",
-	template: "",
+	templateUrl: "./signalform.html",
 	imports: [
-		UiFormDialog,
-		XUiFormField
+		XUiFormDialog,
+		XUiFormField,
+		FormField
 	]
 })
 export class TheSignalForm extends XUiBaseFormDialog<TheSignalFormData, TheSignalFormData> {
