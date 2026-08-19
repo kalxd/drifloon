@@ -40,9 +40,6 @@ export class UiFormDialog {
 	}
 }
 
-/**
- * @deprecated 废弃，请使用signal forms。后几个版本会被替换。
- */
 @Component({
 	template: ""
 })
