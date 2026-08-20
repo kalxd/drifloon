@@ -53,10 +53,9 @@ export abstract class UiBaseFormDialog<T, R> {
 
 	protected init(_: T): void {}
 
-	show(value: T): R.Observable<R> {
+	show(value: T): void {
 		this.init(value);
 		this.dialogRef()?.show();
-		return this.result$;
 	}
 
 	close(): void {
@@ -73,6 +72,11 @@ export abstract class UiBaseFormDialog<T, R> {
 
 		this.submit()
 			.pipe(
+				/**
+				 * 仅取一次正常值，是为了保证每次submit之后能正常取消订阅，
+				 * 妨止出现多次订阅的异常情况。
+				 */
+				R.take(1),
 				R.finalize(() => this.dialogRef()?.setUnload())
 			)
 			.subscribe(value => {

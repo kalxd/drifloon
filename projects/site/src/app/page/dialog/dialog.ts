@@ -26,8 +26,10 @@ export class SiteDialog implements AfterContentInit {
 	protected password = signal("");
 
 	ngAfterContentInit() {
-		this.formDialog().result$.subscribe(_ => {
+		this.formDialog().result$.subscribe(value => {
 			console.log("do this?");
+			this.name.set(value.name);
+			this.password.set(value.password);
 		});
 	}
 
@@ -36,14 +38,9 @@ export class SiteDialog implements AfterContentInit {
 	}
 
 	protected connectShowPlain(): void {
-		const dialog$ = this.formDialog().show({
+		this.formDialog().show({
 			name: this.name(),
 			password: this.password()
-		});
-
-		dialog$.subscribe(x => {
-			this.name.set(x.name);
-			this.password.set(x.password);
 		});
 	}
 
