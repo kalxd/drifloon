@@ -46,8 +46,8 @@ export class UiFormDialog {
 export abstract class UiBaseFormDialog<T, R> {
 	private dialogRef = viewChild(UiFormDialog);
 	protected fb = inject(FormBuilder);
-	private result = new R.Subject<R>();
-	private result$ = this.result.asObservable();
+
+	result$ = new R.Subject<R>();
 
 	abstract fg: FormGroup;
 
@@ -76,7 +76,7 @@ export abstract class UiBaseFormDialog<T, R> {
 				R.finalize(() => this.dialogRef()?.setUnload())
 			)
 			.subscribe(value => {
-				this.result.next(value);
+				this.result$.next(value);
 				this.dialogRef()?.setUnload();
 				this.dialogRef()?.close();
 			});

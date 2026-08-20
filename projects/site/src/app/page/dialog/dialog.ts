@@ -1,4 +1,4 @@
-import { Component, signal, viewChild } from '@angular/core';
+import { AfterContentInit, Component, signal, viewChild } from '@angular/core';
 import { UiDivider } from 'drifloon';
 import { PagePlain } from "./plain";
 import { PageForm } from './form';
@@ -17,13 +17,19 @@ import { TheSignalForm } from './signalform';
 	templateUrl: './dialog.html',
 	styleUrl: './dialog.css'
 })
-export class SiteDialog {
+export class SiteDialog implements AfterContentInit {
 	protected plainDialog = viewChild.required(PagePlain);
 	protected formDialog = viewChild.required(PageForm);
 	protected theSignalFormDialog = viewChild.required(TheSignalForm);
 
 	protected name = signal("");
 	protected password = signal("");
+
+	ngAfterContentInit() {
+		this.formDialog().result$.subscribe(_ => {
+			console.log("do this?");
+		});
+	}
 
 	protected connectPlainOk(): void {
 		alert("你点击了确定！");
