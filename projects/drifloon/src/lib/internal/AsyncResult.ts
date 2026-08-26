@@ -16,7 +16,7 @@ class AsyncLoading<T = never, E = never> implements AsyncResultTrait<T, E> {
 }
 
 class AsyncValue<T, E = never> implements AsyncResultTrait<T, E> {
-	private readonly value: T;
+	readonly value: T;
 
 	constructor(value: T) {
 		this.value = value;
@@ -32,8 +32,43 @@ class AsyncValue<T, E = never> implements AsyncResultTrait<T, E> {
 	}
 }
 
+type CaseOfOption<T, E, R> = {
+	loading: () => R;
+	fail: (err: E) => R;
+	value: (value: T) => R;
+};
+
+const caseOfAsyncResult = <T, E, R>(
+	input: AsyncResultTrait<T, E>,
+	option: CaseOfOption<T, E, R>
+): R => {
+	if (input instanceof AsyncLoading) {
+		return option.loading();
+	}
+	else if (input instanceof AsyncFail) {
+		return option.fail(input.err);
+	}
+	else if (input instanceof AsyncValue) {
+		return option.value(input.value);
+	}
+
+	throw new Error(`{input}不是有效的AsyncResultTrait子类！`);
+};
+
+const rewrapOfAsyncResult = <T, E>(
+	input: AsyncResult<R.Observable<T>, E>
+): R.ObservableInput<AsyncResult<T, E>> => {
+	return input.caseOf({
+		loading: () => R.of(AsyncResult.loading()),
+		fail: err => R.of(AsyncResult.fail(err)),
+		value: s$ => s$.pipe(
+			R.map(s => AsyncResult.of(s))
+		)
+	});
+}
+
 class AsyncFail<E, T = never> implements AsyncResultTrait<T, E> {
-	private readonly err: E;
+	readonly err: E;
 
 	constructor(err: E) {
 		this.err = err;
@@ -70,6 +105,20 @@ export class AsyncResult<T, E> implements AsyncResultTrait<T, E> {
 		);
 	}
 
+	// static concatMap<
+	// 	T,
+	// 	R,
+	// 	O extends R.ObservableInput<R>,
+	// 	E
+	// >(f: (value: T) => O): R.OperatorFunction<AsyncResult<T, E>, AsyncResult<R, E>> {
+	// 	return source => source.pipe(
+	// 		R.concatMap(value => {
+	// 			const v = value.map(f);
+	// 			return v;
+	// 		})
+	// 	);
+	// }
+
 	private value: AsyncResultTrait<T, E>;
 
 	private constructor(value: AsyncResultTrait<T, E>) {
@@ -82,5 +131,9 @@ export class AsyncResult<T, E> implements AsyncResultTrait<T, E> {
 
 	flatMap<R>(f: (value: T) => AsyncResult<R, E>): AsyncResult<R, E> {
 		return new AsyncResult(this.value.flatMap(f));
+	}
+
+	caseOf<R>(option: CaseOfOption<T, E, R>): R {
+		return caseOfAsyncResult(this.value, option);
 	}
 }
