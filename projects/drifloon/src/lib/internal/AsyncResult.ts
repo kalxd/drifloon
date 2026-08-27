@@ -99,6 +99,60 @@ export class AsyncResult<T, E> implements AsyncResultTrait<T, E> {
 		return new AsyncResult(value);
 	}
 
+	static concatMapOf<T, U, E>(
+		f: (value: T, idx: number) => R.ObservableInput<U>,
+	): R.OperatorFunction<T, AsyncResult<U, E>> {
+		return source$ => source$.pipe(
+			R.concatMap(f),
+			R.map(x => AsyncResult.of(x))
+		);
+	}
+
+	static concatMapOfStart<T, R, E>(
+		f: (value: T) => R.ObservableInput<R>,
+	): R.OperatorFunction<T, AsyncResult<R, E>> {
+		return source$ => source$.pipe(
+			AsyncResult.concatMapOf(f),
+			R.startWith(AsyncResult.loading())
+		);
+	}
+
+	static switchMapOf<T, R, E>(
+		f: (value: T, idx: number) => R.ObservableInput<R>
+	): R.OperatorFunction<T, AsyncResult<R, E>> {
+		return source$ => source$.pipe(
+			R.switchMap(f),
+			R.map(AsyncResult.of)
+		);
+	}
+
+	static switchMapOfStart<T, R, E>(
+		f: (value: T, idx: number) => R.ObservableInput<R>
+	): R.OperatorFunction<T, AsyncResult<R, E>> {
+		return source$ => source$.pipe(
+			AsyncResult.switchMapOf(f),
+			R.startWith(AsyncResult.loading())
+		);
+	}
+
+	static exhaustMapOf<T, R, E>(
+		f: (value: T, idx: number) => R.ObservableInput<R>
+	): R.OperatorFunction<T, AsyncResult<R, E>> {
+		return source$ => source$.pipe(
+			R.exhaustMap(f),
+			R.map(AsyncResult.of)
+		);
+	}
+
+	static exhaustMapOfStart<T, R, E>(
+		f: (value: T, idx: number) => R.ObservableInput<R>
+	): R.OperatorFunction<T, AsyncResult<R, E>> {
+		return source$ => source$.pipe(
+			AsyncResult.exhaustMapOf(f),
+			R.startWith(AsyncResult.loading())
+		);
+	}
+
 	static map<T, R, E>(f: (value: T) => R): R.OperatorFunction<AsyncResult<T, E>, AsyncResult<R, E>> {
 		return source => source.pipe(
 			R.map(x => x.map(f))
@@ -137,3 +191,7 @@ export class AsyncResult<T, E> implements AsyncResultTrait<T, E> {
 		return caseOfAsyncResult(this.value, option);
 	}
 }
+
+const v = R.of(1);
+const vv = v.pipe(AsyncResult.concatMapOf(x => R.of(x + 1)));
+
