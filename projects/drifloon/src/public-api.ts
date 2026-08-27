@@ -17,6 +17,8 @@ export * from "./lib/task/task";
 export * from "./lib/dialog/dialog";
 export * from "./lib/dialog/formdialog";
 
+export * as AsyncResult from "./lib/data/async-result";
+
 // 常用辅助函数。
 export * as Fx from "./fx";
 // 常用codec。
