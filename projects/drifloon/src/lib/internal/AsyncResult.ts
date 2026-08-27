@@ -1,5 +1,4 @@
 import * as R from "rxjs";
-
 interface AsyncResultTrait<T, E> {
 	map<R>(f: (value: T) => R): AsyncResultTrait<R, E>;
 	flatMap<R>(f: (value: T) => AsyncResultTrait<R, E>): AsyncResultTrait<R, E>;
@@ -29,6 +28,41 @@ class AsyncValue<T, E = never> implements AsyncResultTrait<T, E> {
 
 	flatMap<R>(f: (value: T) => AsyncResultTrait<R, E>): AsyncResultTrait<R, E> {
 		return f(this.value);
+	}
+}
+
+class AsyncFail<E, T = never> implements AsyncResultTrait<T, E> {
+	readonly err: E;
+
+	constructor(err: E) {
+		this.err = err;
+	}
+
+	map<R>(_: (value: T) => R): AsyncResultTrait<R, E> {
+		return new AsyncFail(this.err);
+	}
+
+	flatMap<R>(_: (value: T) => AsyncResultTrait<R, E>): AsyncResultTrait<R, E> {
+		return new AsyncFail(this.err);
+	}
+}
+
+
+interface LiftObservable<A, E> {
+	liftObservable(): R.Observable<AsyncResult<A, E>>;
+}
+
+class ObservableLoading<T = never, E = never> extends AsyncLoading<R.Observable<T>, E> implements LiftObservable<T> {
+	liftObservable(): R.Observable<AsyncLoading<T, E>> {
+		return R.of(AsyncResult.loading());
+	}
+}
+
+class ObserableValue<E, T = never> extends AsyncValue<R.Observable<T>, E> implements LiftObservable<T, E> {
+	liftObservable(): R.Observable<AsyncResult<T, E>> {
+		return this.value.pipe(
+			R.map(AsyncResult.of)
+		);
 	}
 }
 
@@ -65,22 +99,6 @@ const rewrapOfAsyncResult = <T, E>(
 			R.map(s => AsyncResult.of(s))
 		)
 	});
-}
-
-class AsyncFail<E, T = never> implements AsyncResultTrait<T, E> {
-	readonly err: E;
-
-	constructor(err: E) {
-		this.err = err;
-	}
-
-	map<R>(_: (value: T) => R): AsyncResultTrait<R, E> {
-		return new AsyncFail(this.err);
-	}
-
-	flatMap<R>(_: (value: T) => AsyncResultTrait<R, E>): AsyncResultTrait<R, E> {
-		return new AsyncFail(this.err);
-	}
 }
 
 export class AsyncResult<T, E> implements AsyncResultTrait<T, E> {
@@ -159,23 +177,19 @@ export class AsyncResult<T, E> implements AsyncResultTrait<T, E> {
 		);
 	}
 
-	// static concatMap<
-	// 	T,
-	// 	R,
-	// 	O extends R.ObservableInput<R>,
-	// 	E
-	// >(f: (value: T) => O): R.OperatorFunction<AsyncResult<T, E>, AsyncResult<R, E>> {
-	// 	return source => source.pipe(
-	// 		R.concatMap(value => {
-	// 			const v = value.map(f);
-	// 			return v;
-	// 		})
-	// 	);
-	// }
+	static concatMap<T, R, E>(
+		f: (value: T, idx: number) => R.Observable<R>
+	): R.OperatorFunction<AsyncResult<T, E>, AsyncResult<R, E>> {
+		return source$ => source$.pipe(
+			R.concatMap((x, idx) => {
+				const s = x.map(y => f(y, idx));
+			})
+		);
+	}
 
-	private value: AsyncResultTrait<T, E>;
+	protected value: AsyncResultTrait<T, E>;
 
-	private constructor(value: AsyncResultTrait<T, E>) {
+	protected constructor(value: AsyncResultTrait<T, E>) {
 		this.value = value;
 	}
 
@@ -191,7 +205,3 @@ export class AsyncResult<T, E> implements AsyncResultTrait<T, E> {
 		return caseOfAsyncResult(this.value, option);
 	}
 }
-
-const v = R.of(1);
-const vv = v.pipe(AsyncResult.concatMapOf(x => R.of(x + 1)));
-
