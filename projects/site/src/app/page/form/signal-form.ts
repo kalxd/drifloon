@@ -1,33 +1,40 @@
-import { Component, signal } from "@angular/core";
+import { Component, linkedSignal, signal, WritableSignal } from "@angular/core";
 import { form, FormField, required } from "@angular/forms/signals";
-import { XUiBaseForm, XUiForm, XUiFormField } from "drifloon";
 import * as R from "rxjs";
 
 interface UserModel {
 	username: string,
 	password: string
+	selections: WritableSignal<Array<string>>;
+	curSelection: WritableSignal<string | undefined>;
 }
 
 @Component({
 	selector: "site-signal-form",
 	imports: [
-		FormField,
-		XUiForm,
-		XUiFormField
+		FormField
 	],
 	templateUrl: "./signal-form.html"
 })
-export class SiteSignalForm extends XUiBaseForm<UserModel> {
-	override formModel = signal<UserModel>({
+export class SiteSignalForm {
+	private readonly selections = signal<Array<string>>([]);
+	private readonly curSelection = linkedSignal<string | undefined>(
+		() => this.selections()[0]
+	);
+
+	readonly formModel = signal<UserModel>({
 		password: "",
-		username: ""
+		username: "",
+		selections: this.selections,
+		curSelection: this.curSelection
 	});
 
-	override formData = form(this.formModel, p => {
+	readonly formData = form(this.formModel, p => {
 		required(p.username);
+		required(p.curSelection);
 	});
 
-	override submit(): R.Observable<void> {
+	submit(): R.Observable<void> {
 		return R.timer(3000).pipe(
 			R.map(_ => {})
 		);

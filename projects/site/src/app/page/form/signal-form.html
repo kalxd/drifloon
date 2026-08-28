@@ -1,10 +1,10 @@
-<xui-form [state]="state()">
-	<xui-form-field label="用户名" [fieldName]="formData.username">
-		<input [formField]="formData.username">
-	</xui-form-field>
+<div>
+	<div>
+		<label>用户名</label>
+		<input [formField]="formData.username" />
+	</div>
 
-	<xui-form-field label="密码" [fieldName]="formData.password">
-		<input [formField]="formData.password">
-	</xui-form-field>
-	<button (click)="connectSubmit()">submit</button>
-</xui-form>
+	<div>
+		<label>选择</label>
+	</div>
+</div>

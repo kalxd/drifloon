@@ -2,7 +2,7 @@ import { Component, inject, input, output, signal, viewChild } from "@angular/co
 import { UiDialog } from "./dialog";
 import { UiDialogBox } from "../box/dialog-box";
 import { UiForm } from "../form/form";
-import { UiSkeleton } from "../skeleton/skeleton";
+import { UiSkeleton } from "../ui/skeleton/skeleton";
 import { FormBuilder, FormGroup } from "@angular/forms";
 import * as R from "rxjs";
 

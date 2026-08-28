@@ -10,7 +10,8 @@ import {
 } from "@angular/core";
 import * as R from "rxjs";
 import { AsyncResult, caseOfAsyncResult } from "../lib/data/async-result";
-import { UiErrorPage, UiSkeleton } from "../public-api";
+import { UiErrorPage } from "../lib/ui/error-page/error-page";
+import { UiSkeleton } from "../lib/ui/skeleton/skeleton";
 import { fmtErrorMsg } from "../lib/data/error";
 
 @Component({

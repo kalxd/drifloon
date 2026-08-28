@@ -13,7 +13,7 @@ export * from "./lib/form/form";
 export * from "./lib/form/formfield";
 
 export * from "./lib/pager/pager";
-export * from "./lib/skeleton/skeleton";
+export * from "./lib/ui/skeleton/skeleton";
 export * from "./lib/task/task";
 
 export * from "./lib/dialog/dialog";
@@ -30,4 +30,4 @@ export * as Fc  from "./fc";
 export * from "./directive/loading";
 
 // 实验性质的组件。
-export * from "./lib/de";
+// export * from "./lib/de";

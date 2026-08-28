@@ -7,7 +7,7 @@ import {
 	ViewContainerRef
 } from "@angular/core";
 import { Maybe } from "../internal/maybe";
-import { UiSkeleton } from "../skeleton/skeleton";
+import { UiSkeleton } from "../ui/skeleton/skeleton";
 import * as R from "rxjs";
 
 /**

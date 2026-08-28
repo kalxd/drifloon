@@ -11,7 +11,7 @@ type Align = "left" | "center" | "right";
 })
 export class UiBox {
 	align = input<Align | null>(null);
-	pad = input(false, { transform: booleanAttribute});
+	pad = input(false, { transform: booleanAttribute });
 
 	protected theStyle: Signal<Partial<CSSStyleDeclaration>> = computed(() => {
 		const builder = new CssStyleBuilder();
