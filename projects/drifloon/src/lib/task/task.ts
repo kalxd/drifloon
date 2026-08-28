@@ -102,6 +102,9 @@ export class ActionResult<T> {
 	}
 }
 
+/**
+ * @deprecated 这已经是过去时，使用另一个任务。
+ */
 @Directive({
 	selector: "[task]"
 })
