@@ -1,0 +1,40 @@
+import { Component, signal } from '@angular/core';
+import { form, FormField, required } from '@angular/forms/signals';
+import { XUiForm, XUiBaseForm, Ar } from "drifloon";
+import * as R from "rxjs";
+
+interface FormModel {
+	username: string;
+	password: string;
+}
+
+@Component({
+	imports: [
+		FormField,
+		XUiForm
+	],
+	selector: 'site-signal-form',
+	styleUrl: './signal-form.css',
+	templateUrl: './signal-form.html',
+})
+export class SiteSignalForm extends XUiBaseForm {
+	protected readonly model = signal<FormModel>({
+		username: "",
+		password: ""
+	});
+
+	protected readonly fd = form(this.model, p => {
+		required(p.username);
+	});
+
+	override submit(): R.Observable<Ar.AsyncResult<unknown, unknown>> {
+		return R.of(1).pipe(
+			Ar.mapOf(x => x),
+			R.delay(1000)
+		);
+	}
+
+	override submitOk(): void {
+		alert("提交完成！");
+	}
+}

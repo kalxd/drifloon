@@ -46,7 +46,14 @@ export abstract class XUiBaseForm {
 
 		this.submit()
 			.pipe(
-				Ar.tapFinish(_ => this.submitOk())
+				R.tap(x => Ar.caseOfAsyncResult(x, {
+					refresh: () => this.isLoading.set(true),
+					err: _ => this.isLoading.set(false),
+					finish: _ => {
+						this.isLoading.set(false);
+						this.submitOk();
+					}
+				}))
 			)
 			.subscribe(Ar.subscriptionAll);
 	}

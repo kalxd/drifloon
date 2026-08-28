@@ -1,0 +1,11 @@
+<xui-form [state]="state()" (submit)="connectSubmit()">
+	<div>
+		<label>用户名</label>
+		<input [formField]="fd.username" />
+	</div>
+
+	<div>
+		<label>密码</label>
+		<input [formField]="fd.password" />
+	</div>
+</xui-form>
