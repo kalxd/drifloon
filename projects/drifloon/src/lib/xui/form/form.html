@@ -1,18 +1,15 @@
 <fieldset class="xui form">
-	<legend>{{ title() }}</legend>
+	<legend>{{ state().title ?? "请填写" }}</legend>
 	<div class="body" #body>
 		<ng-content />
 	</div>
 
 	@if (isLoading()) {
-	<div class="mask">
-		正在提交……
-	</div>
+	<ui-skeleton />
 	}
-
-	@if (isLoading()) {
-	<div class="loading mask">
-		<label class="text">请稍候……</label>
+	@else {
+	<div>
+		<button (click)="submit.emit()">提交</button>
 	</div>
 	}
 </fieldset>

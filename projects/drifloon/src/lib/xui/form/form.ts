@@ -1,61 +1,52 @@
-import { Component, computed, input, signal, WritableSignal } from '@angular/core';
+import { Component, computed, input, output, Signal, signal } from '@angular/core';
 import { FieldTree } from '@angular/forms/signals';
 import * as R from "rxjs";
-import { fmtErrorMsg } from '../../data/error';
+import * as Ar from "../../data/async-result";
+import { UiSkeleton } from '../../ui/skeleton/skeleton';
 
 export interface XUiFormState {
-	isLoading: boolean;
+	title?: string;
+	isLoading?: boolean;
+	submitText?: string;
 }
 
 @Component({
 	selector: 'xui-form',
-	imports: [],
+	imports: [UiSkeleton],
 	templateUrl: './form.html',
 	styleUrl: './form.css',
 })
 export class XUiForm {
-	title = input<string>("请填写");
-	state = input<XUiFormState | undefined>();
+	state = input.required<XUiFormState>({});
 
-	isLoading = computed(() => {
-		return this.state?.()?.isLoading === true;
-	});
+	protected isLoading = computed(() => this.state().isLoading === true);
+
+	submit = output<void>();
 }
 
-export abstract class XUiBaseForm<T extends {}> {
-	protected abstract formModel: WritableSignal<T>;
-	protected abstract formData: FieldTree<T>
-	protected state = signal<XUiFormState>({
+export abstract class XUiBaseForm<T> {
+	private readonly isLoading = signal(false);
+	protected submitText: string | undefined;
+	protected title: string | undefined;
+
+	protected readonly state: Signal<XUiFormState> = computed(() => ({
+		isLoading: this.isLoading(),
+		submitText: this.submitText,
+		title: this.title
+	}));
+
+	protected readonly formState = signal<XUiFormState>({
 		isLoading: false
 	});
 
-	private markAllDirty(): void {
-		for (const key of Object.keys(this.formModel())) {
-			(this.formData as any)[key]().markAsDirty();
-		}
-	}
+	protected readonly abstract theForm: FieldTree<T>;
 
-	protected abstract submit(): R.Observable<void>;
+	abstract submit(): R.Observable<Ar.AsyncResult<unknown, unknown>>;
+	protected sumbitOk(): void {}
 
-	protected connectSubmit(): void {
-		this.markAllDirty();
+	connectSubmit(): void {
+		this.isLoading.set(true);
 
-		if (this.formData().invalid()) {
-			return ;
-		}
-
-		this.state.update(s => ({ ...s, isLoading: true }));
-		this.submit()
-			.pipe(
-				R.finalize(() => {
-					this.state.update(s => ({ ...s, isLoading: false }));
-				}),
-				R.catchError((e: unknown) => {
-					const msg = fmtErrorMsg(e);
-					alert(msg);
-					return R.of();
-				})
-			)
-			.subscribe();
+		this.submit().subscribe(Ar.subscriptionAll);
 	}
 }

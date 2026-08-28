@@ -31,3 +31,4 @@ export * from "./directive/loading";
 
 // 实验性质的组件。
 // export * from "./lib/de";
+export * from "./lib/xui/form/form";
