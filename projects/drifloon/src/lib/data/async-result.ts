@@ -287,6 +287,18 @@ export function catchIntoResult<T>(): R.OperatorFunction<T, AsyncResult<T, AppEr
 	)
 }
 
+export function tapFinish<T, E>(
+	f: (value: T) => void
+): R.MonoTypeOperatorFunction<AsyncResult<T, E>> {
+	return source$ => source$.pipe(
+		R.tap(x => {
+			if (x.tag === "finish") {
+				f(x.value);
+			}
+		})
+	);
+}
+
 type AsyncResultSubscription = {
 	next: (x: AsyncResult<unknown, unknown>) => void;
 	error: (e: unknown) => void;

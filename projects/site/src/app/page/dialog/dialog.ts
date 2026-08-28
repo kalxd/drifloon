@@ -3,7 +3,6 @@ import { UiDivider } from 'drifloon';
 import { PagePlain } from "./plain";
 import { PageForm } from './form';
 import { FormsModule } from '@angular/forms';
-import { TheSignalForm } from './signalform';
 
 @Component({
 	selector: 'site-dialog',
@@ -12,7 +11,6 @@ import { TheSignalForm } from './signalform';
 		PagePlain,
 		PageForm,
 		FormsModule,
-		TheSignalForm
 	],
 	templateUrl: './dialog.html',
 	styleUrl: './dialog.css'
@@ -20,7 +18,6 @@ import { TheSignalForm } from './signalform';
 export class SiteDialog implements AfterContentInit {
 	protected plainDialog = viewChild.required(PagePlain);
 	protected formDialog = viewChild.required(PageForm);
-	protected theSignalFormDialog = viewChild.required(TheSignalForm);
 
 	protected name = signal("");
 	protected password = signal("");
@@ -42,17 +39,5 @@ export class SiteDialog implements AfterContentInit {
 			name: this.name(),
 			password: this.password()
 		});
-	}
-
-	connectShowTheSignalForm(): void {
-		this.theSignalFormDialog()
-			.show({
-				name: this.name(),
-				password: this.password()
-			})
-			.subscribe(value => {
-				this.name.set(value.name);
-				this.password.set(value.password);
-			});
 	}
 }
