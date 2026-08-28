@@ -1,4 +1,5 @@
 import * as R from "rxjs";
+import { AppError, fmtErrorMsg } from "./error";
 
 interface AsyncRefresh {
 	tag: "refresh";
@@ -236,5 +237,52 @@ export function exhaustFlatMapWithRefresh<T, R, E>(
 	return source$ => source$.pipe(
 		exhaustFlatMap(f),
 		R.startWith(mkAsyncRefresh)
+	);
+}
+
+/**
+ * 重新抛出AsyncResult的错误。
+ * 自动过滤`refresh`，遇到正常值放行。
+ * 遇到错误`E`，如果`E`是`AppError`，原样抛出，否则包装成`AppError`抛出：最终都会抛出`AppError`。
+ * 后者AppError.code = -1。
+ */
+export function raiseError<T, E>(): R.OperatorFunction<AsyncResult<T, E>, T> {
+	return source$ => source$.pipe(
+		R.filter(x => x.tag !== "refresh"),
+		R.map(x => {
+			if (x.tag === "finish") {
+				return x.value;
+			}
+			else if (x.tag === "err") {
+				if (x.err instanceof AppError) {
+					throw x.err;
+				}
+
+				const msg = fmtErrorMsg(x.err);
+				throw new AppError(-1, msg);
+			}
+
+			const _: never = x;
+			return _;
+		})
+	);
+}
+
+/**
+ * 自动捕获导常，转化为`AsyncResult<T, AppError>`。
+ * 其它异常转化成`AppError`的`code=-1`。
+ */
+export function catchIntoResult<T>(): R.OperatorFunction<T, AsyncResult<T, AppError>> {
+	return source$ => source$.pipe(
+		R.map(mkAsyncFinish),
+		R.catchError(e => {
+			if (e instanceof AppError) {
+				return R.of(mkAsyncErr(e));
+			}
+
+			const msg = fmtErrorMsg(e);
+			const ex = new AppError(-1, msg);
+			return R.of(mkAsyncErr(ex));
+		})
 	);
 }
