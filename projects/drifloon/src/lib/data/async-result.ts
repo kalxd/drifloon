@@ -16,16 +16,16 @@ interface AsyncErr<E> {
 
 export type AsyncResult<T, E> = AsyncRefresh | AsyncFinish<T> | AsyncErr<E>;
 
-const mkAsyncRefresh: AsyncResult<any, any> = {
+export const mkAsyncRefresh: AsyncResult<any, any> = {
 	tag: "refresh"
 };
 
-const mkAsyncFinish = <T, E = never>(value: T): AsyncResult<T, E> => ({
+export const mkAsyncFinish = <T, E = never>(value: T): AsyncResult<T, E> => ({
 	tag: "finish",
 	value
 });
 
-const mkAsyncErr = <E, T = never>(err: E): AsyncResult<T, E> => ({
+export const mkAsyncErr = <E, T = never>(err: E): AsyncResult<T, E> => ({
 	tag: "err",
 	err
 });

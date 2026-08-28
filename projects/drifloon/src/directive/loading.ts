@@ -1,7 +1,29 @@
-import { Directive, inject, input, OnInit, TemplateRef, ViewContainerRef } from "@angular/core";
+import {
+	Component,
+	Directive,
+	inject,
+	input,
+	inputBinding,
+	OnInit,
+	TemplateRef,
+	ViewContainerRef
+} from "@angular/core";
 import * as R from "rxjs";
 import { AsyncResult, caseOfAsyncResult } from "../lib/data/async-result";
-import { UiSkeleton } from "../public-api";
+import { UiErrorPage, UiSkeleton } from "../public-api";
+import { fmtErrorMsg } from "../lib/data/error";
+
+@Component({
+	imports: [UiErrorPage],
+	selector: "iu-loading-error-box",
+	template: `
+	<ui-error-page>
+	{{ msg() }}
+	</ui-error-page>`
+})
+class LoadingErrorBox {
+	msg = input.required<string>();
+}
 
 @Directive({
 	selector: "[uiLoading]"
@@ -26,7 +48,11 @@ export class UiLoadingDirective implements OnInit {
 					});
 				},
 				err: e => {
-					this.container.createComponent(UiSkeleton);
+					this.container.createComponent(LoadingErrorBox, {
+						bindings: [
+							inputBinding("msg", () => fmtErrorMsg(e))
+						]
+					});
 				}
 			});
 		});

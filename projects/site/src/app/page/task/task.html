@@ -1,10 +1,6 @@
 <button (click)="connectRefresh()">刷新</button>
 
-<div *task="let xs from value$">
+<div *uiLoading="let x from value$">
 	<h1>sb</h1>
-	<ul>
-		@for (x of xs; track x) {
-		<li>{{ x }}</li>
-		}
-	</ul>
+	{{ x }}
 </div>
