@@ -1,5 +1,5 @@
 import * as R from "rxjs";
-import { AppError, fmtErrorMsg } from "./error";
+import { AppError, fmtErrorMsg, alertErrorMsg } from "./error";
 
 interface AsyncRefresh {
 	tag: "refresh";
@@ -284,5 +284,19 @@ export function catchIntoResult<T>(): R.OperatorFunction<T, AsyncResult<T, AppEr
 			const ex = new AppError(-1, msg);
 			return R.of(mkAsyncErr(ex));
 		})
-	);
+	)
 }
+
+type AsyncResultSubscription = {
+	next: (x: AsyncResult<unknown, unknown>) => void;
+	error: (e: unknown) => void;
+};
+
+export const subscriptionAll: AsyncResultSubscription = {
+	next: x => {
+		if (x.tag === "err") {
+			alertErrorMsg(x.err);
+		}
+	},
+	error: alertErrorMsg
+};

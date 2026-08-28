@@ -1,4 +1,3 @@
-
 /**
  * 自定义的错误类型，与原始Error区别开。
  */
@@ -30,4 +29,17 @@ export const fmtErrorMsg = (e: unknown): string => {
 	}
 
 	return "未知错误";
+};
+
+export function alertErrorMsg(e: unknown): void {
+	const msg = fmtErrorMsg(e);
+	alert(msg);
+};
+
+type SubscriptionOption = {
+	error: (e: unknown) => void;
+}
+
+export const subscriptionAll: SubscriptionOption = {
+	error: alertErrorMsg
 };
