@@ -1,11 +1,6 @@
 import { Component, input } from '@angular/core';
 import { UiSkeleton } from '../skeleton/skeleton';
 
-export interface UiBaseFormState {
-	title?: string;
-	isLoading?: boolean;
-}
-
 @Component({
 	selector: "ui-base-form-action",
 	template: "<ng-content />"

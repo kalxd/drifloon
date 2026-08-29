@@ -1,7 +1,7 @@
 import { Component, computed, input, output, Signal, signal } from '@angular/core';
 import * as R from "rxjs";
 import * as Ar from "../../data/async-result";
-import { UiSkeleton } from '../../ui/skeleton/skeleton';
+import { UiBaseForm, UiBaseFormAction} from "../../ui/base-form/base-form";
 import { FieldTree } from '@angular/forms/signals';
 
 export interface XUiFormState {
@@ -12,13 +12,14 @@ export interface XUiFormState {
 
 @Component({
 	selector: 'xui-form',
-	imports: [UiSkeleton],
+	imports: [UiBaseForm, UiBaseFormAction],
 	templateUrl: './form.html',
 	styleUrl: './form.css',
 })
 export class XUiForm {
 	state = input.required<XUiFormState>({});
-
+	protected title = computed(() => this.state().title ?? "请填写");
+	protected submitText = computed(() => this.state().submitText ?? "提交");
 	protected isLoading = computed(() => this.state().isLoading === true);
 
 	submit = output<void>();

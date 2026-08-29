@@ -1,15 +1,7 @@
-<fieldset class="xui form">
-	<legend>{{ state().title ?? "请填写" }}</legend>
-	<div class="body" #body>
-		<ng-content />
-	</div>
+<ui-base-form [title]="title()" [loading]="isLoading()">
+	<ng-content />
 
-	@if (isLoading()) {
-	<ui-skeleton suit="dialog" />
-	}
-	@else {
-	<div>
-		<button (click)="submit.emit()">提交</button>
-	</div>
-	}
-</fieldset>
+	<ui-base-form-action>
+		<button (click)="submit.emit()">{{ submitText() }}</button>
+	</ui-base-form-action>
+</ui-base-form>
