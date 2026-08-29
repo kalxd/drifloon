@@ -1,6 +1,5 @@
 # drifloon
 
-![npm](https://img.shields.io/npm/v/drifloon?color=brightgreen&label=npm)
 [![LICENSE](https://img.shields.io/badge/LICENSE-AGPL%20v3-blue)](https://www.gnu.org/licenses/agpl-3.0.en.html)
 [![deploy to github page](https://github.com/kalxd/drifloon/actions/workflows/deploy-page.yml/badge.svg)](https://github.com/kalxd/drifloon/actions/workflows/deploy-page.yml)
 
