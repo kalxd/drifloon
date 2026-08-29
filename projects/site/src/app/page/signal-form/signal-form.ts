@@ -1,6 +1,6 @@
 import { Component, signal } from '@angular/core';
 import { form, FormField, required } from '@angular/forms/signals';
-import { XUiForm, XUiBaseForm, Ar } from "drifloon";
+import { XUiForm, XUiBaseForm, Ar, XUiFormField } from "drifloon";
 import * as R from "rxjs";
 
 interface FormModel {
@@ -11,7 +11,8 @@ interface FormModel {
 @Component({
 	imports: [
 		FormField,
-		XUiForm
+		XUiForm,
+		XUiFormField
 	],
 	selector: 'site-signal-form',
 	styleUrl: './signal-form.css',
@@ -23,7 +24,7 @@ export class SiteSignalForm extends XUiBaseForm<FormModel, void> {
 		password: ""
 	});
 
-	protected readonly fd = form(this.model, p => {
+	override fd = form(this.model, p => {
 		required(p.username);
 	});
 

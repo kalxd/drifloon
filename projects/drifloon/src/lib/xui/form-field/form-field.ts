@@ -1,5 +1,5 @@
-import { Component, computed, input } from '@angular/core';
-import { FieldTree } from '@angular/forms/signals';
+import { Component, computed, input, model } from '@angular/core';
+import { FormValueControl, ValidationError, WithOptionalFieldTree } from '@angular/forms/signals';
 
 const trKind = (kind: string, label: string | undefined, message: string | undefined): string => {
 	if (kind === "required") {
@@ -15,31 +15,16 @@ const trKind = (kind: string, label: string | undefined, message: string | undef
   templateUrl: './form-field.html',
   styleUrl: './form-field.css',
 })
-export class XUiFormField {
-	readonly fieldName = input<FieldTree<string, any>>();
-	readonly label = input<string>();
+export class XUiFormField implements FormValueControl<unknown> {
+	readonly value = model<unknown>();
+	readonly required = input<boolean>(false);
+	readonly invalid = input<boolean>(false);
+	readonly errors = input<readonly WithOptionalFieldTree<ValidationError>[]>([]);
 
-	protected labelTitle = computed(() => {
-		const label = this.label();
-		return label ?? "填写此处";
-	});
+	readonly label = input<string | undefined>();
+	protected readonly labelTitle = computed(() => this.label() ?? "请填写");
 
-	protected errors = computed<Array<string> | undefined>(() => {
-		const fieldName = this.fieldName?.();
-
-		if (fieldName === undefined) {
-			return ;
-		}
-
-		if (!fieldName().dirty()) {
-			return ;
-		}
-
-		return fieldName().errors()
-			.map(e => trKind(e.kind, this.label(), e.message));
-	});
-
-	protected isRequire = computed<boolean>(() => {
-		return this.fieldName?.()?.()?.required() === true;
-	});
+	showOneError(e: ValidationError): string {
+		return trKind(e.kind, this.label(), e.message);
+	};
 }

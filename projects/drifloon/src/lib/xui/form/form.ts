@@ -41,6 +41,10 @@ export abstract class XUiBaseForm<T, R> {
 	protected submitOk(_: R): void {}
 
 	connectSubmit(): void {
+		if (this.fd().invalid()) {
+			return ;
+		}
+
 		this.submit()
 			.pipe(
 				R.startWith(Ar.mkAsyncRefresh),

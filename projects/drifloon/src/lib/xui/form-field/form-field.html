@@ -1,12 +1,14 @@
-<div class="ui field" [class.required]="isRequire()">
+<div class="ui field" [class.required]="required()">
 	<label>{{ labelTitle() }}</label>
 	<div class="control">
 		<ng-content />
-
-		@if (errors() !== null) {
-		@for (e of errors(); track $index) {
-		<div class="error">{{ e }}</div>
-		}
-		}
 	</div>
+
+	@if (invalid()) {
+	<ul class="error">
+		@for (e of errors(); track $index) {
+		<li>{{ showOneError(e) }}</li>
+		}
+	</ul>
+	}
 </div>
