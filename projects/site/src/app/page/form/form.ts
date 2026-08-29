@@ -2,6 +2,7 @@ import { Component, inject } from '@angular/core';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { UiForm, UiFormField } from "drifloon";
 import { SiteSignalForm } from './signal-form';
+import { TheBaseForm } from "./base-form/base-form";
 
 @Component({
 	selector: 'site-form',
@@ -9,7 +10,8 @@ import { SiteSignalForm } from './signal-form';
 		ReactiveFormsModule,
 		UiForm,
 		UiFormField,
-		SiteSignalForm
+		SiteSignalForm,
+		TheBaseForm
 	],
 	templateUrl: './form.html',
 	styleUrl: './form.css'

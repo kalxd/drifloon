@@ -1,0 +1,14 @@
+<ui-base-form title="基础form外观，无任何业务代码" [loading]="isLoading()">
+	<div>
+		<label>username</label>
+		<input />
+	</div>
+
+	<div>
+		<button (click)="isLoading.set(false)">停止</button>
+	</div>
+
+	<ui-base-form-action>
+		<button (click)="isLoading.set(true)">刷新</button>
+	</ui-base-form-action>
+</ui-base-form>

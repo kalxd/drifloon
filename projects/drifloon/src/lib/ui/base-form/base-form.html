@@ -1,0 +1,13 @@
+<fieldset class="ui form">
+	<legend>{{ title() }}</legend>
+	<div class="body" #body>
+		<ng-content />
+	</div>
+
+	@if (loading()) {
+	<ui-skeleton suit="dialog" />
+	}
+	@else {
+	<ng-content select="ui-base-form-action" />
+	}
+</fieldset>
