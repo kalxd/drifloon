@@ -33,3 +33,4 @@ export * from "./directive/loading";
 // export * from "./lib/de";
 export * from "./lib/xui/form/form";
 export * from "./lib/xui/form-field/form-field";
+export * from "./lib/xui/form-dialog/form-dialog";

@@ -1,0 +1,16 @@
+<ui-dialog>
+	<ng-content select="dialog-header" />
+
+	<xui-form [state]="state()">
+		<ng-content />
+	</xui-form>
+
+	<ng-content select="dialog-footer" />
+
+	@if (isLoading()) {
+	<ui-skeleton suit="dialog" />
+	}
+	@else {
+	<ui-dialog-box />
+	}
+</ui-dialog>
