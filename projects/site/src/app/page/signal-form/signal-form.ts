@@ -17,7 +17,7 @@ interface FormModel {
 	styleUrl: './signal-form.css',
 	templateUrl: './signal-form.html',
 })
-export class SiteSignalForm extends XUiBaseForm {
+export class SiteSignalForm extends XUiBaseForm<FormModel, void> {
 	protected readonly model = signal<FormModel>({
 		username: "",
 		password: ""
@@ -27,9 +27,9 @@ export class SiteSignalForm extends XUiBaseForm {
 		required(p.username);
 	});
 
-	override submit(): R.Observable<Ar.AsyncResult<unknown, unknown>> {
+	override submit(): R.Observable<Ar.AsyncResult<void, unknown>> {
 		return R.of(1).pipe(
-			Ar.mapOf(x => x),
+			Ar.mapOf(_ => {}),
 			R.delay(1000)
 		);
 	}

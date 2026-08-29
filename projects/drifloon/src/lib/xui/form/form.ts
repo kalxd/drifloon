@@ -2,6 +2,7 @@ import { Component, computed, input, output, Signal, signal } from '@angular/cor
 import * as R from "rxjs";
 import * as Ar from "../../data/async-result";
 import { UiSkeleton } from '../../ui/skeleton/skeleton';
+import { FieldTree } from '@angular/forms/signals';
 
 export interface XUiFormState {
 	title?: string;
@@ -23,7 +24,7 @@ export class XUiForm {
 	submit = output<void>();
 }
 
-export abstract class XUiBaseForm {
+export abstract class XUiBaseForm<T, R> {
 	private readonly isLoading = signal(false);
 	protected submitText: string | undefined;
 	protected title: string | undefined;
@@ -34,24 +35,21 @@ export abstract class XUiBaseForm {
 		title: this.title
 	}));
 
-	protected readonly formState = signal<XUiFormState>({
-		isLoading: false
-	});
+	protected abstract fd: FieldTree<T>;
 
-	abstract submit(): R.Observable<Ar.AsyncResult<unknown, unknown>>;
-	protected submitOk(): void {}
+	protected abstract submit(): R.Observable<Ar.AsyncResult<R, unknown>>;
+	protected submitOk(_: R): void {}
 
 	connectSubmit(): void {
-		this.isLoading.set(true);
-
 		this.submit()
 			.pipe(
+				R.startWith(Ar.mkAsyncRefresh),
 				R.tap(x => Ar.caseOfAsyncResult(x, {
 					refresh: () => this.isLoading.set(true),
 					err: _ => this.isLoading.set(false),
-					finish: _ => {
+					finish: x => {
 						this.isLoading.set(false);
-						this.submitOk();
+						this.submitOk(x);
 					}
 				}))
 			)
