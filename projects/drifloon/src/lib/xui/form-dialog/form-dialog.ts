@@ -49,7 +49,15 @@ export class XUiFormDialog {
 })
 export abstract class XUiBaseFormDialog<T, R> {
 	protected title: string | undefined;
+	protected okText: string | undefined;
+	protected cancelText: string | undefined;
 	private readonly isLoading = signal<boolean>(false);
+	protected readonly state = computed<XUiFormDialogState>(() => ({
+		title: this.title,
+		isLoading: this.isLoading(),
+		okText: this.okText,
+		cancelText: this.cancelText
+	}));
 
 	protected readonly abstract fd: FieldTree<T>;
 	private readonly ok$ = new R.Subject<R>();
@@ -85,7 +93,7 @@ export abstract class XUiBaseFormDialog<T, R> {
 
 		this.dialogRef().show();
 
-		return R.of().pipe(
+		return R.of(1).pipe(
 			R.switchMap(_ => this.ok$),
 			R.take(1)
 		);

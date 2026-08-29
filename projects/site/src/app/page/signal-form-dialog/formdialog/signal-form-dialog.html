@@ -1,0 +1,9 @@
+<xui-form-dialog [state]="state()" (submit)="connectSubmit()">
+	<xui-form-field label="username" [formField]="fd.username">
+		<input [formField]="fd.username" />
+	</xui-form-field>
+
+	<xui-form-field label="password" [formField]="fd.password">
+		<input [formField]="fd.password" />
+	</xui-form-field>
+</xui-form-dialog>

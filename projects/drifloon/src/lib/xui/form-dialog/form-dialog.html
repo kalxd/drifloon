@@ -3,7 +3,7 @@
 		<ng-content />
 
 		<ui-base-form-action>
-			<ui-dialog-box />
+			<ui-dialog-box (cancel)="close()" (ok)="submit.emit()" />
 		</ui-base-form-action>
 	</ui-base-form>
 </ui-dialog>

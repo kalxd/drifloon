@@ -1,0 +1,13 @@
+<ui-base-form>
+	<xui-form-field label="username">
+		<input [formField]="fd.username" />
+	</xui-form-field>
+
+	<xui-form-field label="password">
+		<input [formField]="fd.password" />
+	</xui-form-field>
+
+	<button (click)="connectOpenDialog()">打开对话框</button>
+</ui-base-form>
+
+<the-signal-form-dialog />
