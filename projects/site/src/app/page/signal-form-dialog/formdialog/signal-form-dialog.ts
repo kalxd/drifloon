@@ -30,6 +30,8 @@ export class TheSignalFormDialog extends XUiBaseFormDialog<UserModel, UserModel>
 
 	override sumbit(): R.Observable<Ar.AsyncResult<UserModel, unknown>> {
 		const result: UserModel = this.userModel();
-		return R.of(Ar.mkAsyncFinish(result));
+		return R.of(Ar.mkAsyncFinish(result)).pipe(
+			R.delay(1000)
+		);
 	}
 }

@@ -6,6 +6,9 @@ import { UiSkeleton } from "../ui/skeleton/skeleton";
 import { FormBuilder, FormGroup } from "@angular/forms";
 import * as R from "rxjs";
 
+/**
+ * @deprecated 同{@link UiForm}一同废弃，将来由{@link XUiFormDialog}代替。
+ */
 @Component({
 	selector: "ui-form-dialog",
 	templateUrl: "./formdialog.html",
@@ -40,6 +43,9 @@ export class UiFormDialog {
 	}
 }
 
+/**
+ * @deprecated 同{@link UiFormDialog}一同废弃，将来由{@link XUiBaseFormDialog}代替。
+ */
 @Component({
 	template: ""
 })

@@ -16,6 +16,9 @@ import {
 	Validators
 } from "@angular/forms";
 
+/**
+ * @deprecated 同{@link UiForm}一同废弃，将来由{@link XUiFormField}代替。
+ */
 @Component({
 	selector: "ui-form-field",
 	imports: [FormsModule],
