@@ -1,5 +1,5 @@
 import * as R from "rxjs";
-import { AppError, fmtErrorMsg, alertErrorMsg } from "./error";
+import { AppError, mkInnerError, fmtErrorMsg, alertErrorMsg } from "./error";
 
 interface AsyncRefresh {
 	tag: "refresh";
@@ -16,6 +16,7 @@ interface AsyncErr<E> {
 }
 
 export type AsyncResult<T, E = unknown> = AsyncRefresh | AsyncFinish<T> | AsyncErr<E>;
+export type AsyncAppResult<T> = AsyncResult<T, AppError>;
 
 export const mkAsyncRefresh: AsyncResult<any, any> = {
 	tag: "refresh"
@@ -259,7 +260,7 @@ export function raiseError<T, E>(): R.OperatorFunction<AsyncResult<T, E>, T> {
 				}
 
 				const msg = fmtErrorMsg(x.err);
-				throw new AppError(-1, msg);
+				throw mkInnerError(msg);
 			}
 
 			const _: never = x;
@@ -281,7 +282,7 @@ export function catchIntoResult<T>(): R.OperatorFunction<T, AsyncResult<T, AppEr
 			}
 
 			const msg = fmtErrorMsg(e);
-			const ex = new AppError(-1, msg);
+			const ex = mkInnerError(msg);
 			return R.of(mkAsyncErr(ex));
 		})
 	)
