@@ -17,6 +17,14 @@ export class AppError {
 	}
 }
 
+/**
+ * 快速构建非Http请求的错误信息，
+ * 该错误用于应用内部错误，且无关紧要。
+ */
+function mkInnerError(msg: string): AppError {
+	return new AppError(-1, msg);
+}
+
 export const fmtErrorMsg = (e: unknown): string => {
 	if (e instanceof AppError) {
 		return e.msg;

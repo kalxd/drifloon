@@ -1,3 +1,7 @@
+// 基本数据结构
+export * from "./lib/data/error";
+export * as Ar from "./lib/data/async-result";
+
 export * from "./lib/ui/error-page/error-page";
 
 export * from "./pipe/zhdatatime";
@@ -19,8 +23,6 @@ export * from "./lib/task/task";
 
 export * from "./lib/dialog/dialog";
 export * from "./lib/dialog/formdialog";
-
-export * as Ar from "./lib/data/async-result";
 
 // 常用辅助函数。
 export * as Fx from "./fx";
