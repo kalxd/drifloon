@@ -1,6 +1,6 @@
 {
 	"name": "drifloon",
-	"version": "0.31.6",
+	"version": "0.31.7",
 	"dependencies": {
 		"tslib": "^2.3.0"
 	},
