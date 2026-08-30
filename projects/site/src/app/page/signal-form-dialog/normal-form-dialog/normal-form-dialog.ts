@@ -26,7 +26,7 @@ export class TheNormalFormDialog extends XUiBaseFormDialog<void, NormalFormModel
 
 	override fd = form(this.userModel);
 
-	override sumbit(): R.Observable<Ar.AsyncResult<NormalFormModel, unknown>> {
+	override submit(): R.Observable<Ar.AsyncResult<NormalFormModel, unknown>> {
 		const result = this.userModel();
 
 		return R.of(result).pipe(

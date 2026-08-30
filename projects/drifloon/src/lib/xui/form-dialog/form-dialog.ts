@@ -67,14 +67,14 @@ export abstract class XUiBaseFormDialog<T, R> {
 		this.fd().reset();
 	}
 
-	abstract sumbit(): R.Observable<Ar.AsyncResult<R, unknown>>;
+	abstract submit(): R.Observable<Ar.AsyncResult<R, unknown>>;
 
 	connectSubmit(): void {
 		if (this.fd().invalid()) {
 			return ;
 		}
 
-		this.sumbit()
+		this.submit()
 			.pipe(
 				R.startWith(Ar.mkAsyncRefresh),
 				R.tap(x => Ar.caseOfAsyncResult(x, {

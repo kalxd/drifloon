@@ -28,7 +28,7 @@ export class TheSignalFormDialog extends XUiBaseFormDialog<UserModel, UserModel>
 		this.userModel.set(input);
 	}
 
-	override sumbit(): R.Observable<Ar.AsyncResult<UserModel, unknown>> {
+	override submit(): R.Observable<Ar.AsyncResult<UserModel, unknown>> {
 		const result: UserModel = this.userModel();
 		return R.of(Ar.mkAsyncFinish(result)).pipe(
 			R.delay(1000)
