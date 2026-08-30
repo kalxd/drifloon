@@ -59,11 +59,13 @@ export abstract class XUiBaseFormDialog<T, R> {
 		cancelText: this.cancelText
 	}));
 
-	protected readonly abstract fd: FieldTree<T>;
+	protected readonly abstract fd: FieldTree<unknown>;
 	private readonly ok$ = new R.Subject<R>();
 	private readonly dialogRef = viewChild.required(XUiFormDialog);
 
-	protected init(_: T): void {}
+	protected init(_: T): void {
+		this.fd().reset();
+	}
 
 	abstract sumbit(): R.Observable<Ar.AsyncResult<R, unknown>>;
 
