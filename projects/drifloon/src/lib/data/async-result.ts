@@ -15,7 +15,7 @@ interface AsyncErr<E> {
 	err: E;
 }
 
-export type AsyncResult<T, E> = AsyncRefresh | AsyncFinish<T> | AsyncErr<E>;
+export type AsyncResult<T, E = unknown> = AsyncRefresh | AsyncFinish<T> | AsyncErr<E>;
 
 export const mkAsyncRefresh: AsyncResult<any, any> = {
 	tag: "refresh"
